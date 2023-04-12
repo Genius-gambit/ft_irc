@@ -6,27 +6,34 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 22:07:24 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/08 22:21:42 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/13 01:01:29 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-
-bool	args_check(int argc, std::string port)
-{
-	if (argc != 3 || port.find_first_not_of("0123456789") != port.npos)
-		return (true);
-	return (false);	
-}
+#include "../includes/ft_irc.hpp"
 
 int	main(int argc, char **argv)
 {
-	if (args_check(argc, argv[1]))
-	{
-		std::cerr << "ft_irc: Err: Incorrect Arguments!\n";
-		std::cout << "Please execute as follows:\n\t";
-		std::cout << "./ft_irc <port number> <password>\n";
-		return (1);
+	/**	@brief : Check arguments are valid */
+	try{
+		error().argc(argc);
+		error().port(argv[1]);
+	}catch(const std::exception &e){
+		std::cerr << e.what() << std::endl;
+		exit(1);
 	}
+
+	/**	@brief : handle signals */
+	catch_signals();
+
+	/**	@brief : run server */
+	while (g_server_run)
+	{
+		std::cout << "running!\n";
+		sleep (1);
+	}
+	
+	/**	@brief : free stuff if necessary */
+
 	return (0);
 }

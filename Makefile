@@ -7,6 +7,8 @@ NAME = ft_irc
 ClIENT = irssi_client
 
 SRCS = main \
+	classDef/error \
+	classDef/signals \
 
 CXX = c++ -std=c++98
 
@@ -21,6 +23,7 @@ OBJS = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(SRCS)))
 #*	@example : @mkdir -p $(OBJDIR)/classDef
 $(OBJDIR)/%.o : srcs/%.cpp
 	@mkdir -p $(OBJDIR)
+	@mkdir -p $(OBJDIR)/classDef
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 all : $(NAME) printProvided
