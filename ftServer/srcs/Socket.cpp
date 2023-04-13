@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.cpp                                        :+:      :+:    :+:   */
+/*   Socket.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/12 21:50:47 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/13 23:32:57 by wismith          ###   ########.fr       */
+/*   Created: 2023/04/13 23:54:27 by wismith           #+#    #+#             */
+/*   Updated: 2023/04/13 23:57:17 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/signal.h>
-#include <iostream>
+#include "Socket.hpp"
 
-bool	g_server_run = true;
+ft::SetSocket::SetSocket(){}
+ft::SetSocket::SetSocket(const SetSocket &e){(void)e}
 
-void	sighandlr(int signum)
-{
-	(void) signum;
-	g_server_run = false;
-	std::cout << "\nStopping server!\n";
-}
+ft::SetSocket::~SetSocket(){}
 
-void	catch_signals()
-{
-	signal(SIGINT, sighandlr);
-	signal(SIGQUIT, sighandlr);
-	signal(SIGHUP, sighandlr);
-	signal(SIGTERM, sighandlr);
-	signal(SIGPIPE, sighandlr);
-}
+ft::SetSocket	&ft::SetSocket::operator=(const SetSocket &e){(void)e}

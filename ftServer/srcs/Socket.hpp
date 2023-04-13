@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.cpp                                        :+:      :+:    :+:   */
+/*   Socket.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/12 21:50:47 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/13 23:32:57 by wismith          ###   ########.fr       */
+/*   Created: 2023/04/13 23:45:33 by wismith           #+#    #+#             */
+/*   Updated: 2023/04/13 23:57:30 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/signal.h>
-#include <iostream>
+#	ifndef SOCKET_HPP
+# define SOCKET_HPP
 
-bool	g_server_run = true;
+# include <iostream>
+# include <string.h>
+# include <sys/types.h>
+# include <sys/socket.h>
+# include <netinet/in.h>
+# include <arpa/inet.h>
+# include <stdlib.h>
+# include <unistd.h>
 
-void	sighandlr(int signum)
+namespace	ft
 {
-	(void) signum;
-	g_server_run = false;
-	std::cout << "\nStopping server!\n";
-}
+	class SetSocket
+	{
+		private :
+			SetSocket();
+			SetSocket(const SetSocket &s);
+			SetSocket	&operator=(const SetSocket &s);
 
-void	catch_signals()
-{
-	signal(SIGINT, sighandlr);
-	signal(SIGQUIT, sighandlr);
-	signal(SIGHUP, sighandlr);
-	signal(SIGTERM, sighandlr);
-	signal(SIGPIPE, sighandlr);
-}
+		public :
+			~SetSocket();
+
+	};
+};
+
+#endif

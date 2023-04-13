@@ -1,32 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.cpp                                        :+:      :+:    :+:   */
+/*   Super.hpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/12 21:50:47 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/13 23:32:57 by wismith          ###   ########.fr       */
+/*   Created: 2023/04/13 23:48:56 by wismith           #+#    #+#             */
+/*   Updated: 2023/04/13 23:50:20 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/signal.h>
-#include <iostream>
+#	ifndef SUPER_HPP
+# define SUPER_HPP
 
-bool	g_server_run = true;
-
-void	sighandlr(int signum)
-{
-	(void) signum;
-	g_server_run = false;
-	std::cout << "\nStopping server!\n";
-}
-
-void	catch_signals()
-{
-	signal(SIGINT, sighandlr);
-	signal(SIGQUIT, sighandlr);
-	signal(SIGHUP, sighandlr);
-	signal(SIGTERM, sighandlr);
-	signal(SIGPIPE, sighandlr);
-}
+#endif
