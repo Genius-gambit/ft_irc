@@ -1,5 +1,9 @@
 NAME = ft_irc
 
+SERVDIR = ftServer
+
+SERVARCH = $(SERVDIR)/ServerSide.a
+
 #* @note : no need to include .cpp extension in SRCS 	
 #* 	@format : directory/file_name without .cpp
 #*	@example : classDef/rawData
@@ -29,14 +33,17 @@ $(OBJDIR)/%.o : srcs/%.cpp
 all : $(NAME) printProvided
 
 $(NAME): printStart $(OBJS) printnl
+	@make -C $(SERVDIR)
 	@printf "Generating Executable:\n"
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJS) $(SERVARCH) -o $(NAME)
 
 clean:
 		rm -rf $(OBJDIR)
+		@make clean -C $(SERVDIR)
 
 fclean: clean
 		rm -rf $(NAME)
+		@make fclean -C $(SERVDIR)
 
 re: fclean all
 
