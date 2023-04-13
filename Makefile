@@ -7,8 +7,8 @@ NAME = ft_irc
 ClIENT = irssi_client
 
 SRCS = main \
+	signals \
 	classDef/error \
-	classDef/signals \
 
 CXX = c++ -std=c++98
 
