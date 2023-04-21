@@ -12,6 +12,8 @@ ClIENT = irssi_client
 
 SRCS = main \
 	signals \
+	client \
+	server \
 
 CXX = c++ -std=c++98
 
