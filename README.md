@@ -8,6 +8,9 @@
    3. Handled invalid port as argument
    4. Implemented a signal handler
    5. Implemented SetSocket(Interface) and Binder class for ftServer library
+   6. Implemented Listener and Reader class, and merged Binder into Listener for ftServer library
+   7. Implemented non-blocking using function fcntl within Listener
+   8. Added socket options method to Listener class that incorporated setsockopt
 
 ## Objectives
 
@@ -15,5 +18,4 @@
 1. Create config and parse such files.
 
 #### WJS
-1. Implementation of connection class for ftServer library
-2. Implement server
+1. Implement server
