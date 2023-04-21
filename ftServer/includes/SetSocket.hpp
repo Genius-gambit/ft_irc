@@ -6,12 +6,14 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 23:45:33 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/14 02:46:01 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/18 02:02:16 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #	ifndef SOCKET_HPP
 # define SOCKET_HPP
+
+#include "error.hpp"
 
 # include <iostream>
 # include <string.h>
@@ -21,6 +23,7 @@
 # include <arpa/inet.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <sys/fcntl.h>
 
 namespace	ft
 {
@@ -31,21 +34,25 @@ namespace	ft
 			int					sock;
 			int					connection;
 
-			SetSocket();
 			SetSocket(const SetSocket &s);
 			SetSocket	&operator=(const SetSocket &s);
 
 		public :
+			SetSocket();
 			SetSocket(int domain, int service, int protocol, int port, unsigned long interface);
-			~SetSocket();
+			virtual ~SetSocket();
 			
 			virtual	int connect_net(int sock, struct sockaddr_in address) = 0;
 
-			struct sockaddr_in	getAddress() const;
+			struct sockaddr_in	&getAddress();
 			int					getSock() const;
 			int					getConnection() const;
 
 			void				setConnection(int);
+			void				setAddress(const struct sockaddr_in &addr);
+			void				setSock(const int sockfd);
+			virtual void		setInfo(int domain, int service, int protocol,
+									int port, unsigned long interface);
 	};
 };
 

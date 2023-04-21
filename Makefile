@@ -2,7 +2,7 @@ NAME = ft_irc
 
 SERVDIR = ftServer
 
-SERVARCH = $(SERVDIR)/ServerSide.a
+SERVARCH = $(SERVDIR)/ServerUtils.a
 
 #* @note : no need to include .cpp extension in SRCS 	
 #* 	@format : directory/file_name without .cpp
@@ -12,7 +12,6 @@ ClIENT = irssi_client
 
 SRCS = main \
 	signals \
-	classDef/error \
 
 CXX = c++ -std=c++98
 
@@ -28,22 +27,25 @@ OBJS = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(SRCS)))
 $(OBJDIR)/%.o : srcs/%.cpp
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(OBJDIR)/classDef
+	@printf "\033[A\033[2K\r"
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 all : $(NAME) printProvided
 
-$(NAME): printStart $(OBJS) printnl
-	@make -C $(SERVDIR)
+$(NAME): utils printStart $(OBJS) printnl
 	@printf "Generating Executable:\n"
 	$(CXX) $(CXXFLAGS) $(OBJS) $(SERVARCH) -o $(NAME)
 
+utils :
+	@make -C $(SERVDIR)
+
 clean:
-		rm -rf $(OBJDIR)
-		@make clean -C $(SERVDIR)
+	@rm -rf $(OBJDIR)
+	@make clean -C $(SERVDIR)
 
 fclean: clean
-		rm -rf $(NAME)
-		@make fclean -C $(SERVDIR)
+	@rm -rf $(NAME)
+	@make fclean -C $(SERVDIR)
 
 re: fclean all
 
@@ -63,7 +65,7 @@ rm_client:
 
 #* @brief : rules to print messages
 printStart :
-	@printf "\nConstructing new 'ft_irc' server objects:\n"
+	@printf "\nConstructing new 'ft_irc' server objects:\n\n"
 printnl :
 	@echo ""
 printProvided :

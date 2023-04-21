@@ -6,11 +6,11 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 21:16:09 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/13 17:32:03 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/20 14:35:53 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/error.hpp"
+#include "../includes/error.hpp"
 
 /**	@brief : Default Constructor */
 error::error(){}
@@ -48,6 +48,7 @@ size_t	error::port(const std::string &port_)
 
 /**	@brief : Checks the return of socket function
  * @note : upon success socket will return a valid file descriptor.
+ * 			Throws SocketFailure exception if parameter < 0
  */
 void	error::SocketCheck(int rtn)
 {
@@ -55,11 +56,52 @@ void	error::SocketCheck(int rtn)
 		throw (SocketFailure());
 }
 
-/**	@brief : Checks the return of binding function.
- * @note : binding will return 0 on success
+/**	@brief : Checks the return of Connect function.
+ * @note : binding will return 0 on success,
+ * 			throws ConnectFailure exception if parameter != 0
  */
 void	error::ConnectionCheck(int rtn)
 {
 	if (rtn)
+		throw (ConnectFailure());
+}
+
+/**	@brief : Checks the return of binding function.
+ * @note : binding will return 0 on success.
+ * 				throws BindingFailure exception if parameter != 0
+ */
+void	error::BindCheck(int rtn)
+{
+	if (rtn)
 		throw (BindingFailure());
+}
+
+/**	@brief : Checks the return of listen function.
+ * @note : listen will return 0 on success.
+ * 			Throws ListenFailure exception if parameter != 0
+ */
+void	error::LstnCheck(int rtn)
+{
+	if (rtn)
+		throw (ListenFailure());
+}
+
+/**	@brief : Checks the return of fcntl function.
+ * @note : fcntl will return -1 on failure
+ * 			Throws FcntlFailure exception if parameter == -1
+ */
+void	error::BlockCheck(int rtn)
+{
+	if (rtn == -1)
+		throw (FcntlFailure());
+}
+
+/**	@brief : Checks the return of setsockopt function.
+ * @note : setsockopt will return -1 on failure
+ * 			Throws SockOptFailure exception if parameter == -1
+ */
+void	error::sockOptErr(int rtn)
+{
+	if (rtn == -1)
+		throw (SockOptFailure());
 }

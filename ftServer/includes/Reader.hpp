@@ -1,34 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   connecter.hpp                                      :+:      :+:    :+:   */
+/*   reader.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/14 17:46:27 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/14 17:48:14 by wismith          ###   ########.fr       */
+/*   Created: 2023/04/18 14:19:59 by wismith           #+#    #+#             */
+/*   Updated: 2023/04/18 17:42:41 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#	ifndef CONNECTER_HPP
-# define CONNECTER_HPP
+#	ifndef READER_HPP
+# define READER_HPP
 
+# include <iostream>
 # include "SetSocket.hpp"
+
+# define BUFFER 510
 
 namespace ft
 {
-	class Connecter : public SetSocket
+	class Reader
 	{
 		private :
-			Connecter();
-			Connecter(const Connecter &b);
-			Connecter	&operator=(const Connecter &b);
-			
+			std::string	*data;
+			int			fd;
+
 		public :
-			Connecter(int domain, int service, int protocol, int port, unsigned long interface);
-			
-			int connect_net(int sock, struct sockaddr_in address);
-			
+			Reader();
+			Reader(int nfd);
+			Reader(const Reader &r);
+			~Reader();
+
+			Reader	&operator=(const Reader &r);
+
+			Reader	&retrieve();
+
+			void	setFd(int nfd);
+			std::string	getData();
 	};
 };
 
