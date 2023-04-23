@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:30:56 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/21 20:39:07 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/22 14:48:25 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,10 @@
 
 # include <map>
 # include <sys/poll.h>
+# include <string>
 # include "signals.hpp"
 # include "client.hpp"
-# include "../ftServer/includes/Listener.hpp"
+# include "../ftServerUtils/includes/Listener.hpp"
 
 # define CLIENT ft::client
 # define CLIENT_FD int
@@ -36,6 +37,7 @@ namespace ft
 			ft::Listener				lstn;
 			struct pollfd 				server_pfd;
 			std::map<CLIENT_FD, CLIENT>	clients;
+			std::vector<pollfd>			pfds;
 			
 		public :
 			server (int nport, std::string pw);

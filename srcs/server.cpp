@@ -6,13 +6,13 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/21 20:27:17 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/23 00:14:23 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/server.hpp"
 
-ft::server::server(int nport, std::string pw) : state(SHUTDOWN), opt(1), port(nport), password(pw), lstn(), clients()
+ft::server::server(int nport, std::string pw) : state(SHUTDOWN), opt(1), port(nport), password(pw), lstn(), clients(), pfds()
 {
 	try
 	{
@@ -25,6 +25,7 @@ ft::server::server(int nport, std::string pw) : state(SHUTDOWN), opt(1), port(np
 		this->lstn.ListenConnect();
 		this->server_pfd.fd = lstn.getSock();
 		this->server_pfd.events = POLLIN;
+		this->pfds.push_back(this->server_pfd);
 		this->state = RUNNING;
 	} catch (const std::exception &e)
 	{
@@ -42,20 +43,25 @@ void	ft::server::run()
 
 	while (g_server_run && this->state)
 	{
-		poll(&this->server_pfd, 1, 100);
-		if (this->server_pfd.revents == POLLIN
+		poll(&this->pfds[0], this->pfds.size(), 1000);
+
+		if (this->pfds[0].revents == POLLIN
 			&& (new_client = accept(lstn.getSock(), (struct sockaddr*)&lstn.getAddress(),
             		(socklen_t*)&addrlen)) >= 0)
-			this->clients[new_client] = ft::client(new_client);
-
-		for (std::map<CLIENT_FD, CLIENT>::iterator it = this->clients.begin(); it != this->clients.end(); it++)
 		{
-			if (poll(it->second.getPfd(), 3, 100) >= 0 && it->second.getPfd()[IN].revents == POLLIN)
+			this->pfds.push_back(pollfd());
+			this->pfds.back().fd = new_client;
+			this->pfds.back().events = POLLIN;
+			this->clients[new_client] = ft::client(new_client);
+		}
+
+		for (std::vector<struct pollfd>::iterator it = this->pfds.begin()
+			; it != this->pfds.end(); it++)
+		{
+			if (it->revents == POLLIN)
 			{
-				std::cout << it->second.Read();
-				if (poll(it->second.getPfd(), 3, 100) >= 0
-					&& it->second.getPfd()[OUT].revents == POLLOUT)
-					it->second.Write("Hello from Server!\n");
+				std::cout << this->clients[it->fd].Read();
+				this->clients[it->fd].Write("hello from server!\n");
 			}
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:33:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/21 20:39:42 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/23 01:33:28 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,25 @@
 # define CLIENT_HPP
 
 # include <sys/poll.h>
-# include "../ftServer/includes/Reader.hpp"
+# include "../ftServerUtils/includes/Reader.hpp"
 
-# define IN 0
-# define OUT 1
+# define ILLEGAL 0 	//! Client password not authenticated
+# define VERIFIED 1 //! Client password authenticated
 
 namespace ft
 {
 	class client
 	{
 		private :
-			int	fd;
-			struct pollfd	pfd[3];
-			ft::Reader		reader;
+			int				fd; 	//! Client fd to read / write to
+			int				status; //! Illegal / Verified
+			std::string		nick;	//! Client nickname
+			ft::Reader		reader; //! object used to read from fd
 
-			client (const client &c);
 
 		public :
 			client ();
+			client (const client &c);
 			client (int nfd);
 			~client();
 
@@ -40,10 +41,13 @@ namespace ft
 			std::string		Read();
 			void			Write(std::string str);
 
-			struct pollfd	*getPfd();
-
 			void			setFd(int nfd);
+			void			setStatus(int stat);
+			void			setNick(const std::string &Nick);
+
 			int				getFd() const;
+			int				getStatus() const;
+			std::string		getNick() const;
 	};
 };
 

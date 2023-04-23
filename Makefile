@@ -1,7 +1,6 @@
-NAME = ft_irc
+NAME = ircserv
 
-SERVDIR = ftServer
-
+SERVDIR = ftServerUtils
 SERVARCH = $(SERVDIR)/ServerUtils.a
 
 #* @note : no need to include .cpp extension in SRCS 	
@@ -71,6 +70,6 @@ printStart :
 printnl :
 	@echo ""
 printProvided :
-	@printf "\nServer 'ft_irc' provided\n"
+	@printf "\nServer 'ircserv' provided\n"
 
 .PHONY : all clean fclean re printStart printnl printProvided
