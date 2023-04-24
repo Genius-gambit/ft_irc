@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 19:00:43 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/20 15:56:19 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/24 03:39:33 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,7 @@ void	ft::Listener::setInfo(int domain, int service, int protocol,
 
 	this->setSock(socket(domain, service, protocol));
 	error().SocketCheck(this->getSock());
-	
-	// int res = setsockopt(this->getSock(), SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
-	// std::cout << "res setSockOpt : " << res << std::endl;
-	// res = setsockopt(this->getSock(), SOL_SOCKET, SO_REUSEPORT, &opt, sizeof(opt));
-	// std::cout << "res setSockOpt : " << res << std::endl;
+	std::cout << "Server Status: Socket fd set\n";
 
 	newAddr.sin_family = domain;
 	newAddr.sin_port = htons(port);
@@ -61,7 +57,8 @@ void	ft::Listener::setInfo(int domain, int service, int protocol,
  */
 void	ft::Listener::ListenConnect()
 {
-	error().LstnCheck(listen(this->getSock(), this->backlog));
+	error().LstnCheck(listen(this->getSock(), this->getAddress().sin_port));
+	std::cout << "Server Status: Listening on Socket\n";
 }
 
 /**	@brief nonBlocking method uses fcntl system call to set socket
@@ -75,10 +72,8 @@ void	ft::Listener::ListenConnect()
  */
 void	ft::Listener::nonBlocking()
 {
-	int	flag = fcntl(this->getSock(), F_GETFL);
-	error().BlockCheck(flag);
-	flag = fcntl(this->getSock(), F_SETFL, flag | O_NONBLOCK);
-	error().BlockCheck(flag);
+	error().BlockCheck(fcntl(this->getSock(), F_SETFL, O_NONBLOCK));
+	std::cout << "Server Status: Socket set to Non Blocking\n";
 }
 
 /**	@brief connect_net method used to perform bind system call
@@ -89,6 +84,7 @@ int	ft::Listener::connect_net(int sock, struct sockaddr_in addr)
 {
 	int	res = bind(sock, (struct sockaddr *)&addr, sizeof(addr));
 	error().BindCheck(res);
+	std::cout << "Server Status: Binding Socket\n"; 
 	return (res);
 }
 
@@ -106,5 +102,7 @@ void	ft::Listener::BindConnect()
 void	ft::Listener::setSockProto(int level, int option_name, int &opt)
 {
 	error().sockOptErr(setsockopt(this->getSock(), level, option_name, &opt, sizeof(opt)));
+	std::cout << "Server Status: Set sock Opt \"" << (option_name == SO_REUSEADDR ? "SO_REUSEADDR"
+		: "SO_REUSEPORT") << "\"" << std::endl;
 }
 

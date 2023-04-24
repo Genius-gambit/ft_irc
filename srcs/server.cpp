@@ -6,18 +6,19 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/23 00:14:23 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/25 00:00:14 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/server.hpp"
 
-ft::server::server(int nport, std::string pw) : state(SHUTDOWN), opt(1), port(nport), password(pw), lstn(), clients(), pfds()
+ft::server::server(int nport, std::string pw) : state(SHUTDOWN), opt(1),
+				port(nport), password(pw), lstn(), clients(), pfds()
 {
 	try
 	{
 		this->opt = 1;
-		this->lstn.setInfo(AF_INET, SOCK_STREAM, 0, this->port, INADDR_ANY);
+		this->lstn.setInfo(AF_INET, SOCK_STREAM, IPPROTO_TCP, this->port, INADDR_ANY);
 		this->lstn.setSockProto(SOL_SOCKET, SO_REUSEADDR, this->opt);
 		this->lstn.setSockProto(SOL_SOCKET, SO_REUSEPORT, this->opt);
 		this->lstn.nonBlocking();
@@ -38,33 +39,42 @@ ft::server::~server() {}
 
 void	ft::server::run()
 {
-	int	new_client;
-	int	addrlen = sizeof(lstn.getAddress());
-
 	while (g_server_run && this->state)
 	{
-		poll(&this->pfds[0], this->pfds.size(), 1000);
-
-		if (this->pfds[0].revents == POLLIN
-			&& (new_client = accept(lstn.getSock(), (struct sockaddr*)&lstn.getAddress(),
-            		(socklen_t*)&addrlen)) >= 0)
+		poll(this->pfds.data(), this->pfds.size(), -1);
+		for (size_t i = 0; i < this->pfds.size(); i++)
 		{
-			this->pfds.push_back(pollfd());
-			this->pfds.back().fd = new_client;
-			this->pfds.back().events = POLLIN;
-			this->clients[new_client] = ft::client(new_client);
-		}
+			if ( this->pfds[i].revents & POLLIN && !i)
+        	{
+            	int fd = -1;
+            	int addressLen = 0;
+            	struct sockaddr_in address;
+            	memset(&address, 0, sizeof(address));
 
-		for (std::vector<struct pollfd>::iterator it = this->pfds.begin()
-			; it != this->pfds.end(); it++)
-		{
-			if (it->revents == POLLIN)
+            	if ( ( fd = accept( this->lstn.getSock(), (sockaddr *)&address, (socklen_t *)&addressLen ) ) < 0 )
+					break ;
+				this->clients[fd] = ft::client(fd);
+				this->pfds.push_back((pollfd){ .fd = fd, .events = POLLIN | POLLOUT, .revents = 0 });
+        	}
+
+			// if (this->pfds[i].revents & POLLOUT && i)
+			// {
+				// this->clients[this->pfds[i].fd].Write("hello from server!\n");
+			// }
+
+			if (this->pfds[i].revents & POLLIN)
 			{
-				std::cout << this->clients[it->fd].Read();
-				this->clients[it->fd].Write("hello from server!\n");
+				std::string str = this->clients[this->pfds[i].fd].Read();
+				std::cout << "fd '" << this->pfds[i].fd << "' : " << str; 
+				if (this->pfds[i].revents & POLLOUT && i)
+					this->clients[this->pfds[i].fd].Write("Server: Acknowledged Command\n");
 			}
+
 		}
 	}
-	for (std::map<CLIENT_FD, CLIENT>::iterator it = this->clients.begin(); it != this->clients.end(); it++)
-		close (it->second.getFd());
+
+	for (size_t i = 0; i < this->pfds.size(); i++)
+		(i ? close (this->pfds[i].fd) : (int) i);
 }
+
+

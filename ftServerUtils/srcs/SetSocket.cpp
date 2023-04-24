@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 23:54:27 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/20 23:05:09 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/24 03:10:38 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ ft::SetSocket::SetSocket(int domain, int service, int protocol, int port, unsign
 ft::SetSocket::~SetSocket()
 {
 	shutdown (this->sock, SHUT_RDWR);
+	close (this->sock);
 }
 
 /**	@brief : Copy assignment operator overload
