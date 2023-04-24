@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:33:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/23 01:33:28 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/25 02:09:38 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 # define CLIENT_HPP
 
 # include <sys/poll.h>
-# include "../ftServerUtils/includes/Reader.hpp"
+# include <sys/socket.h>
+# include <strings.h>
+# include <string>
 
 # define ILLEGAL 0 	//! Client password not authenticated
 # define VERIFIED 1 //! Client password authenticated
@@ -27,7 +29,6 @@ namespace ft
 			int				fd; 	//! Client fd to read / write to
 			int				status; //! Illegal / Verified
 			std::string		nick;	//! Client nickname
-			ft::Reader		reader; //! object used to read from fd
 
 
 		public :

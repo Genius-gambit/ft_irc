@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:30:56 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/25 00:00:32 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/25 00:42:41 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ namespace ft
 			int							port;
 			std::string					password;
 			ft::Listener				lstn;
-			struct pollfd 				server_pfd;
 			std::map<CLIENT_FD, CLIENT>	clients;
 			std::vector<pollfd>			pfds;
 			
@@ -44,7 +43,11 @@ namespace ft
 			server (int nport, std::string pw);
 			~server ();
 
+			void	init();
+			void	lstnInit();
 			void	run();
+
+			void	regNewClient();
 	};
 };
 

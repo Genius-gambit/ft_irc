@@ -14,9 +14,9 @@ SRCS = main \
 	client \
 	server \
 
-CXX = c++ -std=c++98
+CXX = c++
 
-CXXFLAGS = -Wall -Wextra -Werror
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
 
 OBJDIR = object
 

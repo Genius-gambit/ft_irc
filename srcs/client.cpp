@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:39:31 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/23 01:45:05 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/25 02:07:28 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ ft::client::client() {}
  * 		sets status as illegal (Default), and instantiates,
  * 		reader with file descriptor.
 */
-ft::client::client(int nfd) : fd(nfd), status(ILLEGAL), nick(), reader(fd) {}
+ft::client::client(int nfd) : fd(nfd), status(ILLEGAL), nick() {}
 
 /** @brief Copy Constructor */
 ft::client::client(const ft::client &c) : fd(c.fd), status(c.status),
-	nick(c.nick), reader(c.reader) {}
+	nick(c.nick) {}
 //* ------------- End Constructors ------------- *//
 
 /** @brief client destructor */
@@ -39,7 +39,6 @@ ft::client &ft::client::operator=(const client &c)
 		this->setFd(c.getFd());
 		this->setNick(c.getNick());
 		this->setStatus(c.getStatus());
-		this->reader = c.reader;
 	}
 	return (*this);
 }
@@ -47,7 +46,10 @@ ft::client &ft::client::operator=(const client &c)
 //! ------------- Server Operation Methods ------------- *//
 std::string	ft::client::Read()
 {
-	return (this->reader.retrieve().getData());
+	char		Buff[1024];
+	bzero(Buff, sizeof(Buff));
+	recv(this->fd, Buff, sizeof(Buff), 0);
+	return (std::string(Buff));
 }
 
 void	ft::client::Write(std::string str)
@@ -60,7 +62,6 @@ void	ft::client::Write(std::string str)
 void	ft::client::setFd(int nfd)
 {
 	this->fd = nfd;
-	this->reader.setFd(this->fd);
 }
 
 void	ft::client::setStatus(int stat)
