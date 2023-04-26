@@ -13,6 +13,8 @@ SRCS = main \
 	signals \
 	client \
 	server \
+	network \
+	parser \
 
 CXX = c++
 
@@ -53,6 +55,8 @@ re: fclean all
 #* @client
 #* @brief : make client will build and execute a client
 #*	@note : quit client by typing "/quit" on interface
+#* ipconfig getifaddr en0
+#*
 client:
 	docker run -it --name $(ClIENT) -e TERM -u $(id -u):$(id -g) \
 	--log-driver=none \

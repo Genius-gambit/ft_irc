@@ -6,7 +6,7 @@
 #    By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/04/13 23:57:52 by wismith           #+#    #+#              #
-#    Updated: 2023/04/25 02:18:59 by wismith          ###   ########.fr        #
+#    Updated: 2023/04/25 21:23:16 by wismith          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ CXX = c++
 CPPFLAGS = -Wall -Werror -Wextra -std=c++98 -g3
 
 SRCS = SetSocket \
-	error \
 	Listener \
+	error \
 
 OBJDIR = objects
 

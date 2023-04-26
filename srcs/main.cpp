@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 22:07:24 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/25 00:31:16 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/25 02:24:30 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ int	main(int argc, char **argv)
 		exit(1);
 	}
 
-	ft::server	server(port, password);
 	catch_signals();
 
 	try {
+		ft::server	server(port, password);
 		server.init();
 		server.run();
 	} catch(const std::exception& e) {

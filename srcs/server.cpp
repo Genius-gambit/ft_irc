@@ -6,39 +6,45 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/25 01:16:50 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/26 18:29:39 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/server.hpp"
 
-struct pollfd	newPollfd(int fd)
-{
-	return (
-		(struct pollfd){
-			.fd = fd,
-			.events = POLLIN | POLLOUT,
-			.revents = 0
-		}
-	);
-}
+/** @brief Port and Password Constructor
+ * 		initializes values to default settings
+*/
+ft::server::server(int nport, std::string pw) : network(pw), parser(), state(SHUTDOWN), opt(1),
+				port(nport), lstn() {}
 
-ft::server::server(int nport, std::string pw) : state(SHUTDOWN), opt(1),
-				port(nport), password(pw), lstn(), clients(), pfds() {}
-
+/** @brief Destructor 
+ * @note closes any open file descriptors 
+*/
 ft::server::~server()
 {
 	for (size_t i = 0; i < this->pfds.size(); i++)
 		(i ? close (this->pfds[i].fd) : (int) i);
 }
 
+/** @brief server init calls lstnInit to initialize the listener,
+ * 			pushes a new struct pollfd with values initialized with the macro NPOLL,
+ * 			if an exception hasn't been thrown yet, the state is set to RUNNING
+*/
 void	ft::server::init()
 {
 	this->lstnInit();
-	this->pfds.push_back(newPollfd(this->lstn.getSock()));
+	this->pfds.push_back(NPOLL(this->lstn.getSock()));
 	this->state = RUNNING;
 }
 
+/** @brief lstnInit initializes the listener with the port
+ * 			Taken as param for constructor.
+ * 			Inits sockaddr_in.
+ * 			Sets the socket to non blocking.
+ * 			Binds the socket to fd.
+ * 			Listens with the socket.
+*/
 void	ft::server::lstnInit()
 {
 	this->opt = 1;
@@ -50,6 +56,13 @@ void	ft::server::lstnInit()
 	this->lstn.ListenConnect();
 }
 
+/** @brief registers a new  client
+ * 	@note new client is stored within a std::map
+ * 			with key values being the file descriptor returned
+ * 			by accept.
+ * 		Each client is associated with a pollfd structure stored
+ * 			within a vector.
+*/
 void	ft::server::regNewClient()
 {
     int fd = -1;
@@ -60,7 +73,7 @@ void	ft::server::regNewClient()
     if ((fd = accept(this->lstn.getSock(), (sockaddr *)&address, (socklen_t *)&addrlen)) < 0 )
 		return ; // throw an Error!
 	this->clients[fd] = ft::client(fd);
-	this->pfds.push_back(newPollfd(fd));
+	this->pfds.push_back(NPOLL(fd));
 }
 
 void	ft::server::run()
@@ -78,13 +91,18 @@ void	ft::server::run()
 				// this->clients[this->pfds[i].fd].Write("hello from server!\n");
 			// }
 
-			if (this->pfds[i].revents & POLLIN)
+			if (this->pfds[i].revents & POLLIN && i)
 			{
-				std::string str = this->clients[this->pfds[i].fd].Read();
-				std::cout << str;
-				if (this->pfds[i].revents & POLLOUT && i)
-					this->clients[this->pfds[i].fd].Write("Server: Acknowledged Command\n");
+				std::string str = M_CLIENT(i).Read();
+				this->pRecv(str);
+
+				this->selCmd(this->getCmds(), i);
+				
+				std::cout << "\n -- parsed -- \n";
+				this->printCmds();
+				std::cout << "-- finished parse --\n";
 			}
+			this->clear();
 		}
 	}
 }

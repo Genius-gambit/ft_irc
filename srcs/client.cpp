@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:39:31 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/25 02:07:28 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/25 16:40:00 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //* ------------- Constructors ------------- *//
 /** @brief client default constructor */
-ft::client::client() {}
+ft::client::client() : fd(0), status(ILLEGAL), nick() {}
 
 /** @brief client file descriptor constructor
  * @note initializes fd to one passed as parameter,
@@ -46,10 +46,10 @@ ft::client &ft::client::operator=(const client &c)
 //! ------------- Server Operation Methods ------------- *//
 std::string	ft::client::Read()
 {
-	char		Buff[1024];
-	bzero(Buff, sizeof(Buff));
-	recv(this->fd, Buff, sizeof(Buff), 0);
-	return (std::string(Buff));
+	std::string	str;
+	str.resize(512);
+	recv(this->fd, const_cast<char *>(str.data()), str.size() - 1, 0);
+	return (str);
 }
 
 void	ft::client::Write(std::string str)

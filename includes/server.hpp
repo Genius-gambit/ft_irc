@@ -6,48 +6,62 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:30:56 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/25 00:42:41 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/26 18:27:46 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #	ifndef SERVER_HPP
 # define SERVER_HPP
 
+
 # include <map>
 # include <sys/poll.h>
 # include <string>
+# include <vector>
 # include "signals.hpp"
 # include "client.hpp"
+# include "parser.hpp"
+# include "network.hpp"
 # include "../ftServerUtils/includes/Listener.hpp"
-# include <vector>
 
-# define CLIENT ft::client
-# define CLIENT_FD int
+/** @brief NPOLL macro is used to define a pollfd struct
+ * 	@note takes a new fd as arg
+*/
+# define NPOLL(nfd) (struct pollfd){ .fd = nfd, .events = POLLIN | POLLOUT, .revents = 0 }
+
 # define RUNNING 1
 # define SHUTDOWN 0
 
+/*
+*	struct pollfd
+*	{
+*		int fd;
+*		int	events = POLLIN | POLLOUT;
+*		int revents = 0;
+*	}
+*
+*	struct pollfd *pfds
+*/
+
 namespace ft
 {
-	class server
+	class server : public network, public parser
 	{
 		private :
 			int							state;
 			int							opt;
 			int							port;
-			std::string					password;
 			ft::Listener				lstn;
-			std::map<CLIENT_FD, CLIENT>	clients;
-			std::vector<pollfd>			pfds;
-			
+
+			void	lstnInit();
+			void	regNewClient();
+
 		public :
 			server (int nport, std::string pw);
 			~server ();
 
 			void	init();
-			void	lstnInit();
 			void	run();
-
-			void	regNewClient();
 	};
 };
 

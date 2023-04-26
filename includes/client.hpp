@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:33:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/25 02:09:38 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/26 15:19:24 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,18 @@
 # include <sys/socket.h>
 # include <strings.h>
 # include <string>
+# include <vector>
 
 # define ILLEGAL 0 	//! Client password not authenticated
 # define VERIFIED 1 //! Client password authenticated
+
+# define CLIENT ft::client
+# define CLIENT_FD int
+
+/** @brief M_CLIENT macro is used in place of accessing a mapped client
+ * 			using the [] operator.
+*/
+# define M_CLIENT(i) this->clients[this->pfds[i].fd]
 
 namespace ft
 {
