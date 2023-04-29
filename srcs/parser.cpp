@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:13:37 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/26 19:57:23 by wismith          ###   ########.fr       */
+/*   Updated: 2023/04/27 12:40:31 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,26 @@ parser::~parser() {}
 
 void	parser::pRecv(const std::string &cmd)
 {
-	std::stringstream	ss(cmd);
-	std::string			word;
+	std::stringstream			ss(cmd);
+	std::string					line;
+	std::string					word;
+	std::vector<std::string>	save;
 
 	while (!ss.eof())
 	{
-		getline(ss, word, ' ');
-		this->cmds.push_back(word);
+		getline(ss, line, '\n');
+		save.push_back(line);
+		// this->cmds.push_back(word);
+	}
+
+	for (size_t i = 0; i < save.size(); i++)
+	{
+		std::stringstream		stream(save[i]);
+		while (!stream.eof())
+		{
+			getline(stream, word, ' ');
+			this->cmds.push_back(word);
+		}
 	}
 }
 
