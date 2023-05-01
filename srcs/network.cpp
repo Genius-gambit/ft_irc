@@ -6,7 +6,7 @@
 /*   By: imustafa <imustafa@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:17:52 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/01 12:22:27 by imustafa         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:43:12 by imustafa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ network::~network() {}
 
 void	network::quit(int i_pfds)
 {
-	if (pfds[i_pfds].revents & POLLOUT)
-		M_CLIENT(i_pfds).Write(M_CLIENT(i_pfds).getNick() + " Quiting ircserv\n");
-	clients.erase(pfds[i_pfds].fd);
-	close (pfds[i_pfds].fd);
-	pfds.erase(pfds.begin() + i_pfds);
+	std::cout << "Client " + M_CLIENT(i_pfds).getNick() + " has quit\n";
+	M_CLIENT(i_pfds).setStatus(ILLEGAL);
+	M_CLIENT(i_pfds).setNick("");
+	M_CLIENT(i_pfds).Write("QUIT");
+	close(M_CLIENT(i_pfds).getFd());
+	this->pfds.erase(this->pfds.begin() + i_pfds);
 }
 
 void	network::pass(int i_pfds, const std::vector<std::string> &cmds)
@@ -47,12 +48,14 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
 	std::map<int, std::string>	m_cmds;
 
 	// irssi commands
-	m_cmds[0] = "PASS";
-	/* Usage: PASS <password>
-  	Sets the connection password.  The password can and must be set before
-  	any attempt to register the connection is made.  Currently no connection
-  	is allowed to a server which has not registered.  Numeric Replies:
-  	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED */
+	m_cmds[0] = "QUIT";
+	/* Usage: QUIT [ <Quit Message> ]
+  	Forces the user to be removed from the server.  The <Quit Message>
+  	may be up to 510 characters long and contain space characters.  Numeric
+  	Replies:
+  	None.
+  	Examples:
+  	QUIT :Gone to have lunch -or- QUIT :Gone to the beach */
 	m_cmds[1] = "NICK";
 	/* Usage: NICK <nickname> [ <hopcount> ]
   	Allows a client to register a nickname with the server.  Numeric Replies:
@@ -96,14 +99,12 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	Examples:
   	OPER foo bar - Try to become an operator using password "bar" and
   	username "foo". */
-	m_cmds[4] = "QUIT";
-	/* Usage: QUIT [ <Quit Message> ]
-  	Forces the user to be removed from the server.  The <Quit Message>
-  	may be up to 510 characters long and contain space characters.  Numeric
-  	Replies:
-  	None.
-  	Examples:
-  	QUIT :Gone to have lunch -or- QUIT :Gone to the beach */
+	m_cmds[4] = "PASS";
+	/* Usage: PASS <password>
+  	Sets the connection password.  The password can and must be set before
+  	any attempt to register the connection is made.  Currently no connection
+  	is allowed to a server which has not registered.  Numeric Replies:
+  	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED */
 	m_cmds[5] = "JOIN";
 	/* Usage: JOIN <channel>{,<channel>} [<key>{,<key>}]
   	Join the comma separated list of channels, specifying the passwords,
