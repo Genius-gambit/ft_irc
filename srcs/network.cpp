@@ -6,7 +6,7 @@
 /*   By: imustafa <imustafa@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:17:52 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/01 15:45:19 by imustafa         ###   ########.fr       */
+/*   Updated: 2023/05/01 17:24:08 by imustafa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,13 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	None.
   	Examples:
   	QUIT :Gone to have lunch -or- QUIT :Gone to the beach */
-	m_cmds[1] = "NICK";
+	m_cmds[1] = "PASS";
+	/* Usage: PASS <password>
+  	Sets the connection password.  The password can and must be set before
+  	any attempt to register the connection is made.  Currently no connection
+  	is allowed to a server which has not registered.  Numeric Replies:
+  	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED */
+	m_cmds[2] = "NICK";
 	/* Usage: NICK <nickname> [ <hopcount> ]
   	Allows a client to register a nickname with the server.  Numeric Replies:
   	ERR_NONICKNAMEGIVEN ERR_ERRONEUSNICKNAME ERR_NICKNAMEINUSE
@@ -70,23 +76,6 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	Notes:
   	After registration, clients must use the NICK command to
   	change their nickname. */
-	m_cmds[2] = "USER";
-	/* Usage: USER <username> <hostname> <servername> <realname>
-  	Initial user registration command.  The first parameter is the user's
-  	username, the second one is hostname (optionally including the
-  	servername), the third one is the name of the server which the client
-  	is connecting to and the last parameter is the real name of the user.
-  	The hostname for servers is passed as *.
-  	<servername> parameter is used to determine the name of the other
-  	server to which all data must be sent.  If it is omitted, the
-  	current server is assumed as the target.  If any wildcard (*)
-  	is present in the <servername> parameter, the client will be
-  	disconnected from the server unless it has been started with
-  	the allow-wildcard option.  Numeric Replies:
-  	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED
-  	Notes:
-  	After registration, clients must use the NICK command to
-  	change their nickname. */
 	m_cmds[3] = "OPER";
 	/* Usage: OPER <name> <password>
   	Used by a normal user to obtain operator privileges.  The combination
@@ -98,13 +87,7 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	Examples:
   	OPER foo bar - Try to become an operator using password "bar" and
   	username "foo". */
-	m_cmds[4] = "PASS";
-	/* Usage: PASS <password>
-  	Sets the connection password.  The password can and must be set before
-  	any attempt to register the connection is made.  Currently no connection
-  	is allowed to a server which has not registered.  Numeric Replies:
-  	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED */
-	m_cmds[5] = "JOIN";
+	m_cmds[4] = "JOIN";
 	/* Usage: JOIN <channel>{,<channel>} [<key>{,<key>}]
   	Join the comma separated list of channels, specifying the passwords,
   	if needed.  If a channel is password protected and no password is given,
@@ -114,33 +97,14 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	ERR_NOSUCHCHANNEL ERR_TOOMANYCHANNELS RPL_TOPIC
   	Examples:
   	JOIN #foobar fubar123 -or- JOIN &foo fubar123 */
-	m_cmds[6] = "PART";
+	m_cmds[5] = "PART";
 	/* Usage: PART <channel>{,<channel>}
   	Part the comma separated list of channels.  If no message is given,
   	part message is used.  Numeric Replies:
   	ERR_NEEDMOREPARAMS ERR_NOSUCHCHANNEL ERR_NOTONCHANNEL
   	Examples:
   	PART #twilight_zone -or- PART #oz-ops,&group5 */
-	m_cmds[7] = "MODE";
-	/* Usage: MODE <nickname> <modes>
-  	Mode command is provided so that users may query and change the
-  	characteristics of a user.  For more details on available modes
-  	and their uses, see "Internet Relay Chat: Channel Management"
-  	[RFC 2811].  Numeric Replies:
-  	ERR_NEEDMOREPARAMS ERR_USERSDONTMATCH ERR_UMODEUNKNOWNFLAG
-  	ERR_USERSDONTMATCH
-  	Examples:
-  	MODE WiZ -w -or- MODE Angel +i */
-	m_cmds[8] = "TOPIC";
-	/* Usage: TOPIC <channel> [ <topic> ]
-  	Allows the client to set the topic for a channel.  If <topic>
-  	is an empty string, the topic for that channel is removed.  Numeric
-  	Replies:
-  	ERR_NEEDMOREPARAMS ERR_NOTONCHANNEL RPL_NOTOPIC
-  	RPL_TOPIC
-  	Examples:
-  	TOPIC #test :New topic -or- TOPIC #test : */
-	m_cmds[9] = "NAMES";
+	m_cmds[6] = "NAMES";
 	/* Usage: NAMES [ <channel>{,<channel>} ]
   	By supplying a list of channel names or if no arguments are given,
   	a list of all channels and their occupants is returned.  If the
@@ -153,21 +117,19 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	Examples:
   	NAMES #twilight_zone,#42 - list visible users on #twilight_zone
   	and #42 -or- NAMES - list visible users for all channels */
-	m_cmds[10] = "LIST";
-	/* Usage: LIST [ <channel>{,<channel>} [ <server> ] ]
-  	If no parameters are given, all visible channels and contents
-  	are listed.  If a server parameter is given, the list will
-  	be returned in a format similar to the reply for LINKS.  However,
-  	only servers which are visible to the user issuing the command
-  	are listed.  If a list of channels is given, then only those
-  	channels are listed which are visible to the user issuing the
-  	command.  Numeric Replies:
-  	ERR_TOOMANYMATCHES ERR_NOSUCHSERVER RPL_LIST RPL_LISTEND
+	m_cmds[7] = "KICK";
+	/* Usage: KICK <channel> <user> [<comment>]
+  	Forcibly removes a user from a channel.  <comment> is an optional
+  	message that is sent to the kicked user.  KICK can only be used
+  	by a channel operator or the server administrator.  Numeric Replies:
+  	ERR_NEEDMOREPARAMS ERR_NOSUCHCHANNEL ERR_BADCHANMASK
+  	ERR_CHANOPRIVSNEEDED ERR_USERNOTINCHANNEL ERR_NOTONCHANNEL
+  	ERR_USERONCHANNEL ERR_NOCHANMODES ERR_CHANOPRIVSNEEDED
+  	ERR_NOTREGISTERED
   	Examples:
-  	LIST - list all channels -or- LIST #twilight_zone,#42 - list
-  	only channels #twilight_zone and #42 -or- LIST #* -or- LIST
-  	* - list all channels which the user can see */
-	m_cmds[11] = "INVITE";
+  	KICK &Melbourne Matthew -or- KICK #Finnish John :Speaking
+  	English */ 
+	m_cmds[8] = "INVITE";
 	/* Usage: INVITE <nickname> <channel>
   	Invites a user to a channel.  <channel> does not have to exist.
   	As with PRIVMSG, for a user to be able to invite other users to
@@ -181,18 +143,25 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	RPL_INVITING
   	Examples:
   	INVITE Wiz #Twilight_Zone -or- INVITE Wiz #Twilight_Zone */
-	m_cmds[12] = "KICK";
-	/* Usage: KICK <channel> <user> [<comment>]
-  	Forcibly removes a user from a channel.  <comment> is an optional
-  	message that is sent to the kicked user.  KICK can only be used
-  	by a channel operator or the server administrator.  Numeric Replies:
-  	ERR_NEEDMOREPARAMS ERR_NOSUCHCHANNEL ERR_BADCHANMASK
-  	ERR_CHANOPRIVSNEEDED ERR_USERNOTINCHANNEL ERR_NOTONCHANNEL
-  	ERR_USERONCHANNEL ERR_NOCHANMODES ERR_CHANOPRIVSNEEDED
-  	ERR_NOTREGISTERED
+	m_cmds[9] = "TOPIC";
+	/* Usage: TOPIC <channel> [ <topic> ]
+  	Allows the client to set the topic for a channel.  If <topic>
+  	is an empty string, the topic for that channel is removed.  Numeric
+  	Replies:
+  	ERR_NEEDMOREPARAMS ERR_NOTONCHANNEL RPL_NOTOPIC
+  	RPL_TOPIC
   	Examples:
-  	KICK &Melbourne Matthew -or- KICK #Finnish John :Speaking
-  	English */ 
+  	TOPIC #test :New topic -or- TOPIC #test : */
+	m_cmds[10] = "MODE";
+	/* Usage: MODE <nickname> <modes>
+  	Mode command is provided so that users may query and change the
+  	characteristics of a user.  For more details on available modes
+  	and their uses, see "Internet Relay Chat: Channel Management"
+  	[RFC 2811].  Numeric Replies:
+  	ERR_NEEDMOREPARAMS ERR_USERSDONTMATCH ERR_UMODEUNKNOWNFLAG
+  	ERR_USERSDONTMATCH
+  	Examples:
+  	MODE WiZ -w -or- MODE Angel +i */
 	for (; i < m_cmds.size() && m_cmds[i] != cmds[0]; i++)
 		;
 	switch (i){
