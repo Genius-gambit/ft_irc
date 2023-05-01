@@ -6,7 +6,7 @@
 /*   By: imustafa <imustafa@student.42abudhabi.ae>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:17:52 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/01 15:43:12 by imustafa         ###   ########.fr       */
+/*   Updated: 2023/05/01 15:45:19 by imustafa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,11 @@ network::~network() {}
 
 void	network::quit(int i_pfds)
 {
-	std::cout << "Client " + M_CLIENT(i_pfds).getNick() + " has quit\n";
-	M_CLIENT(i_pfds).setStatus(ILLEGAL);
-	M_CLIENT(i_pfds).setNick("");
-	M_CLIENT(i_pfds).Write("QUIT");
-	close(M_CLIENT(i_pfds).getFd());
-	this->pfds.erase(this->pfds.begin() + i_pfds);
+	if (pfds[i_pfds].revents & POLLOUT)
+		M_CLIENT(i_pfds).Write(M_CLIENT(i_pfds).getNick() + " Quiting ircserv\n");
+	clients.erase(pfds[i_pfds].fd);
+	close (pfds[i_pfds].fd);
+	pfds.erase(pfds.begin() + i_pfds);
 }
 
 void	network::pass(int i_pfds, const std::vector<std::string> &cmds)
