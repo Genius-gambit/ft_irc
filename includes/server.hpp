@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:30:56 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/26 18:27:46 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/03 18:40:54 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 # include <vector>
 # include "signals.hpp"
 # include "client.hpp"
-# include "parser.hpp"
 # include "network.hpp"
 # include "../ftServerUtils/includes/Listener.hpp"
 
@@ -45,7 +44,7 @@
 
 namespace ft
 {
-	class server : public network, public parser
+	class server : public network
 	{
 		private :
 			int							state;

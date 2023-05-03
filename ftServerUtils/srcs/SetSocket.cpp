@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 23:54:27 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/24 03:10:38 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/01 20:20:58 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,6 @@
 
 /**	@brief : Default constructor */
 ft::SetSocket::SetSocket(){}
-
-/**	@brief : Value Constructor initializes data to the arguments passed
- * @note : example input :
- * 			Domain: AF_INET, Service: SOCK_STREAM, protocol: 0, port: 6697, interface: INADDR_ANY
-*/
-ft::SetSocket::SetSocket(int domain, int service, int protocol, int port, unsigned long interface)
-{
-	this->setInfo(domain, service, protocol, port, interface);
-}
 
 /**	@brief : Destructor
  * @note : Upon destruction of the object, the socket file descriptor is closed
@@ -85,20 +76,4 @@ void	ft::SetSocket::setAddress(const struct sockaddr_in &addr)
 void	ft::SetSocket::setSock(const int sockfd)
 {
 	this->sock = sockfd;
-}
-
-/**	@brief : setInfo method sets the attributes of the address structure to the values passed
- * 			as parameter. It will then perform a socket system call and set the sock attribute to
- * 				the socket file descriptor. If socket failed then SocketFailure() exception is thrown.
- * @note : example of input:
- * 				Domain: AF_INET, Service: SOCK_STREAM, protocol: 0, port: 6697, interface: INADDR_ANY
- */
-void	ft::SetSocket::setInfo(int domain, int service, int protocol, int port, unsigned long interface)
-{
-	this->address.sin_family = domain;
-	this->address.sin_port = htons(port);
-	this->address.sin_addr.s_addr = htonl(interface);
-	this->setSock(socket(domain, service, protocol));
-
-	error().SocketCheck(this->getSock());
 }

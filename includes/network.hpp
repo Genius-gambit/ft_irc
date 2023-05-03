@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:15:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/26 18:34:33 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/03 18:41:23 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define NETWORK_HPP
 
 # include "client.hpp"
+# include "parser.hpp"
 # include <unistd.h>
 # include <map>
 # include <vector>
@@ -22,7 +23,7 @@
 
 namespace ft
 {
-	class network
+	class network : public ft::parser
 	{
 		protected :
 			std::map<CLIENT_FD, CLIENT>			clients;

@@ -6,16 +6,14 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 21:06:06 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/20 14:33:59 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/01 17:31:20 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #	ifndef ERROR_HPP
 # define ERROR_HPP
 
-# include <iostream>
-# include <exception>
-# include <cstdlib>
+# include "ServerUtility.hpp"
 
 /**	@brief : Included exceptions and error class */
 

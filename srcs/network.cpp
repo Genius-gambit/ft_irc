@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   network.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: imustafa <imustafa@student.42abudhabi.ae>  +#+  +:+       +#+        */
+/*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:17:52 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/01 17:24:08 by imustafa         ###   ########.fr       */
+/*   Updated: 2023/05/03 18:42:24 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 using namespace ft;
 
-network::network(std::string pw) : clients(), pfds(), password(pw) {}
+network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw) {}
 
 network::~network() {}
 

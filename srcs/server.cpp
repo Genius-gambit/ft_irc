@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/26 18:29:39 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/03 19:02:40 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /** @brief Port and Password Constructor
  * 		initializes values to default settings
 */
-ft::server::server(int nport, std::string pw) : network(pw), parser(), state(SHUTDOWN), opt(1),
+ft::server::server(int nport, std::string pw) : network(pw), state(SHUTDOWN), opt(1),
 				port(nport), lstn() {}
 
 /** @brief Destructor 
@@ -23,8 +23,11 @@ ft::server::server(int nport, std::string pw) : network(pw), parser(), state(SHU
 */
 ft::server::~server()
 {
+	this->log << "Closing client fds\n";
 	for (size_t i = 0; i < this->pfds.size(); i++)
 		(i ? close (this->pfds[i].fd) : (int) i);
+	this->log << "Shutting Down Server";
+	std::cout << "Shutting Down Server\n";
 }
 
 /** @brief server init calls lstnInit to initialize the listener,
@@ -33,6 +36,8 @@ ft::server::~server()
 */
 void	ft::server::init()
 {
+	this->log << "initializing the listener";
+	std::cout << "Initializing Listener\n";
 	this->lstnInit();
 	this->pfds.push_back(NPOLL(this->lstn.getSock()));
 	this->state = RUNNING;
@@ -48,12 +53,12 @@ void	ft::server::init()
 void	ft::server::lstnInit()
 {
 	this->opt = 1;
-	this->lstn.setInfo(AF_INET, SOCK_STREAM, IPPROTO_TCP, this->port, INADDR_ANY);
-	this->lstn.setSockProto(SOL_SOCKET, SO_REUSEADDR, this->opt);
-	this->lstn.setSockProto(SOL_SOCKET, SO_REUSEPORT, this->opt);
-	this->lstn.nonBlocking();
-	this->lstn.BindConnect();
-	this->lstn.ListenConnect();
+	this->log << this->lstn.setInfo(AF_INET, SOCK_STREAM, IPPROTO_TCP, this->port, INADDR_ANY);
+	this->log << this->lstn.setSockProto(SOL_SOCKET, SO_REUSEADDR, this->opt);
+	this->log << this->lstn.setSockProto(SOL_SOCKET, SO_REUSEPORT, this->opt);
+	this->log << this->lstn.nonBlocking();
+	this->log << this->lstn.BindConnect();
+	this->log << this->lstn.ListenConnect();
 }
 
 /** @brief registers a new  client
@@ -69,15 +74,25 @@ void	ft::server::regNewClient()
     int addrlen = 0;
     struct sockaddr_in address;
     memset(&address, 0, sizeof(address));
-
+	
+	this->log << "Client Attempting to Connect";
     if ((fd = accept(this->lstn.getSock(), (sockaddr *)&address, (socklen_t *)&addrlen)) < 0 )
-		return ; // throw an Error!
-	this->clients[fd] = ft::client(fd);
-	this->pfds.push_back(NPOLL(fd));
+	{
+		std::cout << "Client not connecting!\n";
+		this->log << "Client unable to connect!\n";
+		this->log << "accept returned fd : " + (std::string() << fd);
+	}
+	else
+	{
+		this->clients[fd] = ft::client(fd);
+		this->pfds.push_back(NPOLL(fd));
+		this->log << "Accepting new client, fd : " + (std::string() << fd);
+	}
 }
 
 void	ft::server::run()
 {
+	std::cout << "Server Running ...\n";
 	while (g_server_run && this->state)
 	{
 		poll(this->pfds.data(), this->pfds.size(), -1);

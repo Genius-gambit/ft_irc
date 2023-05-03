@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:14:03 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/26 18:11:53 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/03 18:45:16 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,17 @@
 # include <vector>
 # include <sstream>
 # include <iostream>
+# include "../ftServerUtils/includes/log.hpp"
 
 namespace ft
 {
 	class parser
 	{
+		private :
 		std::vector<std::string>	cmds;
+
+		protected :
+		ft::log						log;
 
 		public :
 			parser();

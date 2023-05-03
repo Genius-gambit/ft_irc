@@ -6,37 +6,35 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/17 18:57:26 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/20 14:43:50 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/01 20:16:30 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #	ifndef LISTENER_HPP
 # define LISTENER_HPP
 
+# include "ServerUtility.hpp"
 # include "SetSocket.hpp"
+# include "log.hpp"
 
 namespace ft
 {
 	class Listener : public ft::SetSocket
 	{
 		private :
-			int			backlog;
-
-			Listener(const Listener &l);
-			Listener	&operator=(const Listener &l);
-			int			connect_net(int sock, struct sockaddr_in addr);
+			int					connect_net(int sock, struct sockaddr_in addr);
 
 		public :
-			Listener();
-			~Listener();
+								Listener();
+								~Listener();
 
-			void	setInfo(int domain, int service, int protocol,
-					int port, unsigned long interface);
+			std::string			setInfo(int domain, int service, int protocol,
+								int port, unsigned long interface);
 
-			void	setSockProto(int level, int option_name, int &opt);
-			void	nonBlocking();
-			void	BindConnect();
-			void	ListenConnect();
+			std::string			setSockProto(int level, int option_name, int &opt);
+			std::string			nonBlocking();
+			std::string			BindConnect();
+			std::string			ListenConnect();
 	};
 };
 

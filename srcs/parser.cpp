@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:13:37 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/27 12:40:31 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/03 18:43:27 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 using namespace ft;
 
-parser::parser() : cmds() {}
+parser::parser() : cmds(), log("server.log") {}
 
 parser::~parser() {}
 
