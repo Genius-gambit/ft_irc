@@ -15,6 +15,8 @@ SRCS = main \
 	server \
 	network \
 	parser \
+	commands/cinterface \
+	commands/quit \
 
 CXX = c++
 
@@ -29,7 +31,7 @@ OBJS = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(SRCS)))
 #*	@example : @mkdir -p $(OBJDIR)/classDef
 $(OBJDIR)/%.o : srcs/%.cpp
 	@mkdir -p $(OBJDIR)
-	@mkdir -p $(OBJDIR)/classDef
+	@mkdir -p $(OBJDIR)/commands
 	@printf "\033[A\033[2K\r"
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -49,6 +51,7 @@ clean:
 fclean: clean
 	@rm -rf $(NAME)
 	@make fclean -C $(SERVDIR)
+	@rm server.log
 
 re: fclean all
 

@@ -1,45 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   network.hpp                                        :+:      :+:    :+:   */
+/*   cinterface.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/26 15:15:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/05 22:15:40 by wismith          ###   ########.fr       */
+/*   Created: 2023/05/05 21:26:54 by wismith           #+#    #+#             */
+/*   Updated: 2023/05/05 22:03:33 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#	ifndef NETWORK_HPP
-# define NETWORK_HPP
+#	ifndef CINTERFACE_HPP
+# define CINTERFACE_HPP
 
-# include "client.hpp"
-# include "parser.hpp"
-# include "commands/cinterface.hpp"
-# include <unistd.h>
+# include "../client.hpp"
+# include "../parser.hpp"
 # include <map>
 # include <vector>
 # include <string>
-# include <iostream>
+# include <poll.h>
 
 namespace ft
 {
-	class network : public ft::parser
+	class cinterface
 	{
 		protected :
-			std::map<std::string, ft::cinterface *>	cmds;
-			std::map<CLIENT_FD, CLIENT>				clients;
-			std::vector<pollfd>						pfds;
-			std::string								password;
-
+			std::map<CLIENT_FD, CLIENT>			&clients;
+			std::vector<pollfd>					&pfds;
+			std::string							&password;
 		public :
-			network (std::string pw);
-			~network ();
+			cinterface (std::map<CLIENT_FD, CLIENT> &, std::vector<pollfd> &, std::string &);
+			virtual ~cinterface ();
 
-			void	selCmd(const std::vector<std::string> &cmds, int i_pfds);
+			virtual void exec(int, const std::vector<std::string> &) = 0;
 	};
 };
-
-# include "commands/quit.hpp"
 
 #endif

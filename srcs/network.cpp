@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:17:52 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/03 18:42:24 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/05 22:15:15 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,40 +14,28 @@
 
 using namespace ft;
 
-network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw) {}
-
-network::~network() {}
-
-void	network::quit(int i_pfds)
+network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 {
-	if (pfds[i_pfds].revents & POLLOUT)
-		M_CLIENT(i_pfds).Write(M_CLIENT(i_pfds).getNick() + " Quiting ircserv\n");
-	clients.erase(pfds[i_pfds].fd);
-	close (pfds[i_pfds].fd);
-	pfds.erase(pfds.begin() + i_pfds);
+	this->cmds["QUIT"] = new ft::quit(this->clients, this->pfds, this->password);
 }
 
-void	network::pass(int i_pfds, const std::vector<std::string> &cmds)
+network::~network()
 {
-	if (cmds[1] == this->password)
-		M_CLIENT(i_pfds).setStatus(VERIFIED);
-	// if ()
-	// std::cout << "Client status verified\n";
-}
+	std::map<std::string, ft::cinterface *>::iterator	it;
 
-void	network::nick(int i_pfds, const std::vector<std::string> &cmds)
-{
-	M_CLIENT(i_pfds).setNick(cmds[1]);
-	std::cout << "Set client nickname to: " + cmds[1] << "\n";
+	for (it = this->cmds.begin(); it != this->cmds.end(); it++)
+		delete it->second;
 }
 
 void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
 {
-	size_t	i = 0;
-	std::map<int, std::string>	m_cmds;
+	if (this->cmds.find(cmds[0]) != this->cmds.end())
+		this->cmds[cmds[0]]->exec(i_pfds, cmds);
+	// size_t	i = 0;
+	// std::map<int, std::string>	m_cmds;
 
 	// irssi commands
-	m_cmds[0] = "QUIT";
+	//! m_cmds[0] = "QUIT";
 	/* Usage: QUIT [ <Quit Message> ]
   	Forces the user to be removed from the server.  The <Quit Message>
   	may be up to 510 characters long and contain space characters.  Numeric
@@ -55,13 +43,13 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	None.
   	Examples:
   	QUIT :Gone to have lunch -or- QUIT :Gone to the beach */
-	m_cmds[1] = "PASS";
+	//! m_cmds[1] = "PASS";
 	/* Usage: PASS <password>
   	Sets the connection password.  The password can and must be set before
   	any attempt to register the connection is made.  Currently no connection
   	is allowed to a server which has not registered.  Numeric Replies:
   	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED */
-	m_cmds[2] = "NICK";
+	//! m_cmds[2] = "NICK";
 	/* Usage: NICK <nickname> [ <hopcount> ]
   	Allows a client to register a nickname with the server.  Numeric Replies:
   	ERR_NONICKNAMEGIVEN ERR_ERRONEUSNICKNAME ERR_NICKNAMEINUSE
@@ -76,7 +64,7 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	Notes:
   	After registration, clients must use the NICK command to
   	change their nickname. */
-	m_cmds[3] = "OPER";
+	//! m_cmds[3] = "OPER";
 	/* Usage: OPER <name> <password>
   	Used by a normal user to obtain operator privileges.  The combination
   	of <name> and <password> are compared with a list of oper
@@ -87,7 +75,7 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	Examples:
   	OPER foo bar - Try to become an operator using password "bar" and
   	username "foo". */
-	m_cmds[4] = "JOIN";
+	//! m_cmds[4] = "JOIN";
 	/* Usage: JOIN <channel>{,<channel>} [<key>{,<key>}]
   	Join the comma separated list of channels, specifying the passwords,
   	if needed.  If a channel is password protected and no password is given,
@@ -97,14 +85,14 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	ERR_NOSUCHCHANNEL ERR_TOOMANYCHANNELS RPL_TOPIC
   	Examples:
   	JOIN #foobar fubar123 -or- JOIN &foo fubar123 */
-	m_cmds[5] = "PART";
+	//! m_cmds[5] = "PART";
 	/* Usage: PART <channel>{,<channel>}
   	Part the comma separated list of channels.  If no message is given,
   	part message is used.  Numeric Replies:
   	ERR_NEEDMOREPARAMS ERR_NOSUCHCHANNEL ERR_NOTONCHANNEL
   	Examples:
   	PART #twilight_zone -or- PART #oz-ops,&group5 */
-	m_cmds[6] = "NAMES";
+	//! m_cmds[6] = "NAMES";
 	/* Usage: NAMES [ <channel>{,<channel>} ]
   	By supplying a list of channel names or if no arguments are given,
   	a list of all channels and their occupants is returned.  If the
@@ -117,7 +105,7 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	Examples:
   	NAMES #twilight_zone,#42 - list visible users on #twilight_zone
   	and #42 -or- NAMES - list visible users for all channels */
-	m_cmds[7] = "KICK";
+	//! m_cmds[7] = "KICK";
 	/* Usage: KICK <channel> <user> [<comment>]
   	Forcibly removes a user from a channel.  <comment> is an optional
   	message that is sent to the kicked user.  KICK can only be used
@@ -129,7 +117,7 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	Examples:
   	KICK &Melbourne Matthew -or- KICK #Finnish John :Speaking
   	English */ 
-	m_cmds[8] = "INVITE";
+	//! m_cmds[8] = "INVITE";
 	/* Usage: INVITE <nickname> <channel>
   	Invites a user to a channel.  <channel> does not have to exist.
   	As with PRIVMSG, for a user to be able to invite other users to
@@ -143,7 +131,7 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	RPL_INVITING
   	Examples:
   	INVITE Wiz #Twilight_Zone -or- INVITE Wiz #Twilight_Zone */
-	m_cmds[9] = "TOPIC";
+	//! m_cmds[9] = "TOPIC";
 	/* Usage: TOPIC <channel> [ <topic> ]
   	Allows the client to set the topic for a channel.  If <topic>
   	is an empty string, the topic for that channel is removed.  Numeric
@@ -152,7 +140,7 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	RPL_TOPIC
   	Examples:
   	TOPIC #test :New topic -or- TOPIC #test : */
-	m_cmds[10] = "MODE";
+	//! m_cmds[10] = "MODE";
 	/* Usage: MODE <nickname> <modes>
   	Mode command is provided so that users may query and change the
   	characteristics of a user.  For more details on available modes
@@ -162,19 +150,19 @@ void	network::selCmd(const std::vector<std::string> &cmds, int i_pfds)
   	ERR_USERSDONTMATCH
   	Examples:
   	MODE WiZ -w -or- MODE Angel +i */
-	for (; i < m_cmds.size() && m_cmds[i] != cmds[0]; i++)
-		;
-	switch (i){
-		case 0:
-			network::quit(i_pfds);
-		break ;
-		case 1:
-			network::pass(i_pfds, cmds);
-		break ;
-		case 2:
-			network::nick(i_pfds, cmds);
-		break ;
-		default:
-			std::cout << "Command not found" << std::endl;
-	};
+	// for (; i < m_cmds.size() && m_cmds[i] != cmds[0]; i++)
+	// 	;
+	// switch (i){
+	// 	case 0:
+	// 		network::quit(i_pfds);
+	// 	break ;
+	// 	case 1:
+	// 		network::pass(i_pfds, cmds);
+	// 	break ;
+	// 	case 2:
+	// 		network::nick(i_pfds, cmds);
+	// 	break ;
+	// 	default:
+	// 		std::cout << "Command not found" << std::endl;
+	// };
 }

@@ -6,13 +6,11 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 22:07:24 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/25 02:24:30 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/05 21:48:00 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_irc.hpp"
-#include "../includes/server.hpp"
-#include <poll.h>
 
 int	main(int argc, char **argv)
 {
