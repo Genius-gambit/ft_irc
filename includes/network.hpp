@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:15:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/05 22:15:40 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/07 17:36:24 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ namespace ft
 };
 
 # include "commands/quit.hpp"
+# include "commands/cap.hpp"
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:17:52 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/05 22:15:15 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/07 17:36:43 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ using namespace ft;
 network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 {
 	this->cmds["QUIT"] = new ft::quit(this->clients, this->pfds, this->password);
+	this->cmds["CAP"] = new ft::cap(this->clients, this->pfds, this->password);
 }
 
 network::~network()

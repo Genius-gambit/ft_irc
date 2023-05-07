@@ -17,6 +17,7 @@ SRCS = main \
 	parser \
 	commands/cinterface \
 	commands/quit \
+	commands/cap \
 
 CXX = c++
 
@@ -51,7 +52,7 @@ clean:
 fclean: clean
 	@rm -rf $(NAME)
 	@make fclean -C $(SERVDIR)
-	@rm server.log
+	@rm -rf server.log
 
 re: fclean all
 
@@ -65,12 +66,14 @@ client:
 	--log-driver=none \
     -v ${HOME}/.irssi:/home/user/.irssi:ro \
     irssi
+	docker rm -f $(ClIENT)
+	docker rmi irssi
 
 #* @brief : make rm_client will remove the client and delete the image
 rm_client:
 	docker rm -f $(ClIENT)
 	docker rmi irssi
-
+	
 #* @brief : rules to print messages
 printStart :
 	@printf "\nConstructing new 'ft_irc' server objects:\n\n"
