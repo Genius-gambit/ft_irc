@@ -6,11 +6,13 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/03 19:02:40 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 19:49:44 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/server.hpp"
+
+bool	ft::g_server_run = true;
 
 /** @brief Port and Password Constructor
  * 		initializes values to default settings
@@ -36,6 +38,7 @@ ft::server::~server()
 */
 void	ft::server::init()
 {
+	ft::catch_signals();
 	this->log << "initializing the listener";
 	std::cout << "Initializing Listener\n";
 	this->lstnInit();
@@ -76,12 +79,8 @@ void	ft::server::regNewClient()
     memset(&address, 0, sizeof(address));
 	
 	this->log << "Client Attempting to Connect";
-    if ((fd = accept(this->lstn.getSock(), (sockaddr *)&address, (socklen_t *)&addrlen)) < 0 )
-	{
-		std::cout << "Client not connecting!\n";
+    if ((fd = accept(this->lstn.getSock(), (sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
 		this->log << "Client unable to connect!\n";
-		this->log << "accept returned fd : " + (std::string() << fd);
-	}
 	else
 	{
 		this->clients[fd] = ft::client(fd);
@@ -92,34 +91,54 @@ void	ft::server::regNewClient()
 
 void	ft::server::run()
 {
+	std::string	cmd;
+
 	std::cout << "Server Running ...\n";
-	while (g_server_run && this->state)
+	while (ft::g_server_run && this->state)
 	{
 		poll(this->pfds.data(), this->pfds.size(), -1);
 		for (size_t i = 0; i < this->pfds.size(); i++)
 		{
-			if (this->pfds[i].revents & POLLIN && !i)
+			if (!i && this->pfds[i].revents & POLLIN)
 				this->regNewClient();
 
-			// if (this->pfds[i].revents & POLLOUT && i)
-			// {
-				// this->clients[this->pfds[i].fd].Write("hello from server!\n");
-			// }
+			if (i && this->pfds[i].revents & POLLOUT)
+				;
+				// "Ready to Write" >> M_CLIENT(i);
 
-			if (this->pfds[i].revents & POLLIN && i)
+			if (i && this->pfds[i].revents & POLLIN)
 			{
-				std::string str = M_CLIENT(i).Read();
-				this->pRecv(str);
-
+				this->pRecv(cmd << M_CLIENT(i));
 				this->selCmd(this->getCmds(), i);
-				
+			}
+
+			// just prints commands
+			if (this->getCmds().size())
+			{
 				std::cout << "\n -- parsed -- \n";
 				this->printCmds();
 				std::cout << "-- finished parse --\n";
 			}
+
 			this->clear();
 		}
 	}
 }
 
+/** @brief Non-members */
 
+void	sighandlr(int signum)
+{
+	(void) signum;
+	ft::g_server_run = false;
+	std::cout << "\nStopping server!\n";
+}
+
+void	ft::catch_signals()
+{
+	signal(SIGINT, sighandlr);
+	signal(SIGQUIT, sighandlr);
+	signal(SIGHUP, sighandlr);
+	signal(SIGTERM, sighandlr);
+	signal(SIGPIPE, sighandlr);
+}

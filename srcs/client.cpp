@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:39:31 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/25 16:40:00 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 19:15:17 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,3 +91,17 @@ std::string	ft::client::getNick() const
 	return (this->nick);
 }
 //? ------------- End Getters ------------- *//
+
+
+//! Non members
+
+void	operator>>(const std::string &str, ft::client &c)
+{
+	c.Write(str);
+}
+
+std::string		&operator<<(std::string &str, ft::client &c)
+{
+	str = c.Read();
+	return (str);
+}

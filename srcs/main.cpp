@@ -6,11 +6,11 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/08 22:07:24 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/05 21:48:00 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 16:13:19 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_irc.hpp"
+#include "../includes/server.hpp"
 
 int	main(int argc, char **argv)
 {
@@ -28,14 +28,13 @@ int	main(int argc, char **argv)
 		exit(1);
 	}
 
-	catch_signals();
-
 	try {
 		ft::server	server(port, password);
 		server.init();
 		server.run();
 	} catch(const std::exception& e) {
-		std::cerr << e.what() << '\n';
+		std::cerr << e.what() << std::endl;
+		exit (1);
 	}
 	
 	return (0);

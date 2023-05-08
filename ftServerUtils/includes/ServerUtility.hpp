@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/01 17:24:04 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/01 17:59:46 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 16:45:47 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,10 @@
 # include <fstream>
 # include <string>
 # include <sstream>
+
+# include "error.hpp"
+# include "Listener.hpp"
+# include "log.hpp"
 
 /** @brief << template operator overload used to convert any variable
  * 				type to string.
@@ -38,13 +42,5 @@ std::string	operator<<(std::string str, T const &t)
 	return (str);
 }
 
-// namespace ft
-// {
-// 	class 
-// };
-
-# include "error.hpp"
-# include "Listener.hpp"
-# include "log.hpp"
 
 #endif

@@ -10,7 +10,6 @@ SERVARCH = $(SERVDIR)/ServerUtils.a
 ClIENT = irssi_client
 
 SRCS = main \
-	signals \
 	client \
 	server \
 	network \

@@ -6,21 +6,27 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:15:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/07 17:36:24 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 16:57:22 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #	ifndef NETWORK_HPP
 # define NETWORK_HPP
 
-# include "client.hpp"
-# include "parser.hpp"
-# include "commands/cinterface.hpp"
+/** @brief external */
 # include <unistd.h>
 # include <map>
 # include <vector>
 # include <string>
 # include <iostream>
+
+/** @brief local */
+# include "client.hpp"
+# include "parser.hpp"
+
+/** @brief commands */
+# include "commands/cinterface.hpp"
+# include "commands/commands.hpp"
 
 namespace ft
 {
@@ -33,14 +39,12 @@ namespace ft
 			std::string								password;
 
 		public :
-			network (std::string pw);
-			~network ();
+													network (std::string pw);
+													~network ();
 
-			void	selCmd(const std::vector<std::string> &cmds, int i_pfds);
+			void									selCmd(const std::vector<std::string> &cmds, int i_pfds);
 	};
 };
 
-# include "commands/quit.hpp"
-# include "commands/cap.hpp"
 
 #endif

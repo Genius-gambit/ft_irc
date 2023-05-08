@@ -6,13 +6,14 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:33:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/04/26 15:19:24 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 19:22:06 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #	ifndef CLIENT_HPP
 # define CLIENT_HPP
 
+# include <iostream>
 # include <sys/poll.h>
 # include <sys/socket.h>
 # include <strings.h>
@@ -39,14 +40,13 @@ namespace ft
 			int				status; //! Illegal / Verified
 			std::string		nick;	//! Client nickname
 
-
 		public :
-			client ();
-			client (const client &c);
-			client (int nfd);
-			~client();
+							client ();
+							client (const client &c);
+							client (int nfd);
+							~client();
 
-			client	&operator=(const client &c);
+			client			&operator=(const client &c);
 
 			std::string		Read();
 			void			Write(std::string str);
@@ -60,5 +60,11 @@ namespace ft
 			std::string		getNick() const;
 	};
 };
+
+/** @brief operator writes to a client */
+void			operator>>(const std::string &str, ft::client &c);
+
+/** @brief operator recieves command from client*/
+std::string		&operator<<(std::string &str, ft::client &c);
 
 #endif
