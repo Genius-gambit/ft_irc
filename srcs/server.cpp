@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 19:49:44 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/09 00:27:55 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	ft::server::regNewClient()
 	else
 	{
 		this->clients[fd] = ft::client(fd);
+		this->clients[fd].addBacklog("Server: Welcome to ircserv\r\n\n");
 		this->pfds.push_back(NPOLL(fd));
 		this->log << "Accepting new client, fd : " + (std::string() << fd);
 	}
@@ -103,23 +104,20 @@ void	ft::server::run()
 				this->regNewClient();
 
 			if (i && this->pfds[i].revents & POLLOUT)
-				;
-				// "Ready to Write" >> M_CLIENT(i);
+			{
+				while (M_CLIENT(i).getBacklogSize())
+					M_CLIENT(i).retrBacklog() >> M_CLIENT(i);
+			}
 
 			if (i && this->pfds[i].revents & POLLIN)
 			{
 				this->pRecv(cmd << M_CLIENT(i));
-				this->selCmd(this->getCmds(), i);
+				for (size_t j = 0; j < this->getCmds().size(); j++)
+				{
+					this->printCmds(this->getCmdSec(j));
+					this->selCmd(this->getCmdSec(j), i);
+				}
 			}
-
-			// just prints commands
-			if (this->getCmds().size())
-			{
-				std::cout << "\n -- parsed -- \n";
-				this->printCmds();
-				std::cout << "-- finished parse --\n";
-			}
-
 			this->clear();
 		}
 	}

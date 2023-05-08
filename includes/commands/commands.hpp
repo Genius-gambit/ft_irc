@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:54:00 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 17:02:41 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 21:03:29 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ namespace ft
   	OPER foo bar - Try to become an operator using password "bar" and
   	username "foo". */
 
-	//! class join : public ft::cinterface
 	/* Usage: JOIN <channel>{,<channel>} [<key>{,<key>}]
   	Join the comma separated list of channels, specifying the passwords,
   	if needed.  If a channel is password protected and no password is given,
@@ -91,6 +90,15 @@ namespace ft
   	ERR_NOSUCHCHANNEL ERR_TOOMANYCHANNELS RPL_TOPIC
   	Examples:
   	JOIN #foobar fubar123 -or- JOIN &foo fubar123 */
+	class join : public ft::cinterface
+	{
+		public :
+			join (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &);
+			~join ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 	//! class part : public ft::cinterface
 	/* Usage: PART <channel>{,<channel>}

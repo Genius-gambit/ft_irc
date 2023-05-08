@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 21:52:49 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 19:21:58 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 21:08:12 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,10 @@ void	quit::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
 	(void) cmds;
 	if (pfds[i_pfds].revents & POLLOUT)
+	{
 		"Server: You are quiting ircserv\n" >> M_CLIENT(i_pfds);
+		"QUIT\r\n" >> M_CLIENT(i_pfds);
+	}
 	clients.erase(pfds[i_pfds].fd);
 	close (pfds[i_pfds].fd);
 	pfds.erase(pfds.begin() + i_pfds);

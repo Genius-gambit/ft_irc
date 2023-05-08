@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:39:31 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 19:15:17 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/08 23:16:20 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 //* ------------- Constructors ------------- *//
 /** @brief client default constructor */
-ft::client::client() : fd(0), status(ILLEGAL), nick() {}
+ft::client::client() : fd(0), status(ILLEGAL), nick(), backlog() {}
 
 /** @brief client file descriptor constructor
  * @note initializes fd to one passed as parameter,
@@ -55,6 +55,24 @@ std::string	ft::client::Read()
 void	ft::client::Write(std::string str)
 {
 	send(this->fd, str.c_str(), str.size(), 0);
+}
+
+void	ft::client::addBacklog(const std::string reply)
+{
+	this->backlog.push_back(reply);
+}
+
+size_t	ft::client::getBacklogSize() const
+{
+	return (this->backlog.size());
+}
+
+std::string	ft::client::retrBacklog()
+{
+	std::string	str(this->backlog.front());
+
+	this->backlog.pop_front();
+	return (str);
 }
 //! ------------- End Server Operation Methods ------------- *//
 

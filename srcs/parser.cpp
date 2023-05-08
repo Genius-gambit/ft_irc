@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:13:37 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/03 18:43:27 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/09 01:47:06 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,43 +18,52 @@ parser::parser() : cmds(), log("server.log") {}
 
 parser::~parser() {}
 
-void	parser::pRecv(const std::string &cmd)
+void							parser::pRecv(const std::string &cmd)
 {
 	std::stringstream			ss(cmd);
 	std::string					line;
-	std::string					word;
-	std::vector<std::string>	save;
 
 	while (!ss.eof())
 	{
 		getline(ss, line, '\n');
-		save.push_back(line);
-		// this->cmds.push_back(word);
-	}
-
-	for (size_t i = 0; i < save.size(); i++)
-	{
-		std::stringstream		stream(save[i]);
-		while (!stream.eof())
-		{
-			getline(stream, word, ' ');
-			this->cmds.push_back(word);
-		}
+		this->cmds.push_back(line);
 	}
 }
 
-void	parser::printCmds()
+void							parser::printCmds(std::vector<std::string> vec)
 {
-	for (size_t i = 0; i != this->cmds.size(); i++)
-		std::cout << i << ": " << this->cmds[i] << std::endl;
+	std::cout << "\n";
+	for (size_t i = 0; i != vec.size(); i++)
+			std::cout << i << ": " << vec[i] << std::endl;
 }
 
-void	parser::clear()
+void							parser::clear()
 {
 	this->cmds.clear();
 }
 
-std::vector<std::string>	&parser::getCmds()
+std::vector<std::string>		&parser::getCmds()
 {
 	return (this->cmds);
+}
+
+/** @brief More than one command may be received at a time.
+ * 			This function returns each command one at a time
+ * 			with arguments parsed into vector.
+ * @note argument is the index for the line command is on.
+*/
+std::vector<std::string>		parser::getCmdSec(size_t i)
+{
+	std::stringstream			ss(this->cmds[i]);
+	std::vector<std::string>	indi_cmd;
+	std::string					word;
+
+	if (!ss.eof())
+	{
+		getline(ss, word, ' ');
+		indi_cmd.push_back(word);
+		getline(ss, word, ' ');
+		indi_cmd.push_back(word);
+	}
+	return (indi_cmd);
 }

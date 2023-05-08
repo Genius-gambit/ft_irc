@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cap.cpp                                            :+:      :+:    :+:   */
+/*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/07 17:27:19 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 23:46:43 by wismith          ###   ########.fr       */
+/*   Created: 2023/05/08 21:02:51 by wismith           #+#    #+#             */
+/*   Updated: 2023/05/09 00:43:46 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,16 @@
 
 using namespace ft;
 
-cap::cap(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) :
+join::join(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) :
 	ft::cinterface(c, p, pw) {}
 
-cap::~cap() {}
+join::~join() {}
 
-void	cap::exec(int i_pfds, const std::vector<std::string> &cmds)
+void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
-	(void) cmds;
-	std::string	cap;
-	if (cmds[1] == "LS")
-		M_CLIENT(i_pfds).addBacklog("CAP * LS :multi-prefix server-time\r\n");
-	else if (cmds[1] == "REQ")
-		M_CLIENT(i_pfds).addBacklog("CAP * ACK multi-prefix server-time\r\n");
-	std::cout << cap << std::endl;
+	std::string	args;
+
+	for (size_t i = 1; i < cmds.size(); i++)
+		args += cmds[i];
+	M_CLIENT(i_pfds).addBacklog("JOIN " + args + "\r\n");
 }
