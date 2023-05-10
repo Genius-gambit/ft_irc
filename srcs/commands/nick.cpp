@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:38:01 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/10 20:07:04 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/10 23:12:30 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,7 @@ nick::~nick() {}
 
 void	nick::welcome(ft::client &c)
 {
-	c.addBacklog(": localhost "
-		+ RPL_WELCOME + " " + c.getNick()
+	c.addBacklog(": " + RPL_WELCOME + " " + c.getNick()
 		+ " :\n\nWelcome to ircserv " + c.getNick() + "!\r\n");
 }
 

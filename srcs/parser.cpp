@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:13:37 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/10 18:35:28 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/10 23:53:06 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,13 @@ parser::~parser() {}
 
 void							parser::pRecv(const std::string &cmd)
 {
-	std::stringstream			ss(cmd);
+	std::string	str = cmd;
+	size_t	pos = str.npos;
+
+	while ((pos = str.find('\r', pos + 1)) != str.npos)
+		str.erase(pos, 1).insert(pos, " ");
+
+	std::stringstream			ss(str);
 	std::string					line;
 
 	while (!ss.eof())

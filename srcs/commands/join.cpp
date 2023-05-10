@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 21:02:51 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/10 20:40:18 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/10 22:33:12 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 	this->chan[cmds[1]] = ft::channels();
 	this->chan[cmds[1]].add_clients(M_CLIENT(i_pfds).getFd());
 	this->chan[cmds[1]].setChannelName(cmds[1]);
+	// M_CLIENT(i_pfds).addBacklog("JOIN :" + cmds[1] + "\r\n");
 }
 
