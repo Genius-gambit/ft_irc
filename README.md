@@ -2,6 +2,7 @@
 
 ## Work Logs :notebook_with_decorative_cover:(April 7 2023~)
 1.	***MAK:***	Created a Makefile.
+	1. Channels.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object

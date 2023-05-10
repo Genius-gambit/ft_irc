@@ -13,3 +13,29 @@
 #include "../includes/channels.hpp"
 
 using namespace ft;
+
+channels::channels(void) {}
+
+channels::~channels() {}
+
+void	channels::setChannelName(const std::string &name)
+{
+	this->_chan = name;
+}
+
+void	channels::add_clients(int fd)
+{
+	this->fds.push_back(fd);
+}
+
+void	channels::kick_client(int fd)
+{
+	std::vector<int>::iterator	it;
+
+	for (it = this->fds.begin(); it != this->fds.end(); it++)
+	{
+		if (*it == fd)
+			break;
+	}
+	this->fds.erase(it);
+}

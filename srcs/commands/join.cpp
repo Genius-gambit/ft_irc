@@ -23,7 +23,11 @@ join::~join() {}
 void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
 	(void) this->chan;
-	M_CLIENT(i_pfds).getFd();
+	// this->chan(cmds[1], ft::channels());
+	this->chan[cmds[1]] = ft::channels();
+	this->chan[cmds[1]].add_clients(M_CLIENT(i_pfds).getFd());
+	this->chan[cmds[1]].setChannelName(cmds[1]);
+	// M_CLIENT(i_pfds).getFd();
 	// std::string	args;
 
 	// for (size_t i = 1; i < cmds.size(); i++)

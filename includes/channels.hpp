@@ -14,6 +14,7 @@
 # define CHANNELS_HPP
 
 # include <vector>
+# include <string>
 
 namespace ft
 {
@@ -21,8 +22,14 @@ namespace ft
 	{
 		private :
 			std::vector<int>	fds;
+			std::string	_chan;
 		public :
+			channels();
+			~channels();
 			std::vector<int>	&getFds();
+			void	setChannelName(const std::string &);
+			void	add_clients(int fd);
+			void	kick_client(int fd);
 	};
 };
 
