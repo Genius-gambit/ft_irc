@@ -18,6 +18,7 @@ SRCS = main \
 	commands/quit \
 	commands/cap \
 	commands/join \
+	commands/nick \
 
 CXX = c++
 

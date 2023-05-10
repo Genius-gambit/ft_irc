@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:15:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 16:57:22 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/10 19:46:33 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 /** @brief local */
 # include "client.hpp"
 # include "parser.hpp"
+# include "channels.hpp"
 
 /** @brief commands */
 # include "commands/cinterface.hpp"
@@ -37,6 +38,7 @@ namespace ft
 			std::map<CLIENT_FD, CLIENT>				clients;
 			std::vector<pollfd>						pfds;
 			std::string								password;
+			std::map<std::string, ft::channels>		chans;
 
 		public :
 													network (std::string pw);

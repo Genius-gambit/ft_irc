@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/09 00:27:55 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/10 18:36:15 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ ft::server::~server()
 	for (size_t i = 0; i < this->pfds.size(); i++)
 		(i ? close (this->pfds[i].fd) : (int) i);
 	this->log << "Shutting Down Server";
-	std::cout << "Shutting Down Server\n";
+	std::cout << "Shutting Down Server" << std::endl;
 }
 
 /** @brief server init calls lstnInit to initialize the listener,
@@ -40,7 +40,7 @@ void	ft::server::init()
 {
 	ft::catch_signals();
 	this->log << "initializing the listener";
-	std::cout << "Initializing Listener\n";
+	std::cout << "Initializing Listener" << std::endl;
 	this->lstnInit();
 	this->pfds.push_back(NPOLL(this->lstn.getSock()));
 	this->state = RUNNING;
@@ -84,7 +84,7 @@ void	ft::server::regNewClient()
 	else
 	{
 		this->clients[fd] = ft::client(fd);
-		this->clients[fd].addBacklog("Server: Welcome to ircserv\r\n\n");
+		// this->clients[fd].addBacklog("Server: Welcome to ircserv\r\n\n");
 		this->pfds.push_back(NPOLL(fd));
 		this->log << "Accepting new client, fd : " + (std::string() << fd);
 	}
@@ -94,7 +94,7 @@ void	ft::server::run()
 {
 	std::string	cmd;
 
-	std::cout << "Server Running ...\n";
+	std::cout << "Server Running ..." << std::endl;
 	while (ft::g_server_run && this->state)
 	{
 		poll(this->pfds.data(), this->pfds.size(), -1);
@@ -129,7 +129,7 @@ void	sighandlr(int signum)
 {
 	(void) signum;
 	ft::g_server_run = false;
-	std::cout << "\nStopping server!\n";
+	std::cout << std::endl << "Stopping server!" << std::endl;
 }
 
 void	ft::catch_signals()

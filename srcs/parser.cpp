@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:13:37 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/09 01:47:06 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/10 18:35:28 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void							parser::pRecv(const std::string &cmd)
 
 void							parser::printCmds(std::vector<std::string> vec)
 {
-	std::cout << "\n";
+	std::cout << std::endl;
 	for (size_t i = 0; i != vec.size(); i++)
 			std::cout << i << ": " << vec[i] << std::endl;
 }
@@ -58,10 +58,9 @@ std::vector<std::string>		parser::getCmdSec(size_t i)
 	std::vector<std::string>	indi_cmd;
 	std::string					word;
 
-	if (!ss.eof())
+	// indi_cmd.push_back(this->cmds[i]);
+	while (!ss.eof())
 	{
-		getline(ss, word, ' ');
-		indi_cmd.push_back(word);
 		getline(ss, word, ' ');
 		indi_cmd.push_back(word);
 	}

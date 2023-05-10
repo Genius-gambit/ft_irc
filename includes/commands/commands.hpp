@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:54:00 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 21:03:29 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/10 20:02:12 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,14 @@
 # define COMMANDS_HPP
 
 # include "cinterface.hpp"
+# include "../channels.hpp"
+
+# define RPL_WELCOME std::string("001")
+
+# define ERR_NONICKNAMEGIVEN 431
+# define ERR_ERRONEUSNICKNAME 432
+# define ERR_NICKNAMEINUSE 433
+# define ERR_NICKCOLLISION 436
 
 namespace ft
 {
@@ -53,7 +61,6 @@ namespace ft
   	is allowed to a server which has not registered.  Numeric Replies:
   	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED */
 
-	//! class nick : public ft::cinterface
 	/* Usage: NICK <nickname> [ <hopcount> ]
   	Allows a client to register a nickname with the server.  Numeric Replies:
   	ERR_NONICKNAMEGIVEN ERR_ERRONEUSNICKNAME ERR_NICKNAMEINUSE
@@ -68,6 +75,16 @@ namespace ft
   	Notes:
   	After registration, clients must use the NICK command to
   	change their nickname. */
+	class nick : public ft::cinterface
+	{
+		public :
+					nick (std::map<CLIENT_FD, CLIENT> &,
+						std::vector<pollfd> &, std::string &);
+					~nick ();
+
+			void	welcome(ft::client &c);
+			void	exec(int, const std::vector<std::string> &);
+	};
 
 	//! class oper : public ft::cinterface
 	/* Usage: OPER <name> <password>
@@ -92,9 +109,14 @@ namespace ft
   	JOIN #foobar fubar123 -or- JOIN &foo fubar123 */
 	class join : public ft::cinterface
 	{
+		private :
+			std::map<std::string, ft::channels>	&chan;
+	
 		public :
 			join (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &);
+					std::vector<pollfd> &, std::string &, 
+					std::map<std::string, ft::channels>	&);
+	
 			~join ();
 
 			void exec(int, const std::vector<std::string> &);
