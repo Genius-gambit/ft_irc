@@ -14,6 +14,7 @@ SRCS = main \
 	server \
 	network \
 	parser \
+	channels \
 	commands/cinterface \
 	commands/quit \
 	commands/cap \
