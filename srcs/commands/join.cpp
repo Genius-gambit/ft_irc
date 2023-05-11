@@ -22,10 +22,19 @@ join::~join() {}
 
 void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
-	std::cout << "Client joining Channel" << std::endl;
-	this->chan[cmds[1]] = ft::channels();
+	(void)i_pfds;
+	std::map<std::string, ft::channels>::iterator	it = this->chan.find(cmds[1]);
+	if (it == this->chan.end())
+	{
+		std::cout << "Empty" << std::endl;
+		this->chan[cmds[1]] = ft::channels();
+	}
 	this->chan[cmds[1]].add_clients(M_CLIENT(i_pfds).getFd());
 	this->chan[cmds[1]].setChannelName(cmds[1]);
-	// M_CLIENT(i_pfds).addBacklog("JOIN :" + cmds[1] + "\r\n");
+	M_CLIENT(i_pfds).addBacklog("JOIN :" + cmds[1] + "\r\n");
+	// std::cout << "*******Channel Info:*******" << std::endl;
+	// std::cout << "*******Channel Name:*******" << std::endl;
+	// tmp.print_clients();
+	// std::cout << std::endl;
 }
 

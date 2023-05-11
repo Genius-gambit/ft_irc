@@ -11,10 +11,11 @@
 /* ************************************************************************** */
 
 #include "../includes/channels.hpp"
+#include <iostream>
 
 using namespace ft;
 
-channels::channels(void) {}
+channels::channels(void) : _len(0) {}
 
 channels::~channels() {}
 
@@ -26,6 +27,8 @@ void	channels::setChannelName(const std::string &name)
 void	channels::add_clients(int fd)
 {
 	this->fds.push_back(fd);
+	this->_len++;
+	std::cout << "Length: " + this->_len << std::endl;
 }
 
 void	channels::kick_client(int fd)
@@ -35,7 +38,21 @@ void	channels::kick_client(int fd)
 	for (it = this->fds.begin(); it != this->fds.end(); it++)
 	{
 		if (*it == fd)
+		{
+			this->_len--;
 			break;
+		}
 	}
 	this->fds.erase(it);
+}
+
+int	channels::get_length() { return (this->_len); }
+
+void	channels::print_clients()
+{
+	std::cout << "*******Clients*******" << std::endl;
+	std::cout << "Number of Clients: " + get_length() << std::endl;
+	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
+		std::cout << *it << std::endl;
+	std::cout << "*******End*******" << std::endl;
 }

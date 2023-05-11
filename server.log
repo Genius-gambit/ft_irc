@@ -1,0 +1,27 @@
+1 : initializing the listener
+2 : Server Status: Socket fd set
+3 : Server Status: Set sock Opt "SO_REUSEADDR"
+4 : Server Status: Set sock Opt "SO_REUSEPORT"
+5 : Server Status: Socket set to Non Blocking
+6 : Server Status: Binding Socket
+7 : Server Status: Listening on Socket
+8 : Client Attempting to Connect
+9 : Accepting new client, fd : 4
+10 :  << PASS bob
+11 : NICK makhtar
+12 : USER user 0 * :unknown
+13 : 
+14 :  >> : 001 makhtar :
+15 : 
+16 : Welcome to ircserv makhtar!
+17 : 
+18 :  << JOIN #football
+19 : 
+20 :  >> JOIN :#football
+21 : 
+22 :  << QUIT :ERC (IRC client for Emacs 26.3)
+23 : 
+24 : Closing client fds
+25 : 
+26 : Shutting Down Server
+

@@ -3,6 +3,7 @@
 ## Work Logs :notebook_with_decorative_cover:(April 7 2023~)
 1.	***MAK:***	Created a Makefile.
 	1. Channels.
+	2. Implementation of all unique clients into the channels.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object
@@ -17,6 +18,7 @@
 
 #### MAK
 1. Create config and parse such files.
+2. Update Authentication for all the clients before joining the channels.
 
 #### WJS
 1. Implement server
