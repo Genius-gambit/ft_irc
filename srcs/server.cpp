@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/10 18:36:15 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:10:54 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,37 @@ void	ft::server::regNewClient()
 	else
 	{
 		this->clients[fd] = ft::client(fd);
-		// this->clients[fd].addBacklog("Server: Welcome to ircserv\r\n\n");
 		this->pfds.push_back(NPOLL(fd));
 		this->log << "Accepting new client, fd : " + (std::string() << fd);
+	}
+}
+
+void	ft::server::receiveCmds(size_t i)
+{
+	std::string	cmd;
+
+	cmd << M_CLIENT(i);
+	this->log << " << " + cmd;
+	this->pRecv(cmd);
+	for (size_t j = 0; j < this->getCmds().size(); j++)
+	{
+		if (this->getCmdSec(j)[0].size())
+		{
+			this->printCmds(this->getCmdSec(j));
+			this->selCmd(this->getCmdSec(j), i);
+		}
+	}
+}
+
+void	ft::server::sendReply(size_t i)
+{
+	std::string	reply;
+
+	while (M_CLIENT(i).getBacklogSize())
+	{
+		reply = M_CLIENT(i).retrBacklog();
+		reply >> M_CLIENT(i);
+		this->log << " >> " + reply;
 	}
 }
 
@@ -104,20 +132,10 @@ void	ft::server::run()
 				this->regNewClient();
 
 			if (i && this->pfds[i].revents & POLLOUT)
-			{
-				while (M_CLIENT(i).getBacklogSize())
-					M_CLIENT(i).retrBacklog() >> M_CLIENT(i);
-			}
+				this->sendReply(i);
 
 			if (i && this->pfds[i].revents & POLLIN)
-			{
-				this->pRecv(cmd << M_CLIENT(i));
-				for (size_t j = 0; j < this->getCmds().size(); j++)
-				{
-					this->printCmds(this->getCmdSec(j));
-					this->selCmd(this->getCmdSec(j), i);
-				}
-			}
+				this->receiveCmds(i);
 			this->clear();
 		}
 	}
@@ -129,7 +147,7 @@ void	sighandlr(int signum)
 {
 	(void) signum;
 	ft::g_server_run = false;
-	std::cout << std::endl << "Stopping server!" << std::endl;
+	std::cout << "\nStopping server!" << std::endl;
 }
 
 void	ft::catch_signals()

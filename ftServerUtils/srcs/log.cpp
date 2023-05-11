@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 20:50:54 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/01 20:34:14 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:56:09 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,29 @@ ft::log::log (const std::string &name) : lineNum(0), Name(name),
 /** @brief Destructor*/
 ft::log::~log() {}
 
+/** @brief removes any '\r' characters before splitting
+ * 			by '\n' and pushing each segment into the nextLog list,
+ * 			ready to be pushed to the log file.
+*/
+void			ft::log::parsLog(const std::string &msg)
+{
+	std::string	str = msg;
+	size_t	pos = -1;
+
+	while ((pos = str.find('\r', pos + 1)) != str.npos)
+		str.erase(pos, 1);
+
+	std::stringstream			ss(str);
+	std::string					line;
+
+	pos = -1;
+	while (!ss.eof())
+	{
+		getline(ss, line, '\n');
+		this->nextLog.push_back(line);
+	}
+}
+
 /** @brief pushLog method used to push a new log message into chosen
  * 			log file. If Log file exists prior to log object construction
  * 			content within will be replaced with new content upon initial 
@@ -32,13 +55,20 @@ void	ft::log::pushLog(const std::string &msg)
 {
 	std::ofstream	outfile(this->Name.c_str());
 	this->lastLog = msg;
-	this->lineNum++;
+	this->parsLog(msg);
+
+	while (this->nextLog.size())
+	{
+		this->lineNum++;
+		this->Content += (std::string() << this->lineNum) + " : ";
+		this->Content += this->nextLog.front();
+		this->Content += "\n";
+		this->nextLog.pop_front();
+	}
 	if (outfile.good())
 	{
-		this->Content += (std::string() << this->lineNum) + " : ";
-		this->Content += msg;
-		this->Content += "\n";
 		outfile << this->Content;
+		outfile << "\n";
 	}
 	outfile.close();
 }

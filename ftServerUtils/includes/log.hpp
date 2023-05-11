@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/30 20:36:23 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/01 20:36:17 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:22:56 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <iostream>
 # include <string>
+# include <list>
 
 namespace ft
 {
@@ -22,9 +23,12 @@ namespace ft
 	{
 		private :
 			int 			lineNum;
-			std::string		Name; //!file name
-			std::string		Content; //! file content
-			std::string		lastLog; //! last log message
+			std::string		Name; 		//!file name
+			std::string		Content;	//! file content
+			std::string		lastLog;	//! last log message
+			std::list<std::string>	nextLog;
+			
+			void			parsLog(const std::string &msg);
 
 		public :
 			//! Constructor & Destructor

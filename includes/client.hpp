@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:33:29 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 23:16:31 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 14:29:32 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/socket.h>
 # include <string>
 # include <list>
+# include "../ftServerUtils/includes/ServerUtility.hpp"
 
 # define ILLEGAL 0 	//! Client password not authenticated
 # define VERIFIED 1 //! Client password authenticated

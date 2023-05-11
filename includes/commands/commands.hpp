@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:54:00 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/10 20:02:12 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 16:30:58 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 
 # define RPL_WELCOME std::string("001")
 
-# define ERR_NONICKNAMEGIVEN 431
-# define ERR_ERRONEUSNICKNAME 432
-# define ERR_NICKNAMEINUSE 433
-# define ERR_NICKCOLLISION 436
+# define ERR_NONICKNAMEGIVEN std::string("431")
+# define ERR_ERRONEUSNICKNAME std::string("432")
+# define ERR_NICKNAMEINUSE std::string("433")
+# define ERR_NICKCOLLISION std::string("436")
 
 namespace ft
 {

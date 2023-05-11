@@ -6,11 +6,12 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:39:31 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/08 23:16:20 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 14:32:39 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/client.hpp"
+#include <new>
 
 //* ------------- Constructors ------------- *//
 /** @brief client default constructor */
@@ -46,10 +47,15 @@ ft::client &ft::client::operator=(const client &c)
 //! ------------- Server Operation Methods ------------- *//
 std::string	ft::client::Read()
 {
-	std::string	str;
-	str.resize(512);
-	recv(this->fd, const_cast<char *>(str.data()), str.size() - 1, 0);
-	return (str);
+	char	*buff = (char *)std::malloc(sizeof(char) * 513);
+	ssize_t bits = recv(this->fd, buff, 512, 0);
+	buff[bits] = '\0';
+
+	std::string res;
+	if (bits > 0)
+		res = std::string(buff);
+	free (buff);
+	return (res);
 }
 
 void	ft::client::Write(std::string str)

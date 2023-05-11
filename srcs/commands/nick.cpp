@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:38:01 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/10 23:12:30 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 16:30:34 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 	{
 		if (i != (size_t)i_pfds && M_CLIENT(i).getNick() == nick)
 		{
-			M_CLIENT(i_pfds).addBacklog("NICK : localhost "
-				+ (std::string() << ERR_NICKNAMEINUSE) + " * " + nick
+			M_CLIENT(i_pfds).addBacklog(": "
+				+ ERR_NICKNAMEINUSE + " * " + nick
 				+ " :Nickname already in use\r\n");
 			return ;
 		}
