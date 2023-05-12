@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:39:31 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/11 14:32:39 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 18:12:24 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 
 //* ------------- Constructors ------------- *//
 /** @brief client default constructor */
-ft::client::client() : fd(0), status(ILLEGAL), nick(), backlog() {}
+ft::client::client() : fd(0), status(VERIFIED), nick(), backlog() {}
 
 /** @brief client file descriptor constructor
  * @note initializes fd to one passed as parameter,
  * 		sets status as illegal (Default), and instantiates,
  * 		reader with file descriptor.
 */
-ft::client::client(int nfd) : fd(nfd), status(ILLEGAL), nick() {}
+ft::client::client(int nfd) : fd(nfd), status(VERIFIED), nick() {}
 
 /** @brief Copy Constructor */
 ft::client::client(const ft::client &c) : fd(c.fd), status(c.status),

@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 15:17:52 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/10 22:54:54 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 17:44:24 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["CAP"] = new ft::cap(this->clients, this->pfds, this->password);
 	this->cmds["JOIN"] = new ft::join(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["NICK"] = new ft::nick(this->clients, this->pfds, this->password);
+	this->cmds["PASS"] = new ft::pass(this->clients, this->pfds, this->password);
 }
 
 network::~network()

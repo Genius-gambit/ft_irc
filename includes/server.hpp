@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:30:56 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/11 15:07:02 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 17:49:22 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ namespace ft
 			void			regNewClient();
 			void			receiveCmds(size_t);
 			void			sendReply(size_t);
+			void			rmClient(size_t);
 
 		public :
 							server (int nport, std::string pw);

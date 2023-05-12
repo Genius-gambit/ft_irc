@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quit.cpp                                           :+:      :+:    :+:   */
+/*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/05 21:52:49 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/11 17:53:11 by wismith          ###   ########.fr       */
+/*   Created: 2023/05/11 17:45:04 by wismith           #+#    #+#             */
+/*   Updated: 2023/05/12 02:00:51 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,17 @@
 
 using namespace ft;
 
-quit::quit(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) :
+pass::pass(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) :
 	ft::cinterface(c, p, pw) {}
 
-quit::~quit() {}
+pass::~pass() {}
 
-void	quit::exec(int i_pfds, const std::vector<std::string> &cmds)
+void	pass::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
-	(void) cmds;
-	M_CLIENT(i_pfds).setStatus(ILLEGAL);
-	// if (pfds[i_pfds].revents & POLLOUT)
-	// {
-	// 	"Server: You are quiting ircserv\n" >> M_CLIENT(i_pfds);
-	// 	"QUIT\r\n" >> M_CLIENT(i_pfds);
-	// }
-	// close (pfds[i_pfds].fd);
-	// clients.erase(pfds[i_pfds].fd);
-	// pfds.erase(pfds.begin() + i_pfds);
+	if (this->password != cmds[1])
+	{
+		if (this->pfds[i_pfds].revents & POLLOUT)
+			"localhost 464 johnsmith :Incorrect Password!\r\n" >> M_CLIENT(i_pfds);
+		M_CLIENT(i_pfds).setStatus(ILLEGAL);
+	}
 }

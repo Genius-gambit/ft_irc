@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 15:38:01 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/11 16:30:34 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 17:34:38 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,17 @@ nick::nick(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &
 
 nick::~nick() {}
 
+void	nick::reply(ft::client &c, const std::string &code, const std::string &msg)
+{
+	c.addBacklog(": " + code + " " + c.getNick() + " :" + msg + "\r\n");
+}
+
 void	nick::welcome(ft::client &c)
 {
-	c.addBacklog(": " + RPL_WELCOME + " " + c.getNick()
-		+ " :\n\nWelcome to ircserv " + c.getNick() + "!\r\n");
+	this->reply(c, RPL_WELCOME, "Welcome to the irc server!");
+	this->reply(c, RPL_YOURHOST, "Your host is ircserv, running version 1");
+	this->reply(c, RPL_CREATED, "Server development started April 7th");
+	this->reply(c, RPL_MYINFO, "");
 }
 
 void	nick::exec(int i_pfds, const std::vector<std::string> &cmds)

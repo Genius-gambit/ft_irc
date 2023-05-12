@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/21 13:45:38 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/11 15:10:54 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 18:15:29 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,16 @@ void	ft::server::sendReply(size_t i)
 	}
 }
 
+void	ft::server::rmClient(size_t i)
+{
+	if (M_CLIENT(i).getStatus() == ILLEGAL)
+	{
+		close (pfds[i].fd);
+		this->clients.erase(pfds[i].fd);
+		this->pfds.erase(pfds.begin() + i);
+	}
+}
+
 void	ft::server::run()
 {
 	std::string	cmd;
@@ -136,6 +146,8 @@ void	ft::server::run()
 
 			if (i && this->pfds[i].revents & POLLIN)
 				this->receiveCmds(i);
+
+			this->rmClient(i);
 			this->clear();
 		}
 	}

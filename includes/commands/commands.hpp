@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/08 16:54:00 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/11 16:30:58 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/11 17:44:44 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,16 @@
 # include "cinterface.hpp"
 # include "../channels.hpp"
 
-# define RPL_WELCOME std::string("001")
+# define RPL_WELCOME			std::string("001")
+# define RPL_YOURHOST			std::string("002")
+# define RPL_CREATED			std::string("003")
+# define RPL_MYINFO				std::string("004")
+# define RPL_ISUPPORT			std::string("005")
 
-# define ERR_NONICKNAMEGIVEN std::string("431")
-# define ERR_ERRONEUSNICKNAME std::string("432")
-# define ERR_NICKNAMEINUSE std::string("433")
-# define ERR_NICKCOLLISION std::string("436")
+# define ERR_NONICKNAMEGIVEN	std::string("431")
+# define ERR_ERRONEUSNICKNAME	std::string("432")
+# define ERR_NICKNAMEINUSE		std::string("433")
+# define ERR_NICKCOLLISION		std::string("436")
 
 namespace ft
 {
@@ -54,12 +58,20 @@ namespace ft
 			void exec(int, const std::vector<std::string> &);
 	};
 
-	//! class pass : public ft::cinterface
 	/* Usage: PASS <password>
   	Sets the connection password.  The password can and must be set before
   	any attempt to register the connection is made.  Currently no connection
   	is allowed to a server which has not registered.  Numeric Replies:
   	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED */
+	class pass : public ft::cinterface
+	{
+		public :
+				pass (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &);
+				~pass ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 	/* Usage: NICK <nickname> [ <hopcount> ]
   	Allows a client to register a nickname with the server.  Numeric Replies:
@@ -82,6 +94,7 @@ namespace ft
 						std::vector<pollfd> &, std::string &);
 					~nick ();
 
+			void	reply(ft::client &c, const std::string &code, const std::string &msg);
 			void	welcome(ft::client &c);
 			void	exec(int, const std::vector<std::string> &);
 	};
