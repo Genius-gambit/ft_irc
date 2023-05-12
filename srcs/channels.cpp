@@ -26,6 +26,14 @@ void	channels::setChannelName(const std::string &name)
 
 void	channels::add_clients(int fd)
 {
+	for (std::vector<int>::iterator it = this->fds.begin(); it  != this->fds.end(); it++)
+	{
+		if (*it == fd)
+		{
+			std::cout << "Already a Member" << std::endl;
+			return ;
+		}
+	}
 	this->fds.push_back(fd);
 	this->_len++;
 	std::cout << "Length: " << this->_len << std::endl;
