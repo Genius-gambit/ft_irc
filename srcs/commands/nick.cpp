@@ -32,6 +32,34 @@ void	nick::welcome(ft::client &c)
 	this->reply(c, RPL_MYINFO, "");
 }
 
+void	nick::creating_nick(std::string &nick, int &i_pfds)
+{
+	std::vector<std::string>	tmp;
+	for (size_t i = 1; i < this->pfds.size(); i++)
+	{
+		if (i != (size_t)i_pfds && M_CLIENT(i).getNick() == nick)
+			tmp.push_back(M_CLIENT(i).getNick());
+	}
+	std::string	str = nick + "_";
+	M_CLIENT(i_pfds).setNick(str);
+	std::cout << "Str: " << str << std::endl;
+	std::cout << M_CLIENT(2).getNick().substr(0, str.length()) << std::endl;
+	for (size_t i = 1; i < this->pfds.size(); i++)
+	{
+		if (i != (size_t)i_pfds && M_CLIENT(i).getNick().substr(0, str.length() ) == str)
+		{
+			std::cout << "IN" << std::endl;
+			tmp.push_back(M_CLIENT(i).getNick());
+		}
+	}
+	std::cout << "****Nicknames:****" << std::endl;
+	for (std::vector<std::string>::iterator it = tmp.begin(); it != tmp.end(); it++)
+	{
+		std::cout << *it << std::endl;
+	}
+	std::cout << "****End:****" << std::endl << std::endl;
+}
+
 void	nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
 	std::string	nick;
@@ -44,6 +72,7 @@ void	nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 			M_CLIENT(i_pfds).addBacklog(": "
 				+ ERR_NICKNAMEINUSE + " * " + nick
 				+ " :Nickname already in use\r\n");
+			creating_nick(nick, i_pfds);
 			return ;
 		}
 	}

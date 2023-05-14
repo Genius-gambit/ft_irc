@@ -97,6 +97,7 @@ namespace ft
 			void	reply(ft::client &c, const std::string &code, const std::string &msg);
 			void	welcome(ft::client &c);
 			void	exec(int, const std::vector<std::string> &);
+			void	creating_nick(std::string &, int &);
 	};
 
 	//! class oper : public ft::cinterface
