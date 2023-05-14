@@ -206,6 +206,32 @@ namespace ft
   	ERR_USERSDONTMATCH
   	Examples:
   	MODE WiZ -w -or- MODE Angel +i */
+
+	//!class ping : public ft::cinterface
+	/* Usage: PING [ <server1> [ <server2> ] ]
+  	PING command is used to test the presence of an active client or
+  	server at the other end of the connection.  Servers send a PING
+  	message at regular intervals if no other activity detected coming
+  	from a connection.  If a connection fails to respond to a PING
+  	message within a set amount of time, that connection is closed.
+  	A PING message MAY be sent even if the connection is active.
+  	There are two types of PING message, "PING" and "PONG".  A PING
+  	message is sent by a server to a client or by one client to
+  	another client.  PONG message is a reply to PING message.  Numeric
+  	Replies:
+  	ERR_NOORIGIN
+  	Examples:
+  	PING tolsun.oulu.fi -or- PING WiZ tolsun.oulu.fi */
+
+	class ping : public ft::cinterface
+	{
+		public :
+				ping (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &);
+				~ping ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 };
 
 #endif

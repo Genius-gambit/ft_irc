@@ -21,6 +21,7 @@ SRCS = main \
 	commands/join \
 	commands/nick \
 	commands/pass \
+	commands/ping \
 
 CXX = c++
 
