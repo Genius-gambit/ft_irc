@@ -4,7 +4,8 @@
 1.	***MAK:***	Created a Makefile.
 	1. Channels Initialised.
 	2. Unique channels implemented.
-	3. Unique clients implemented in particular channels.
+	3. Unique clients implemented in particular channels.4
+	4. Parsing handled for duplicate nicknames.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object
