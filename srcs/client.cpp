@@ -15,17 +15,17 @@
 
 //* ------------- Constructors ------------- *//
 /** @brief client default constructor */
-ft::client::client() : fd(0), status(VERIFIED), nick(), backlog() {}
+ft::client::client() : fd(0), status(ILLEGAL), markForDel(false), nick(), backlog() {}
 
 /** @brief client file descriptor constructor
  * @note initializes fd to one passed as parameter,
  * 		sets status as illegal (Default), and instantiates,
  * 		reader with file descriptor.
 */
-ft::client::client(int nfd) : fd(nfd), status(VERIFIED), nick() {}
+ft::client::client(int nfd) : fd(nfd), status(ILLEGAL), markForDel(false), nick() {}
 
 /** @brief Copy Constructor */
-ft::client::client(const ft::client &c) : fd(c.fd), status(c.status),
+ft::client::client(const ft::client &c) : fd(c.fd), status(c.status), markForDel(c.markForDel),
 	nick(c.nick) {}
 //* ------------- End Constructors ------------- *//
 
@@ -47,14 +47,13 @@ ft::client &ft::client::operator=(const client &c)
 //! ------------- Server Operation Methods ------------- *//
 std::string	ft::client::Read()
 {
-	char	*buff = (char *)std::malloc(sizeof(char) * 513);
+	char	buff[513];
 	ssize_t bits = recv(this->fd, buff, 512, 0);
 	buff[bits] = '\0';
 
-	std::string res;
+	std::string res = "";
 	if (bits > 0)
 		res = std::string(buff);
-	free (buff);
 	return (res);
 }
 
@@ -79,6 +78,11 @@ std::string	ft::client::retrBacklog()
 
 	this->backlog.pop_front();
 	return (str);
+}
+
+void		ft::client::markClientForDel()
+{
+	this->markForDel = true;
 }
 //! ------------- End Server Operation Methods ------------- *//
 
@@ -144,6 +148,11 @@ std::string	ft::client::getHostname() const
 std::string	ft::client::getMode() const
 {
 	return (this->mode);
+}
+
+bool		ft::client::getIsMarkForDel() const
+{
+	return (this->markForDel);
 }
 
 //? ------------- End Getters ------------- *//

@@ -64,5 +64,4 @@ void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 		}
 	}
 	M_CLIENT(i_pfds).setNick(nick);
-	this->welcome(M_CLIENT(i_pfds));
 }

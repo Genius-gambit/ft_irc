@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../includes/commands.hpp"
+#include <ctime>
 
 using namespace ft;
 
@@ -26,8 +27,12 @@ void cinterface::reply(ft::client &c, const std::string &code, const std::string
 
 void cinterface::welcome(ft::client &c)
 {
+	time_t	now = time(0);
+	tm		*gmtm = gmtime(&now);
+	std::string time(asctime(gmtm));
+
 	this->reply(c, RPL_WELCOME, "Welcome to the irc server!");
 	this->reply(c, RPL_YOURHOST, "Your host is ircserv, running version 1");
-	this->reply(c, RPL_CREATED, "Server development started April 7th");
+	this->reply(c, RPL_CREATED, "Server started " + time);
 	this->reply(c, RPL_MYINFO, "");
 }

@@ -37,6 +37,7 @@ namespace ft
 		private :
 			int						fd;			//! Client fd to read / write to
 			int						status;		//! Illegal / Verified
+			bool					markForDel; //! Mark the client to be deleted
 			std::string				nick;		//! Client nickname
 			std::string				username;	//! Client username
 			std::string				realname;	//! Client realname
@@ -60,6 +61,7 @@ namespace ft
 			void					addBacklog(const std::string);	//! Adds a reply to client
 			size_t					getBacklogSize() const; 		//! gets backlog size
 			std::string				retrBacklog(); 					//! retrieves backlog
+			void					markClientForDel();
 
 			void					setFd(int nfd);
 			void					setStatus(int stat);
@@ -70,6 +72,7 @@ namespace ft
 
 			int						getFd() const;
 			int						getStatus() const;
+			bool					getIsMarkForDel() const;
 			std::string				getNick() const;
 			std::string				getRealname() const;
 			std::string				getHostname() const;

@@ -19,16 +19,24 @@ quit::quit(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &
 
 quit::~quit() {}
 
+std::string	pars(const std::vector<std::string> &cmds)
+{
+	std::string	res;
+
+	for (size_t i = 1; i < cmds.size(); i++)
+	{
+		res += cmds[i];
+		if (i != cmds.size() - 1)
+			res += ' ';
+	}
+	return (res);
+}
+
 void	quit::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
-	(void) cmds;
-	M_CLIENT(i_pfds).setStatus(ILLEGAL);
-	// if (pfds[i_pfds].revents & POLLOUT)
-	// {
-	// 	"Server: You are quiting ircserv\n" >> M_CLIENT(i_pfds);
-	// 	"QUIT\r\n" >> M_CLIENT(i_pfds);
-	// }
-	// close (pfds[i_pfds].fd);
-	// clients.erase(pfds[i_pfds].fd);
-	// pfds.erase(pfds.begin() + i_pfds);
+	ft::client	&client = M_CLIENT(i_pfds);
+
+	client.markClientForDel();
+	client.addBacklog(":" + client.getNick()
+		+ " QUIT :" + pars(cmds) + "\r\n");
 }

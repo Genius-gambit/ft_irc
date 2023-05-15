@@ -121,7 +121,7 @@ void	ft::server::sendReply(size_t i)
 
 void	ft::server::rmClient(size_t i)
 {
-	if (M_CLIENT(i).getStatus() == ILLEGAL)
+	if (M_CLIENT(i).getIsMarkForDel() == true)
 	{
 		close (pfds[i].fd);
 		this->clients.erase(pfds[i].fd);
@@ -145,10 +145,12 @@ void	ft::server::run()
 			if (i && this->pfds[i].revents & POLLOUT)
 				this->sendReply(i);
 
+			if (i)
+				this->rmClient(i);
+
 			if (i && this->pfds[i].revents & POLLIN)
 				this->receiveCmds(i);
 
-			this->rmClient(i);
 			this->clear();
 		}
 	}
