@@ -31,6 +31,17 @@
 # define ERR_NICKNAMEINUSE		std::string("433")
 # define ERR_NICKCOLLISION		std::string("436")
 
+# define ERR_NEEDMOREPARAMS		std::string("461")
+# define ERR_ALREADYREGISTRED	std::string("462")
+# define ERR_PASSWDMISMATCH		std::string("464")
+# define ERR_UNKNOWNMODE		std::string("472")
+# define ERR_CHANOPRIVSNEEDED	std::string("482")
+# define ERR_UMODEUNKNOWNFLAG	std::string("501")
+# define ERR_USERSDONTMATCH		std::string("502")
+
+# define ERR_NOSUCHNICK			std::string("401")
+# define ERR_NOSUCHCHANNEL		std::string("403")
+
 namespace ft
 {
 	/** @brief command interface inherited by the commands,
@@ -228,6 +239,38 @@ namespace ft
   	ERR_USERSDONTMATCH
   	Examples:
   	MODE WiZ -w -or- MODE Angel +i */
+
+	//!class privmsg : public ft::cinterface
+	/* Usage: PRIVMSG <msgtarget> <message>
+  	PRIVMSG is used to send private messages between users, as well as
+  	to send messages to channels.  <msgtarget> is usually the nickname
+  	of the recipient of the message, or a channel name.  <msgtarget>
+  	may also be a host mask (#<mask>) or server mask ($<mask>).  <message>
+  	is the text to be sent.  PRIVMSG is the only way to send a message
+  	to a user or to a channel.  There is no difference between a message
+  	to a user or a message to a channel - they differ only in the target
+  	of the message.  Numeric Replies:
+  	ERR_NORECIPIENT ERR_NOTEXTTOSEND ERR_CANNOTSENDTOCHAN
+  	ERR_NOTOPLEVEL ERR_WILDTOPLEVEL ERR_TOOMANYTARGETS
+  	ERR_NOSUCHNICK ERR_NOSUCHCHANNEL ERR_CANNOTSENDTOCHAN
+  	ERR_TOOMANYCHANNELS ERR_USERONCHANNEL ERR_NOLOGIN
+  	ERR_USERNOTINCHANNEL ERR_USERONCHANNEL ERR_NOLOGIN
+  	ERR_NOTREGISTERED RPL_AWAY
+  	Examples:
+  	PRIVMSG Angel :yes I'm receiving it ! -or- PRIVMSG
+	#playzone :what's up ? */
+
+	class privmsg : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels>	&chan;
+		public :
+				privmsg (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels> &);
+				~privmsg ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 	//!class ping : public ft::cinterface
 	/* Usage: PING [ <server1> [ <server2> ] ]

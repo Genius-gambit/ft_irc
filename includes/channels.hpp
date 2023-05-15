@@ -14,7 +14,10 @@
 # define CHANNELS_HPP
 
 # include <vector>
+# include <map>
 # include <string>
+
+#include "client.hpp"
 
 namespace ft
 {
@@ -24,6 +27,7 @@ namespace ft
 			std::vector<int>	fds;
 			std::string	_chan;
 			int			_len;
+
 		public :
 			channels();
 			~channels();
@@ -33,6 +37,7 @@ namespace ft
 			void	kick_client(int fd);
 			int		get_length(void);
 			void	print_clients();
+			void	sendToAll(const std::string &, std::map<int, CLIENT> &, int);
 	};
 };
 

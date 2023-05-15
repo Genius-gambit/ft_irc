@@ -23,6 +23,7 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["PASS"] = new ft::pass(this->clients, this->pfds, this->password);
 	this->cmds["PING"] = new ft::ping(this->clients, this->pfds, this->password);
 	this->cmds["USER"] = new user(this->clients, this->pfds, this->password);
+	this->cmds["PRIVMSG"] = new privmsg(this->clients, this->pfds, this->password, this->chans);
 }
 
 network::~network()
