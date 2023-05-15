@@ -22,6 +22,7 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["NICK"] = new ft::nick(this->clients, this->pfds, this->password);
 	this->cmds["PASS"] = new ft::pass(this->clients, this->pfds, this->password);
 	this->cmds["PING"] = new ft::ping(this->clients, this->pfds, this->password);
+	this->cmds["USER"] = new user(this->clients, this->pfds, this->password);
 }
 
 network::~network()

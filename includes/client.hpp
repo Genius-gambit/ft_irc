@@ -38,7 +38,13 @@ namespace ft
 			int						fd;			//! Client fd to read / write to
 			int						status;		//! Illegal / Verified
 			std::string				nick;		//! Client nickname
+			std::string				username;	//! Client username
+			std::string				realname;	//! Client realname
+			std::string				hostname;	//! Client hostname
+			std::string				servername;	//! Client servername
+			std::string				mode;		//! Client mode
 			std::list<std::string>	backlog;	//! reply to Client backlog
+
 
 		public :
 									client ();
@@ -58,10 +64,16 @@ namespace ft
 			void					setFd(int nfd);
 			void					setStatus(int stat);
 			void					setNick(const std::string &Nick);
+			void					setRealname(const std::string &Realname);
+			void					setHostname(const std::string &Hostname);
+			void					setMode(const std::string &Mode);
 
 			int						getFd() const;
 			int						getStatus() const;
 			std::string				getNick() const;
+			std::string				getRealname() const;
+			std::string				getHostname() const;
+			std::string				getMode() const;
 
 	};
 };

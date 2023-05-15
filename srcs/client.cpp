@@ -97,6 +97,22 @@ void	ft::client::setNick(const std::string &Nick)
 {
 	this->nick = Nick;
 }
+
+void	ft::client::setRealname(const std::string &Realname)
+{
+	this->realname = Realname;
+}
+
+void	ft::client::setHostname(const std::string &Hostname)
+{
+	this->hostname = Hostname;
+}
+
+void	ft::client::setMode(const std::string &Mode)
+{
+	this->mode = Mode;
+}
+
 //? ------------- End Setters ------------- *//
 
 //? ------------- Getters ------------- *//
@@ -114,6 +130,22 @@ std::string	ft::client::getNick() const
 {
 	return (this->nick);
 }
+
+std::string	ft::client::getRealname() const
+{
+	return (this->realname);
+}
+
+std::string	ft::client::getHostname() const
+{
+	return (this->hostname);
+}
+
+std::string	ft::client::getMode() const
+{
+	return (this->mode);
+}
+
 //? ------------- End Getters ------------- *//
 
 

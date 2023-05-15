@@ -234,4 +234,38 @@ namespace ft
 	};
 };
 
+	//! class user : public ft::cinterface
+	/* Usage: USER <username> <hostname> <servername> <realname>
+  	The USER command is used at the beginning of connection to specify
+  	the username, hostname, servername and realname of a new user.
+  	<hostname> may be '*' , to use the client host name, or it may
+  	be a host domain name or IP number.  Hostnames are normally used
+  	instead of host IP numbers because they are easier to remember
+  	(for humans).  If the hostname is '*', the correct host name is
+  	automatically determined by the server.  Otherwise, the name is
+  	checked against the mask list at the server.  <servername> is the
+  	name of the server that the user wishes to connect to.  It is
+  	used for virtual hosting, i.e.  when multiple IRC servers are
+  	running on a single host.  <realname> is the real name of the
+  	user.  It is passed through unchanged and may contain spaces.
+  	Spaces are also used to separate multiple middle names.  Numeric
+  	Replies:
+  	ERR_NEEDMOREPARAMS ERR_ALREADYREGISTRED
+  	Examples:
+  	USER guest tolmoon tolsun :Ronnie Reagan
+  	; User registering themselves with a
+  	username of "guest" and real name
+  	"Ronnie Reagan". */
+	class user : public ft::cinterface
+	{
+		public :
+				user (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &);
+				~user ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
+
+
+
 #endif
