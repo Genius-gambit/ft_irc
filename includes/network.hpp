@@ -26,8 +26,7 @@
 # include "channels.hpp"
 
 /** @brief commands */
-# include "commands/cinterface.hpp"
-# include "commands/commands.hpp"
+# include "commands.hpp"
 
 namespace ft
 {

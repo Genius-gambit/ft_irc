@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/commands/commands.hpp"
+#include "../../includes/commands.hpp"
 
 using namespace ft;
 

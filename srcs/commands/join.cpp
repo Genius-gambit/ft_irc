@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/commands/commands.hpp"
+#include "../../includes/commands.hpp"
 
 using namespace ft;
 
@@ -22,7 +22,6 @@ join::~join() {}
 
 void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
-	(void)i_pfds;
 	std::map<std::string, ft::channels>::iterator	it = this->chan.find(cmds[1]);
 	if (it == this->chan.end())
 	{
@@ -37,10 +36,5 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 		this->chan[it->first].print_clients();
 		std::cout << "End" << std::endl;
 	}
-	// M_CLIENT(i_pfds).addBacklog("JOIN :" + cmds[1] + "\r\n");
-	// std::cout << "*******Channel Info:*******" << std::endl;
-	// std::cout << "*******Channel Name:*******" << std::endl;
-	// tmp.print_clients();
-	// std::cout << std::endl;
 }
 

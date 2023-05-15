@@ -7,8 +7,6 @@ SERVARCH = $(SERVDIR)/ServerUtils.a
 #* 	@format : directory/file_name without .cpp
 #*	@example : classDef/rawData
 
-ClIENT = irssi_client
-
 SRCS = main \
 	client \
 	server \
@@ -61,29 +59,35 @@ fclean: clean
 
 re: fclean all
 
+#* @brief vars randomize the clients by date
+LOGFILE = $(shell date)
+CLIENTTIME = $(addsuffix .$(LOGFILE), client)
+CLIENT = $(shell echo $(CLIENTTIME) | tr A-Z a-z | tr -d ' ' | tr -d ':' | tr -d '+' | tr -d '-')
+CLIENT_VERSION = irssi:1.2.3
+
 #* @client
 #* @brief : make client will build and execute a client
 #*	@note : quit client by typing "/quit" on interface
 #* ipconfig getifaddr en0
 #*
 client:
-	docker run -it --name $(ClIENT) -e TERM -u $(id -u):$(id -g) \
+	docker run -it --name $(CLIENT) -e TERM -u $(id -u):$(id -g) \
 	--log-driver=none \
-    -v ${HOME}/.irssi:/home/user/.irssi:ro \
-    irssi
-	docker rm -f $(ClIENT)
-	docker rmi irssi
+	   -v ${HOME}/.irssi:/home/user/.irssi:ro \
+	$(CLIENT_VERSION)
+	docker rm -f $(CLIENT)
 
 #* @brief : make rm_client will remove the client and delete the image
 rm_client:
-	docker rm -f $(ClIENT)
-	docker rmi irssi
+	docker rmi $(CLIENT_VERSION)
 	
 #* @brief : rules to print messages
 printStart :
 	@printf "\nConstructing new 'ft_irc' server objects:\n\n"
+
 printnl :
 	@echo ""
+
 printProvided :
 	@printf "\nServer 'ircserv' provided\n"
 

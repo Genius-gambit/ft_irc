@@ -53,6 +53,7 @@ void			ft::log::parsLog(const std::string &msg)
 */
 void	ft::log::pushLog(const std::string &msg)
 {
+	std::string	lnStr;
 	std::ofstream	outfile(this->Name.c_str());
 	this->lastLog = msg;
 	this->parsLog(msg);
@@ -60,7 +61,7 @@ void	ft::log::pushLog(const std::string &msg)
 	while (this->nextLog.size())
 	{
 		this->lineNum++;
-		this->Content += (std::string() << this->lineNum) + " : ";
+		this->Content += (lnStr << this->lineNum) + " : ";
 		this->Content += this->nextLog.front();
 		this->Content += "\n";
 		this->nextLog.pop_front();

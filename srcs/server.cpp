@@ -73,9 +73,10 @@ void	ft::server::lstnInit()
 */
 void	ft::server::regNewClient()
 {
-    int fd = -1;
-    int addrlen = 0;
-    struct sockaddr_in address;
+	std::string	fdStr;
+    int 		fd = -1;
+    int 		addrlen = 0;
+    struct 		sockaddr_in address;
     memset(&address, 0, sizeof(address));
 	
 	this->log << "Client Attempting to Connect";
@@ -85,7 +86,7 @@ void	ft::server::regNewClient()
 	{
 		this->clients[fd] = ft::client(fd);
 		this->pfds.push_back(NPOLL(fd));
-		this->log << "Accepting new client, fd : " + (std::string() << fd);
+		this->log << "Accepting new client, fd : " + (fdStr << fd);
 	}
 }
 

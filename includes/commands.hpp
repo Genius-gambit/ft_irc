@@ -13,8 +13,12 @@
 #	ifndef COMMANDS_HPP
 # define COMMANDS_HPP
 
-# include "cinterface.hpp"
-# include "../channels.hpp"
+# include "channels.hpp"
+# include "client.hpp"
+
+# include <map>
+# include <string>
+# include <poll.h>
 
 # define RPL_WELCOME			std::string("001")
 # define RPL_YOURHOST			std::string("002")
@@ -29,6 +33,26 @@
 
 namespace ft
 {
+	/** @brief command interface inherited by the commands,
+	 * contains reply function overloads that adds a new backlog to be
+	 * sent  to the client.
+	*/
+	class cinterface
+	{
+		protected :
+			std::map<CLIENT_FD, CLIENT>			&clients;
+			std::vector<pollfd>					&pfds;
+			std::string							&password;
+		public :
+			cinterface (std::map<CLIENT_FD, CLIENT> &, std::vector<pollfd> &, std::string &);
+			virtual ~cinterface ();
+
+			virtual void exec(int, const std::vector<std::string> &) = 0;
+
+			void reply(ft::client &c, const std::string &code, const std::string &msg);
+			void welcome(ft::client &c);
+	};
+
 	// irssi commands
 
 	class cap : public ft::cinterface
@@ -94,8 +118,6 @@ namespace ft
 						std::vector<pollfd> &, std::string &);
 					~nick ();
 
-			void	reply(ft::client &c, const std::string &code, const std::string &msg);
-			void	welcome(ft::client &c);
 			void	exec(int, const std::vector<std::string> &);
 			void	creating_nick(std::string &, int &);
 	};

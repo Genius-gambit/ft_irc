@@ -28,17 +28,27 @@ OBJ = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(SRCS)))
 $(OBJDIR)/%.o : srcs/%.cpp
 	@mkdir -p $(OBJDIR)
 	@printf "\033[A\033[2K\r"
-	@printf "\x1B[32m\tGenerating ... \x1B[0m"
+
+	@tput setaf 2
+	@printf "\tGenerating ... "
+	@tput init
+
 	$(CXX) $(CPPFLAGS) -c $< -o $@
 
 all : $(NAME)
 
 $(NAME) : printHead $(OBJ)
 	@printf "\033[A\033[2K\r"
-	@printf "\x1B[32m\tGenerating ... \x1B[0m"
+	@tput setaf 2
+	@printf "\tGenerating ... "
+	@tput init
 	ar -rc $(NAME) $(OBJ)
+
 	@printf "\033[A\033[2K\r"
-	@printf "\x1B[32m\tArchived ServerUtils.a\n \x1B[0m"
+
+	@tput setaf 2
+	@printf "\tArchived ServerUtils.a\n"
+	@tput init
 
 clean :
 	@rm -rf $(OBJDIR)
@@ -49,13 +59,37 @@ fclean : clean
 re : fclean all
 
 printHead :
-	@printf "\x1B[0m _______________________________________________________\n"
-	@printf "\x1B[0m|                                                       |\n"
-	@printf "\x1B[0m|     \x1B[32m\"THE MOMENT WE STOP LEARNING IS THE MOMENT WE \x1B[0m    |\n"
-	@printf "\x1B[0m|    \x1B[32mSTAGNATE, AND THOUGH LEARNING IN THE REAL WORLD\x1B[0m    |\n"
-	@printf "\x1B[0m|     \x1B[32mIS SELDOM UNACCOMPANIED BY HARDSHIP IT'S ALSO\x1B[0m     |\n"
-	@printf "\x1B[0m|          \x1B[32mAN EXPERIENCE.\"\x1B[0m - Willem J. Smith            |\n"
-	@printf "\x1B[0m|_______________________________________________________|\n"
-	@printf "\x1B[0m\n\n"
+	@printf " _______________________________________________________\n"
+	@printf "|                                                       |\n"
+	@printf "|";
+
+	@tput setaf 2
+	@printf "     \"THE MOMENT WE STOP LEARNING IS THE MOMENT WE     "
+	@tput init
+
+	@printf "|\n"
+	@printf "|";
+
+	@tput setaf 2
+	@printf "    STAGNATE, AND THOUGH LEARNING IN THE REAL WORLD    "
+	@tput init
+
+	@printf "|\n"
+	@printf "|"
+
+	@tput setaf 2
+	@printf "     IS SELDOM UNACCOMPANIED BY HARDSHIP IT'S ALSO     "
+	@tput init
+
+	@printf "|\n"
+	@printf "|"
+
+	@tput setaf 2
+	@printf "          AN EXPERIENCE.\" - Willem J. Smith            "
+	@tput init
+
+	@printf "|\n"
+	@printf "|_______________________________________________________|\n"
+	@printf "\n\n"
 
 .PHONY : all clean fclean re printHead

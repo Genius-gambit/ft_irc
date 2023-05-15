@@ -29,18 +29,19 @@
  * 	@note	should use only integral types as arguments.
  //! @note e.g. :
  * 	@note			std::string() << 5; 
+ *	@note			std::string() << 5.6;
+ *	@note			std::string() << 'c';
  //! @note			or
  * 	@note 			std::string	example;
  * 	@note			example << "hi bob";
 */
 template <class T>
-std::string	operator<<(std::string str, T const &t)
+std::string	&operator<<(std::string &str, T const &t)
 {
 	std::stringstream	ss;
 	ss << t;
 	str = ss.str();
 	return (str);
 }
-
 
 #endif

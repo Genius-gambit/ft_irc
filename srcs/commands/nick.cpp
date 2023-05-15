@@ -10,26 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/commands/commands.hpp"
+#include "../../includes/commands.hpp"
 
 using namespace ft;
 
 nick::nick(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) : ft::cinterface(c, p, pw) {}
 
 nick::~nick() {}
-
-void nick::reply(ft::client &c, const std::string &code, const std::string &msg)
-{
-	c.addBacklog(": " + code + " " + c.getNick() + " :" + msg + "\r\n");
-}
-
-void nick::welcome(ft::client &c)
-{
-	this->reply(c, RPL_WELCOME, "Welcome to the irc server!");
-	this->reply(c, RPL_YOURHOST, "Your host is ircserv, running version 1");
-	this->reply(c, RPL_CREATED, "Server development started April 7th");
-	this->reply(c, RPL_MYINFO, "");
-}
 
 void nick::creating_nick(std::string &nick, int &i_pfds)
 {
@@ -64,6 +51,7 @@ void nick::creating_nick(std::string &nick, int &i_pfds)
 void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
 	std::string nick;
+	std::string num;
 
 	nick = cmds[1];
 	for (size_t i = 1; i < this->pfds.size(); i++)
