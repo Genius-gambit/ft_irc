@@ -18,7 +18,41 @@ nick::nick(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &
 
 nick::~nick() {}
 
-void nick::creating_nick(std::string &nick, int &i_pfds)
+void nick::reply(ft::client &c, const std::string &code, const std::string &msg)
+{
+	c.addBacklog(": " + code + " " + c.getNick() + " :" + msg + "\r\n");
+}
+
+void nick::welcome(ft::client &c)
+{
+	this->reply(c, RPL_WELCOME, "Welcome to the irc server!");
+	this->reply(c, RPL_YOURHOST, "Your host is ircserv, running version 1");
+	this->reply(c, RPL_CREATED, "Server development started April 7th");
+	this->reply(c, RPL_MYINFO, "");
+}
+
+std::string	get_max_str(std::vector<std::string> &str)
+{
+	std::string	max;
+
+	max = str[0];
+	for (std::size_t i = 0; i < str.size(); i++)
+	{
+		if (max < str[i])
+			max = str[i];
+	}
+	return (max);
+}
+
+std::string	ft_itoa(int num)
+{
+	std::string	ret;
+
+	ret = ret << num;
+	return (ret);
+}
+
+std::vector<std::string>	nick::get_original_nickname(std::string &nick, int &i_pfds)
 {
 	std::vector<std::string> tmp;
 	for (size_t i = 1; i < this->pfds.size(); i++)
@@ -26,32 +60,51 @@ void nick::creating_nick(std::string &nick, int &i_pfds)
 		if (i != (size_t)i_pfds && M_CLIENT(i).getNick() == nick)
 			tmp.push_back(M_CLIENT(i).getNick());
 	}
-	std::cout << "Number of Clients: " << (size_t)i_pfds << std::endl;
+	return (tmp);
+}
+
+void nick::creating_nick(std::string &nick, int &i_pfds)
+{
+	std::vector<std::string> tmp;
+	
+	tmp = get_original_nickname(nick, i_pfds);
+	std::cout << std::endl;
+	std::cout << "Number of Clients: " << (size_t)i_pfds << std::endl << std::endl;
 	std::string str = nick + "_";
-	M_CLIENT(i_pfds).setNick(str);
-	std::cout << "Str: " << str << std::endl;
-	std::cout << M_CLIENT(2).getNick().substr(0, str.length()) << std::endl;
 	for (size_t i = 1; i < this->pfds.size(); i++)
 	{
 		if (M_CLIENT(i).getNick().substr(0, str.length()) == str)
-		{
-			std::cout << "IN" << std::endl;
 			tmp.push_back(M_CLIENT(i).getNick());
-		}
 	}
-	std::cout << "****Nicknames:****" << std::endl;
-	for (std::vector<std::string>::iterator it = tmp.begin(); it != tmp.end(); it++)
+	if (tmp.size() == 1)
+		M_CLIENT(i_pfds).setNick(nick + "_1");
+	else if (tmp.size() > 1)
 	{
-		std::cout << *it << std::endl;
+		int		max_index = 0;
+		for (std::size_t i = 0; i < tmp.size(); i++)
+		{
+			if (tmp[i] == get_max_str(tmp))
+			{
+				max_index = i;
+				break;
+			}
+		}
+		M_CLIENT(i_pfds).setNick(str
+		+ ft_itoa(std::atoi(get_max_str(tmp).substr(str.length(),
+		tmp[max_index].length() ).c_str()) + 1));
 	}
-	std::cout << "****End:****" << std::endl
+	std::cout << "****Nicknames****" << std::endl;
+	for (size_t i = 1; i < this->pfds.size(); i++)
+	{
+		std::cout << M_CLIENT(i).getNick() << std::endl;
+	}
+	std::cout << "****End****" << std::endl
 			  << std::endl;
 }
 
 void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
 	std::string nick;
-	std::string num;
 
 	nick = cmds[1];
 	for (size_t i = 1; i < this->pfds.size(); i++)
@@ -60,8 +113,10 @@ void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 		{
 			M_CLIENT(i_pfds).addBacklog(": " + ERR_NICKNAMEINUSE + " * " + nick + " :Nickname already in use\r\n");
 			creating_nick(nick, i_pfds);
+			M_CLIENT(i_pfds).addBacklog(": " + ERR_NICKNAMEINUSE + " * " + M_CLIENT(i_pfds).getNick() + " :New Nickname\r\n");
 			return;
 		}
 	}
 	M_CLIENT(i_pfds).setNick(nick);
+	this->welcome(M_CLIENT(i_pfds));
 }

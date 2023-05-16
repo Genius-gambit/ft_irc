@@ -134,7 +134,10 @@ namespace ft
 						std::vector<pollfd> &, std::string &);
 					~nick ();
 
+			void	reply(ft::client &c, const std::string &code, const std::string &msg);
+			void	welcome(ft::client &c);
 			void	exec(int, const std::vector<std::string> &);
+			std::vector<std::string>	get_original_nickname(std::string &nick, int &i_pfds);
 			void	creating_nick(std::string &, int &);
 	};
 

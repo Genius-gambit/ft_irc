@@ -39,6 +39,7 @@ namespace ft
 			int						status;		//! Illegal / Verified
 			bool					markForDel; //! Mark the client to be deleted
 			bool					passCheck;
+			bool					markForKick;
 			std::string				buffer;
 			std::string				nick;		//! Client nickname
 			std::string				username;	//! Client username

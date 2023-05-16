@@ -6,6 +6,9 @@
 	2. Unique channels implemented.
 	3. Unique clients implemented in particular channels.4
 	4. Parsing handled for duplicate nicknames.
+   5. Unique nicknames have been implemented from nick.cpp.
+   6. Added a public memebr function in nick class.
+   7. Added a new variable in client class markForKick boolean value.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object
@@ -26,9 +29,11 @@
 1. ~~Initialise Channels.~~
 2. ~~Implement Unique channels in the server.~~
 3. ~~Implement Unique clients in particular channels.~~
-4. Kick Client with the nickname.
-5. Authentication Part for the clients.
-6. Parsing for nickname.
+4. Kick Client with the nickname along with sending a message to all the clients in a particular channel.
+5. ~~Authentication Part for the clients.~~
+6. ~~Parsing for nickname.~~
+7. Quit command needs to be implemented which leads to kick clients from their respective channelsand also send a message.
+
 
 #### WJS
 1. Implement server
