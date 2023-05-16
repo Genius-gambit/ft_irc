@@ -39,6 +39,7 @@ namespace ft
 			std::string								password;
 			std::map<std::string, ft::channels>		chans;
 
+			bool									firstFour(const std::string &cmd);
 		public :
 													network (std::string pw);
 													~network ();

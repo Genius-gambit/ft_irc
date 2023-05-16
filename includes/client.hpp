@@ -38,6 +38,8 @@ namespace ft
 			int						fd;			//! Client fd to read / write to
 			int						status;		//! Illegal / Verified
 			bool					markForDel; //! Mark the client to be deleted
+			bool					passCheck;
+			std::string				buffer;
 			std::string				nick;		//! Client nickname
 			std::string				username;	//! Client username
 			std::string				realname;	//! Client realname
@@ -65,6 +67,7 @@ namespace ft
 
 			void					setFd(int nfd);
 			void					setStatus(int stat);
+			void					setPassCheck(bool);
 			void					setNick(const std::string &Nick);
 			void					setRealname(const std::string &Realname);
 			void					setHostname(const std::string &Hostname);
@@ -73,6 +76,7 @@ namespace ft
 			int						getFd() const;
 			int						getStatus() const;
 			bool					getIsMarkForDel() const;
+			bool					getPassCheck() const;
 			std::string				getNick() const;
 			std::string				getRealname() const;
 			std::string				getHostname() const;

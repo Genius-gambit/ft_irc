@@ -21,10 +21,13 @@ pass::~pass() {}
 
 void	pass::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
+	ft::client	&client = M_CLIENT(i_pfds);
 	if (this->password != cmds[1])
 	{
 		if (this->pfds[i_pfds].revents & POLLOUT)
-			"localhost 464 johnsmith :Incorrect Password!\r\n" >> M_CLIENT(i_pfds);
-		M_CLIENT(i_pfds).setStatus(ILLEGAL);
+			client.addBacklog(":localhost 464 johnsmith :Incorrect Password!\r\n");
+		client.setStatus(ILLEGAL);
 	}
+	else
+		client.setPassCheck(true);
 }

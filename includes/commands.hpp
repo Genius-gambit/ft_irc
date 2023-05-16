@@ -26,6 +26,10 @@
 # define RPL_MYINFO				std::string("004")
 # define RPL_ISUPPORT			std::string("005")
 
+# define RPL_MOTDSTART			std::string("375")
+# define RPL_MOTD				std::string("372")
+# define RPL_ENDOFMOTD 			std::string("376")
+
 # define ERR_NONICKNAMEGIVEN	std::string("431")
 # define ERR_ERRONEUSNICKNAME	std::string("432")
 # define ERR_NICKNAMEINUSE		std::string("433")
@@ -55,13 +59,14 @@ namespace ft
 			std::vector<pollfd>					&pfds;
 			std::string							&password;
 		public :
-			cinterface (std::map<CLIENT_FD, CLIENT> &, std::vector<pollfd> &, std::string &);
-			virtual ~cinterface ();
+							cinterface (std::map<CLIENT_FD, CLIENT> &, std::vector<pollfd> &, std::string &);
+			virtual 		~cinterface ();
 
-			virtual void exec(int, const std::vector<std::string> &) = 0;
+			virtual void 	exec(int, const std::vector<std::string> &) = 0;
 
-			void reply(ft::client &c, const std::string &code, const std::string &msg);
-			void welcome(ft::client &c);
+			void			reply(ft::client &c, const std::string &code, const std::string &msg);
+			void			welcome(ft::client &c);
+			void			msgOfTheDay(ft::client &c);
 	};
 
 	// irssi commands

@@ -16,13 +16,14 @@ using namespace ft;
 
 network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 {
-	this->cmds["QUIT"] = new ft::quit(this->clients, this->pfds, this->password);
-	this->cmds["CAP"] = new ft::cap(this->clients, this->pfds, this->password);
+	this->cmds["CAP"] = new ft::cap(this->clients, this->pfds, this->password);		//? 0
+	this->cmds["PASS"] = new ft::pass(this->clients, this->pfds, this->password);	//? 1
+	this->cmds["NICK"] = new ft::nick(this->clients, this->pfds, this->password);	//? 2
+	this->cmds["USER"] = new user(this->clients, this->pfds, this->password);		//? 3
+	this->cmds["QUIT"] = new ft::quit(this->clients, this->pfds, this->password);	//? 4
+
 	this->cmds["JOIN"] = new ft::join(this->clients, this->pfds, this->password, this->chans);
-	this->cmds["NICK"] = new ft::nick(this->clients, this->pfds, this->password);
-	this->cmds["PASS"] = new ft::pass(this->clients, this->pfds, this->password);
 	this->cmds["PING"] = new ft::ping(this->clients, this->pfds, this->password);
-	this->cmds["USER"] = new user(this->clients, this->pfds, this->password);
 	this->cmds["PRIVMSG"] = new privmsg(this->clients, this->pfds, this->password, this->chans);
 }
 
@@ -34,11 +35,28 @@ network::~network()
 		delete it->second;
 }
 
+bool	network::firstFour(const std::string &cmd)
+{
+	return ( cmd == "CAP" ? true :
+			 cmd == "PASS" ? true :
+			 cmd == "NICK" ? true :
+			 cmd == "USER" ? true :
+			 cmd == "QUIT" ? true :
+			 false );
+}
+
 void	network::selCmd(const std::vector<std::string> &v_cmds, int i_pfds)
 {
 	std::map<std::string, ft::cinterface *>::iterator	it;
+	ft::client	&client = M_CLIENT(i_pfds);
 
 	it = this->cmds.find(v_cmds[0]);
 	if (it != this->cmds.end())
-		it->second->exec(i_pfds, v_cmds);
+	{
+		if ((client.getStatus() == ILLEGAL && firstFour(v_cmds[0])) ||
+			client.getStatus() == VERIFIED)
+			it->second->exec(i_pfds, v_cmds);
+		else
+			std::cout << "Wrong Permissions" << std::endl;
+	}
 }

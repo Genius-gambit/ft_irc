@@ -1,0 +1,90 @@
+<< CAP LS 302
+<< JOIN :
+>> :lion.tx.us.dal.net NOTICE AUTH :*** Looking up your hostname...
+>> :lion.tx.us.dal.net NOTICE AUTH :*** Checking Ident
+>> :lion.tx.us.dal.net NOTICE AUTH :*** Found your hostname
+>> :lion.tx.us.dal.net NOTICE AUTH :*** No Ident response
+>> :lion.tx.us.dal.net 451 * JOIN :You must finish connecting with another nickname first.
+<< NICK johnsmith
+<< USER johnsmith johnsmith irc.dal.net :John W. Smith
+>> :lion.tx.us.dal.net 001 johnsmith :Welcome to the DALnet IRC Network johnsmith!~johnsmith@5.195.225.158
+<< MODE johnsmith +i
+>> :lion.tx.us.dal.net 002 johnsmith :Your host is lion.tx.us.dal.net, running version bahamut-2.2.2
+>> :lion.tx.us.dal.net 003 johnsmith :This server was created Mon Oct 10 2022 at 22:48:49 EDT
+>> :lion.tx.us.dal.net 004 johnsmith lion.tx.us.dal.net bahamut-2.2.2 aAbcCdefFghHiIjkKmnoOPrRsSwxXy AbceiIjklLmMnoOpPrRsStv beIjklov
+>> :lion.tx.us.dal.net 005 johnsmith NETWORK=DALnet SAFELIST MAXBANS=200 MAXCHANNELS=50 CHANNELLEN=32 KICKLEN=307 NICKLEN=30 TOPICLEN=307 MODES=6 CHANTYPES=# CHANLIMIT=#:50 PREFIX=(ohv)@%+ STATUSMSG=@%+ :are available on this server
+>> :lion.tx.us.dal.net 005 johnsmith CASEMAPPING=ascii WATCH=128 SILENCE=10 ELIST=cmntu EXCEPTS INVEX CHANMODES=beI,k,jl,ciPAmMnOprRsSt MAXLIST=b:200,e:100,I:100 TARGMAX=DCCALLOW:,JOIN:,KICK:4,KILL:20,NOTICE:20,PART:,PRIVMSG:20,WHOIS:,WHOWAS: :are available on this server
+>> :lion.tx.us.dal.net 251 johnsmith :There are 83 users and 7763 invisible on 39 servers
+>> :lion.tx.us.dal.net 252 johnsmith 79 :IRC Operators online
+>> :lion.tx.us.dal.net 254 johnsmith 3852 :channels formed
+>> :lion.tx.us.dal.net 255 johnsmith :I have 1744 clients and 1 servers
+>> :lion.tx.us.dal.net 265 johnsmith :Current local users: 1744 Max: 3398
+>> :lion.tx.us.dal.net 266 johnsmith :Current global users: 7846 Max: 12060
+>> :lion.tx.us.dal.net NOTICE johnsmith :*** Notice -- motd was last changed at 16/4/2022 12:15
+>> :lion.tx.us.dal.net 375 johnsmith :- lion.tx.us.dal.net Message of the Day - 
+>> :lion.tx.us.dal.net 372 johnsmith :-16/4/2022 12:15
+>> :lion.tx.us.dal.net 372 johnsmith :-      Welcome to,
+>> :lion.tx.us.dal.net 372 johnsmith :-       _ _
+>> :lion.tx.us.dal.net 372 johnsmith :-      | (_)            
+>> :lion.tx.us.dal.net 372 johnsmith :-      | |_  ___  _ __  
+>> :lion.tx.us.dal.net 372 johnsmith :-      | | |/ _ \| '_ \ 
+>> :lion.tx.us.dal.net 372 johnsmith :-      | | | (_) | | | |
+>> :lion.tx.us.dal.net 372 johnsmith :-      |_|_|\___/|_| |_|.tx.us.dal.net 
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-       * Host..............: lion.dal.net | lion-v6.dal.net
+>> :lion.tx.us.dal.net 372 johnsmith :-       * Ports.............: 6667 - 6669, 7000 | SSL - 6697
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-    Welcome to DALnet, by connecting to this network you agree to 
+>> :lion.tx.us.dal.net 372 johnsmith :-    abide by its acceptable use policy, visit : http://www.dal.net/aup
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-      "This server has been sponsored by Psychz Networks"
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-            ---===[https://www.psychz.net/]===---
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-    -------------------------------------------------------------------
+>> :lion.tx.us.dal.net 372 johnsmith :-    [%] Server Staff  =-  
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-    .::. Administrator....:
+>> :lion.tx.us.dal.net 372 johnsmith :-                           sps
+>> :lion.tx.us.dal.net 372 johnsmith :-       
+>> :lion.tx.us.dal.net 372 johnsmith :-    .::. Operators........: 
+>> :lion.tx.us.dal.net 372 johnsmith :-                           eddyk0ng
+>> :lion.tx.us.dal.net 372 johnsmith :-                           Nando
+>> :lion.tx.us.dal.net 372 johnsmith :-                           RallyMaster
+>> :lion.tx.us.dal.net 372 johnsmith :-                           Wagoo
+>> :lion.tx.us.dal.net 372 johnsmith :-                           Wheemp
+>> :lion.tx.us.dal.net 372 johnsmith :-    -------------------------------------------------------------------
+>> :lion.tx.us.dal.net 372 johnsmith :-    [%] Server Policies  =-
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-    a. No spamming or advertising allowed, if found you will be banned 
+>> :lion.tx.us.dal.net 372 johnsmith :-       from this server/network.
+>> :lion.tx.us.dal.net 372 johnsmith :-    b. No malicious bots, including flood and nick/channel chasers
+>> :lion.tx.us.dal.net 372 johnsmith :-    c. No channel filler bots/clients/psybncs
+>> :lion.tx.us.dal.net 372 johnsmith :-       #  A channel filler is a client, bnc, or bot which is connected
+>> :lion.tx.us.dal.net 372 johnsmith :-          just to fill a channel and make it look bigger
+>> :lion.tx.us.dal.net 372 johnsmith :-    d. Operator impersonation will not be tolerated and cause you to be
+>> :lion.tx.us.dal.net 372 johnsmith :-       banned from this server/network.
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-            "REMEMBER IRC IS A PRIVILEGE, NOT A RIGHT"
+>> :lion.tx.us.dal.net 372 johnsmith :-    --------------------------------------------------------------------
+>> :lion.tx.us.dal.net 372 johnsmith :-    For IRC Operator assistance /join #Operhelp
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-    For DALnet and General IRC related help, goto #Help
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-    For multi-lingual documentation - [http://docs.dal.net]
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-    If you have any questions/issues related to this server,           
+>> :lion.tx.us.dal.net 372 johnsmith :-    contact us using: lion-staff@dal.net
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 372 johnsmith :-    Thank you, hope you enjoy your stay!
+>> :lion.tx.us.dal.net 372 johnsmith :- 
+>> :lion.tx.us.dal.net 376 johnsmith :End of /MOTD command.
+>> :johnsmith MODE johnsmith :+iH
+>> :NickServ!service@dal.net NOTICE johnsmith :This nick is owned by someone else. Please choose another.
+>> :NickServ!service@dal.net NOTICE johnsmith :If this is your nick, type: /msg NickServ@services.dal.net IDENTIFY <password>
+>> :NickServ!service@dal.net NOTICE johnsmith :Your nick will be changed in 60 seconds if you do not comply.
+<< PING lion.tx.us.dal.net
+>> :lion.tx.us.dal.net PONG lion.tx.us.dal.net :johnsmith
+--> lag pong
+<< NICK jsjohn1951
+>> :johnsmith!~johnsmith@4447-fde-91bd-4f4-e9ad.195.5.ip NICK :jsjohn1951

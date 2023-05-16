@@ -11,29 +11,32 @@
 /* ************************************************************************** */
 
 #include "../includes/client.hpp"
-#include <new>
+
+using namespace ft;
 
 //* ------------- Constructors ------------- *//
 /** @brief client default constructor */
-ft::client::client() : fd(0), status(ILLEGAL), markForDel(false), nick(), backlog() {}
+client::client() : fd(0), status(ILLEGAL), markForDel(false), 
+	passCheck(false), nick(), backlog() {}
 
 /** @brief client file descriptor constructor
  * @note initializes fd to one passed as parameter,
  * 		sets status as illegal (Default), and instantiates,
  * 		reader with file descriptor.
 */
-ft::client::client(int nfd) : fd(nfd), status(ILLEGAL), markForDel(false), nick() {}
+client::client(int nfd) : fd(nfd), status(ILLEGAL), markForDel(false), 
+	passCheck(false), nick(), backlog() {}
 
 /** @brief Copy Constructor */
-ft::client::client(const ft::client &c) : fd(c.fd), status(c.status), markForDel(c.markForDel),
-	nick(c.nick) {}
+client::client(const client &c) : fd(c.fd), status(c.status), markForDel(c.markForDel),
+passCheck(false), nick(c.nick), backlog(c.backlog) {}
 //* ------------- End Constructors ------------- *//
 
 /** @brief client destructor */
-ft::client::~client() {}
+client::~client() {}
 
 /** @brief Copy assignment operator overload */
-ft::client &ft::client::operator=(const client &c)
+client &client::operator=(const client &c)
 {
 	if (this != &c)
 	{
@@ -45,34 +48,44 @@ ft::client &ft::client::operator=(const client &c)
 }
 
 //! ------------- Server Operation Methods ------------- *//
-std::string	ft::client::Read()
+std::string	client::Read()
 {
 	char	buff[513];
+	std::string	res;
 	ssize_t bits = recv(this->fd, buff, 512, 0);
-	buff[bits] = '\0';
 
-	std::string res = "";
+	buff[bits] = '\0';
+	std::string	str(buff);
 	if (bits > 0)
-		res = std::string(buff);
-	return (res);
+	{
+		if (str.find('\n') == str.npos && str.find('\r') == str.npos)
+			this->buffer += str;
+		else
+		{
+			res = this->buffer + str;
+			this->buffer.clear();
+			return (res);
+		}
+	}
+	return (std::string());
 }
 
-void	ft::client::Write(std::string str)
+void	client::Write(std::string str)
 {
 	send(this->fd, str.c_str(), str.size(), 0);
 }
 
-void	ft::client::addBacklog(const std::string reply)
+void	client::addBacklog(const std::string reply)
 {
 	this->backlog.push_back(reply);
 }
 
-size_t	ft::client::getBacklogSize() const
+size_t	client::getBacklogSize() const
 {
 	return (this->backlog.size());
 }
 
-std::string	ft::client::retrBacklog()
+std::string	client::retrBacklog()
 {
 	std::string	str(this->backlog.front());
 
@@ -80,79 +93,89 @@ std::string	ft::client::retrBacklog()
 	return (str);
 }
 
-void		ft::client::markClientForDel()
+void		client::markClientForDel()
 {
 	this->markForDel = true;
 }
 //! ------------- End Server Operation Methods ------------- *//
 
 //? ------------- Setters ------------- *//
-void	ft::client::setFd(int nfd)
+void	client::setFd(int nfd)
 {
 	this->fd = nfd;
 }
 
-void	ft::client::setStatus(int stat)
+void	client::setStatus(int stat)
 {
 	this->status = stat;
 }
 
-void	ft::client::setNick(const std::string &Nick)
+void	client::setNick(const std::string &Nick)
 {
 	this->nick = Nick;
 }
 
-void	ft::client::setRealname(const std::string &Realname)
+void	client::setRealname(const std::string &Realname)
 {
 	this->realname = Realname;
 }
 
-void	ft::client::setHostname(const std::string &Hostname)
+void	client::setHostname(const std::string &Hostname)
 {
 	this->hostname = Hostname;
 }
 
-void	ft::client::setMode(const std::string &Mode)
+void	client::setMode(const std::string &Mode)
 {
 	this->mode = Mode;
+}
+
+void	client::setPassCheck(bool n)
+{
+	this->passCheck = n;
 }
 
 //? ------------- End Setters ------------- *//
 
 //? ------------- Getters ------------- *//
-int	ft::client::getFd() const
+int	client::getFd() const
 {
 	return (this->fd);
 }
 
-int	ft::client::getStatus() const
+int	client::getStatus() const
 {
 	return (this->status);
 }
 
-std::string	ft::client::getNick() const
+std::string	client::getNick() const
 {
 	return (this->nick);
 }
 
-std::string	ft::client::getRealname() const
+std::string	client::getRealname() const
 {
 	return (this->realname);
 }
 
-std::string	ft::client::getHostname() const
+std::string	client::getHostname() const
 {
 	return (this->hostname);
 }
 
-std::string	ft::client::getMode() const
+std::string	client::getMode() const
 {
 	return (this->mode);
 }
 
-bool		ft::client::getIsMarkForDel() const
+bool		client::getIsMarkForDel() const
 {
 	return (this->markForDel);
+}
+
+bool		client::getPassCheck() const
+{
+	return (this->passCheck);
 }
 
 //? ------------- End Getters ------------- *//
@@ -160,12 +183,12 @@ bool		ft::client::getIsMarkForDel() const
 
 //! Non members
 
-void	operator>>(const std::string &str, ft::client &c)
+void	operator>>(const std::string &str, client &c)
 {
 	c.Write(str);
 }
 
-std::string		&operator<<(std::string &str, ft::client &c)
+std::string		&operator<<(std::string &str, client &c)
 {
 	str = c.Read();
 	return (str);

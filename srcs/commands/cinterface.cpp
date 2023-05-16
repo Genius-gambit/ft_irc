@@ -20,19 +20,55 @@ cinterface::cinterface(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, s
 
 cinterface::~cinterface() {}
 
-void cinterface::reply(ft::client &c, const std::string &code, const std::string &msg)
+void	cinterface::reply(ft::client &c, const std::string &code, const std::string &msg)
 {
-	c.addBacklog(": " + code + " " + c.getNick() + " :" + msg + "\r\n");
+	c.addBacklog(": " + code + " " + c.getNick() + " " + msg + "\r\n");
 }
 
-void cinterface::welcome(ft::client &c)
+void	cinterface::welcome(ft::client &c)
 {
-	time_t	now = time(0);
-	tm		*gmtm = gmtime(&now);
+	time_t		now = time(0);
+	tm			*gmtm = gmtime(&now);
 	std::string time(asctime(gmtm));
 
-	this->reply(c, RPL_WELCOME, "Welcome to the irc server!");
-	this->reply(c, RPL_YOURHOST, "Your host is ircserv, running version 1");
-	this->reply(c, RPL_CREATED, "Server started " + time);
-	this->reply(c, RPL_MYINFO, "");
+	this->reply(c, RPL_WELCOME, ":Welcome to the irc server!");
+	this->reply(c, RPL_YOURHOST, ":Your host is ircserv, running version 1");
+	this->reply(c, RPL_CREATED, ":Server started " + time);
+	this->reply(c, RPL_MYINFO, "ircserv ircserv-1.0.0");
+	this->reply(c, RPL_ISUPPORT, ":are available on this server");
+	this->msgOfTheDay(c);
+}
+
+void	cinterface::msgOfTheDay(ft::client &c)
+{
+	this->reply(c, RPL_MOTDSTART, ":- ircserv Message of the Day");
+
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-        ______________________________________    ");
+	this->reply(c, RPL_MOTD, ":-       |\x1B[32m    _                                 \x1B[0m|   ");
+	this->reply(c, RPL_MOTD, ":-       |\x1B[32m   (_)                                \x1B[0m|   ");
+	this->reply(c, RPL_MOTD, ":-       |\x1B[32m    _ _ __ ___ ___  ___ _ ____   __   \x1B[0m|   ");
+	this->reply(c, RPL_MOTD, ":-       |\x1B[32m   | | '__/ __/ __|/ _ \\ '__\\ \\ / /   \x1B[0m| ");
+	this->reply(c, RPL_MOTD, ":-       |\x1B[32m   | | | | (__\\__ \\  __/ |   \\ V /    \x1B[0m| ");
+	this->reply(c, RPL_MOTD, ":-       |\x1B[32m   |_|_|  \\___|___/\\___|_|    \\_/     \x1B[0m| ");
+	this->reply(c, RPL_MOTD, ":-       |            version : \x1B[31m1.0.0           \x1B[0m|   ");
+	this->reply(c, RPL_MOTD, ":-        --------------------------------------    ");
+	this->reply(c, RPL_MOTD, ":-                      Creators :                   ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-      Muazzam Akhtar, Imran Mustafa, Willem Smith ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-      ------------------------------------------- ");
+	this->reply(c, RPL_MOTD, ":-       \"\x1B[35mWelcome to our IRC server! Ircserv was\x1B[0m   ");
+	this->reply(c, RPL_MOTD, ":-     \x1B[35mcreated as required by the 42 ft_irc project.\x1B[0m");
+	this->reply(c, RPL_MOTD, ":-      \x1B[35mWe are delighted to introduce to you our\x1B[0m    ");
+	this->reply(c, RPL_MOTD, ":-                        \x1B[35mversion.\x1B[0m\"                ");
+	this->reply(c, RPL_MOTD, ":-      ------------------------------------------- ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+
+	this->reply(c, RPL_ENDOFMOTD, ":End of /MOTD command.");
 }

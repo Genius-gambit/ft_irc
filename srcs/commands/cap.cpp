@@ -27,7 +27,10 @@ void	cap::exec(int i_pfds, const std::vector<std::string> &cmds)
 		M_CLIENT(i_pfds).addBacklog("CAP * ACK :multi-prefix server-time\r\n");
 	else if (cmds[1] == "END")
 	{
-		M_CLIENT(i_pfds).setStatus(VERIFIED);
-		this->welcome(M_CLIENT(i_pfds));
+		if (M_CLIENT(i_pfds).getPassCheck() == true)
+		{
+			M_CLIENT(i_pfds).setStatus(VERIFIED);
+			this->welcome(M_CLIENT(i_pfds));
+		}
 	}
 }
