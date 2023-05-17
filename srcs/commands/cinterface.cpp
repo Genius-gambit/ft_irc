@@ -22,7 +22,7 @@ cinterface::~cinterface() {}
 
 void	cinterface::reply(ft::client &c, const std::string &code, const std::string &msg)
 {
-	c.addBacklog(": " + code + " " + c.getNick() + " " + msg + "\r\n");
+	c.addBacklog(":" + c.getHostname() + " " + code + " " + c.getNick() + " " + msg + "\r\n");
 }
 
 void	cinterface::welcome(ft::client &c)
@@ -37,6 +37,40 @@ void	cinterface::welcome(ft::client &c)
 	this->reply(c, RPL_MYINFO, "ircserv ircserv-1.0.0");
 	this->reply(c, RPL_ISUPPORT, ":are available on this server");
 	this->msgOfTheDay(c);
+}
+
+std::string	cinterface::randomMsgOfTheDay()
+{
+	std::string res;
+
+	switch (random() % 7)
+	{
+		case 0:
+			res = "The only way to do great work is to love what you do. - Steve Jobs";
+			break;
+		case 1:
+			res = "If you can dream it, you can do it. - Walt Disney";
+			break;
+		case 2:
+			res = "The secret of getting ahead is getting started. - Mark Twain";
+			break;
+		case 3:
+			res = "If you can dream it, you can do it. - Walt Disney";
+			break;
+		case 4:
+			res = "Never give up. Today is hard, tomorrow will be worse, but the day after tomorrow will be sunshine. - Jack Ma";
+			break;
+		case 5:
+			res = "Life is hard. It's even harder when you're stupid. - John Wayne";
+			break;
+		case 6:
+			res = "You can't wait until life isn't hard anymore before you decide to be happy. - Nightbird";
+			break;
+		default:
+			res = "Life is like a box of chocolates. - Forrest Gump";
+			break;
+	}
+	return (res);
 }
 
 void	cinterface::msgOfTheDay(ft::client &c)
@@ -65,6 +99,8 @@ void	cinterface::msgOfTheDay(ft::client &c)
 	this->reply(c, RPL_MOTD, ":-      \x1B[35mWe are delighted to introduce to you our\x1B[0m    ");
 	this->reply(c, RPL_MOTD, ":-                        \x1B[35mversion.\x1B[0m\"                ");
 	this->reply(c, RPL_MOTD, ":-      ------------------------------------------- ");
+	this->reply(c, RPL_MOTD, ":-                                                  ");
+	this->reply(c, RPL_MOTD, ":-  " + this->randomMsgOfTheDay());
 	this->reply(c, RPL_MOTD, ":-                                                  ");
 	this->reply(c, RPL_MOTD, ":-                                                  ");
 	this->reply(c, RPL_MOTD, ":-                                                  ");

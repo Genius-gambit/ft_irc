@@ -17,7 +17,7 @@ using namespace ft;
 //* ------------- Constructors ------------- *//
 /** @brief client default constructor */
 client::client() : fd(0), status(ILLEGAL), markForDel(false), 
-	passCheck(false), nick(), backlog() {}
+	passCheck(false), nick(), backlog() {(void)this->markForKick;}
 
 /** @brief client file descriptor constructor
  * @note initializes fd to one passed as parameter,

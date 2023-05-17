@@ -37,6 +37,7 @@
 
 # define ERR_NEEDMOREPARAMS		std::string("461")
 # define ERR_ALREADYREGISTRED	std::string("462")
+
 # define ERR_PASSWDMISMATCH		std::string("464")
 # define ERR_UNKNOWNMODE		std::string("472")
 # define ERR_CHANOPRIVSNEEDED	std::string("482")
@@ -65,6 +66,7 @@ namespace ft
 			virtual void 	exec(int, const std::vector<std::string> &) = 0;
 
 			void			reply(ft::client &c, const std::string &code, const std::string &msg);
+			std::string		randomMsgOfTheDay();
 			void			welcome(ft::client &c);
 			void			msgOfTheDay(ft::client &c);
 	};

@@ -36,9 +36,10 @@ namespace ft
 	{
 		private :
 			int						fd;			//! Client fd to read / write to
+
 			int						status;		//! Illegal / Verified
 			bool					markForDel; //! Mark the client to be deleted
-			bool					passCheck;
+			bool					passCheck;	//! user entered correct password
 			bool					markForKick;
 			std::string				buffer;
 			std::string				nick;		//! Client nickname

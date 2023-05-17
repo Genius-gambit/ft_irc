@@ -24,10 +24,7 @@ void	privmsg::exec(int i_pfds, const std::vector<std::string> &cmds)
 				nick = M_CLIENT(i_pfds).getNick();
 				msg = cmds[2];
 				for (size_t i = 3; i < cmds.size(); i++)
-				{
-					if (i != (size_t)i_pfds)
 						msg += " " + cmds[i];
-				}
 				this->chan[chan_name].sendToAll(":" + nick + " PRIVMSG " + chan_name + " " + msg + "\r\n", this->clients, M_CLIENT(i_pfds).getFd());
 			}
 			else
