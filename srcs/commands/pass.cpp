@@ -14,20 +14,46 @@
 
 using namespace ft;
 
-pass::pass(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) :
-	ft::cinterface(c, p, pw) {}
+/** @brief constructor for pass,
+ * 			constructs the inherited cinterface class
+ * 			that takes the map of clients, vector of pollfds,
+ * 			and the password as reference.
+*/
+pass::pass( std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw ) :
+	ft::cinterface( c, p, pw ) {}
 
+/** @brief Destructor for pass */
 pass::~pass() {}
 
-void	pass::exec(int i_pfds, const std::vector<std::string> &cmds)
+/** @brief pass exec command function:
+ * 			executes the pass command with it's 
+ * 			parameter.
+ * @note i_pdfs - index for pollfd vector (pfds) of that client.
+ * 
+ * 			Use:
+ * 				ft::client &client = M_CLIENT(i_pdfs);
+ * 					retrieves the client.
+ * 
+ * @note if number of params is less than 2 ERR_NEEDMOREPARAMS
+ * 			is sent to the client.
+ * @note if password doesn't match, ERR_PASSWDMISMATCH is sent
+ * 			to the client.
+*/
+void	pass::exec( int i_pfds, const std::vector<std::string> &cmds )
 {
-	ft::client	&client = M_CLIENT(i_pfds);
-	if (this->password != cmds[1])
+	ft::client	&client = M_CLIENT( i_pfds );
+
+	if ( cmds.size() < 2 )
+		return ( this->reply( client,
+				 ERR_NEEDMOREPARAMS,
+				":Password needs more params!" ) );
+
+	if ( this->password != cmds[1] )
 	{
-		if (this->pfds[i_pfds].revents & POLLOUT)
-			client.addBacklog(":localhost 464 johnsmith :Incorrect Password!\r\n");
-		client.setStatus(ILLEGAL);
+		this->reply( client,
+			ERR_PASSWDMISMATCH,
+			":Incorrect Password!" );
+		return ( client.setStatus(ILLEGAL) );
 	}
-	else
-		client.setPassCheck(true);
+	client.setPassCheck( true );
 }
