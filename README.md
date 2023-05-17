@@ -24,8 +24,8 @@
    8. Added socket options method to Listener class that incorporated setsockopt
    
    ## Authentication Part
-   1. Password needs to be matched.
-   2. Nickname parsing if there are same nicknames.
+   1. ~~Password needs to be matched.~~
+   2. ~~Nickname parsing if there are same nicknames.~~
 
 ## Objectives
 
