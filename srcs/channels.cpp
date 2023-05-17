@@ -15,14 +15,26 @@
 
 using namespace ft;
 
-channels::channels(void) : _len(0) {}
+channels::channels(void) : _len(0)
+{
+	this->_pass = "";
+}
 
 channels::~channels() {}
 
 void	channels::setChannelName(const std::string &name)
 {
-	this->_chan = name;
+	this->_chan = name.substr(1, name.length());
 }
+
+void	channels::setChannelPass(const std::string &pass)
+{
+	this->_pass = pass;
+}
+
+std::string	channels::get_pass() { return (this->_pass); }
+
+std::string	channels::getChannelName() { return (this->_chan); }
 
 void	channels::add_clients(int fd)
 {
@@ -72,9 +84,6 @@ void	channels::sendToAll(const std::string &msg, std::map<int, CLIENT> &clients,
 
 void	channels::print_clients()
 {
-	std::cout << "*******Clients*******" << std::endl;
-	std::cout << "Number of Clients: " << get_length() << std::endl;
 	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
 		std::cout << *it << std::endl;
-	std::cout << "*******End*******" << std::endl;
 }

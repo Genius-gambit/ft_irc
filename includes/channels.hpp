@@ -26,6 +26,7 @@ namespace ft
 		private :
 			std::vector<int>	fds;
 			std::string	_chan;
+			std::string	_pass;
 			int			_len;
 
 		public :
@@ -33,10 +34,13 @@ namespace ft
 			~channels();
 			std::vector<int>	&getFds();
 			void	setChannelName(const std::string &);
+			void	setChannelPass(const std::string &);
 			void	add_clients(int fd);
 			void	kick_client(int fd);
 			int		get_length(void);
 			void	print_clients();
+			std::string	get_pass();
+			std::string	getChannelName();
 			void	sendToAll(const std::string &, std::map<int, CLIENT> &, int);
 	};
 };

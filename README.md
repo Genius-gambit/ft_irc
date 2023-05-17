@@ -9,6 +9,10 @@
    5. Unique nicknames have been implemented from nick.cpp.
    6. Added a public memebr function in nick class.
    7. Added a new variable in client class markForKick boolean value.
+   8. Added setChannelName(const std::string &) to set the name of the channel.
+   9. Added setChannelPass(const std::string &) to set the password of the channel.
+   10. Added getChannelName() to fetch the name of the channel.
+   11. Added get_pass() to fetch the password of the channel.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object
@@ -33,6 +37,8 @@
 5. ~~Authentication Part for the clients.~~
 6. ~~Parsing for nickname.~~
 7. Quit command needs to be implemented which leads to kick clients from their respective channelsand also send a message.
+8. ~~Implementation of channels along with passwords.~~
+9. ~~Implementation of granting access to clients who give correct password to the channels for joining in.~~
 
 
 #### WJS
