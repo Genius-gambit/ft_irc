@@ -9,14 +9,19 @@ user::~user() {}
 void	user::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
 	ft::client	&client = M_CLIENT(i_pfds);
+	std::string	realname;
 
 	if (client.getStatus() == VERIFIED)
 		return (this->reply(client, ERR_ALREADYREGISTRED, ":Client already registered"));
 	if (cmds.size() >= 4)
 	{
+		client.setUsername(cmds[2]);
 		client.setHostname(cmds[3]);
-		client.setRealname(cmds[4] + " " + cmds[5]);
+
+		realname = this->combineArgs(cmds, 4, cmds.size());
+		realname.erase(realname.begin());
+		client.setRealname(realname);
+		return ;
 	}
-	else
-		this->reply(client, ERR_NEEDMOREPARAMS, ":Not enough parameters");
+	this->reply(client, ERR_NEEDMOREPARAMS, ":Not enough parameters");
 }

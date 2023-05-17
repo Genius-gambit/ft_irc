@@ -32,21 +32,30 @@
 
 namespace ft
 {
+
+	typedef struct s_clientData
+	{
+		std::string				nick;		//! Client nickname
+		std::string				username;	//! Client username
+		std::string				realname;	//! Client realname
+		std::string				hostname;	//! Client hostname
+		std::string				servername;	//! Client servername
+	}	t_clientData;
+
 	class client
 	{
 		private :
 			int						fd;			//! Client fd to read / write to
-
 			int						status;		//! Illegal / Verified
+
+
 			bool					markForDel; //! Mark the client to be deleted
 			bool					passCheck;	//! user entered correct password
 			bool					markForKick;
+
+			t_clientData			data;
+
 			std::string				buffer;
-			std::string				nick;		//! Client nickname
-			std::string				username;	//! Client username
-			std::string				realname;	//! Client realname
-			std::string				hostname;	//! Client hostname
-			std::string				servername;	//! Client servername
 			std::string				mode;		//! Client mode
 			std::list<std::string>	backlog;	//! reply to Client backlog
 
@@ -70,18 +79,23 @@ namespace ft
 			void					setFd(int nfd);
 			void					setStatus(int stat);
 			void					setPassCheck(bool);
+
 			void					setNick(const std::string &Nick);
 			void					setRealname(const std::string &Realname);
 			void					setHostname(const std::string &Hostname);
+			void					setUsername(const std::string &Username);
 			void					setMode(const std::string &Mode);
 
 			int						getFd() const;
 			int						getStatus() const;
 			bool					getIsMarkForDel() const;
 			bool					getPassCheck() const;
+
 			std::string				getNick() const;
 			std::string				getRealname() const;
 			std::string				getHostname() const;
+			std::string				getUsername() const;
+
 			std::string				getMode() const;
 
 	};

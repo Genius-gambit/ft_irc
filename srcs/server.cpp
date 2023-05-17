@@ -121,17 +121,15 @@ void	ft::server::sendReply(size_t i)
 
 void	ft::server::rmClient(size_t i)
 {
-	if (M_CLIENT(i).getIsMarkForDel() == true)
-	{
-		close (pfds[i].fd);
-		this->clients.erase(pfds[i].fd);
-		this->pfds.erase(pfds.begin() + i);
-	}
+	close (pfds[i].fd);
+	this->clients.erase(pfds[i].fd);
+	this->pfds.erase(pfds.begin() + i);
 }
 
 void	ft::server::run()
 {
 	std::string	cmd;
+	bool		clientRM = false;
 
 	std::cout << "Server Running ..." << std::endl;
 	while (ft::g_server_run && this->state)
@@ -145,12 +143,16 @@ void	ft::server::run()
 			if (i && this->pfds[i].revents & POLLOUT)
 				this->sendReply(i);
 
-			if (i)
+			if (i && M_CLIENT(i).getIsMarkForDel())
+			{
 				this->rmClient(i);
+				clientRM = true;
+			}
 
-			if (i && this->pfds[i].revents & POLLIN)
+			if (i && !clientRM && this->pfds[i].revents & POLLIN)
 				this->receiveCmds(i);
 
+			clientRM = false;
 			this->clear();
 		}
 	}

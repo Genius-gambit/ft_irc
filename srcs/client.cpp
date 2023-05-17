@@ -17,7 +17,7 @@ using namespace ft;
 //* ------------- Constructors ------------- *//
 /** @brief client default constructor */
 client::client() : fd(0), status(ILLEGAL), markForDel(false), 
-	passCheck(false), nick(), backlog() {(void)this->markForKick;}
+	passCheck(false), data(), backlog() {(void)this->markForKick;}
 
 /** @brief client file descriptor constructor
  * @note initializes fd to one passed as parameter,
@@ -25,11 +25,11 @@ client::client() : fd(0), status(ILLEGAL), markForDel(false),
  * 		reader with file descriptor.
 */
 client::client(int nfd) : fd(nfd), status(ILLEGAL), markForDel(false), 
-	passCheck(false), nick(), backlog() {}
+	passCheck(false), data(), backlog() {}
 
 /** @brief Copy Constructor */
 client::client(const client &c) : fd(c.fd), status(c.status), markForDel(c.markForDel),
-passCheck(false), nick(c.nick), backlog(c.backlog) {}
+passCheck(false), data(), backlog(c.backlog) {}
 //* ------------- End Constructors ------------- *//
 
 /** @brief client destructor */
@@ -53,6 +53,8 @@ std::string	client::Read()
 	char	buff[513];
 	std::string	res;
 	ssize_t bits = recv(this->fd, buff, 512, 0);
+	if (!bits || bits > 512)
+		return (std::string());
 
 	buff[bits] = '\0';
 	std::string	str(buff);
@@ -112,17 +114,17 @@ void	client::setStatus(int stat)
 
 void	client::setNick(const std::string &Nick)
 {
-	this->nick = Nick;
+	this->data.nick = Nick;
 }
 
 void	client::setRealname(const std::string &Realname)
 {
-	this->realname = Realname;
+	this->data.realname = Realname;
 }
 
 void	client::setHostname(const std::string &Hostname)
 {
-	this->hostname = Hostname;
+	this->data.hostname = Hostname;
 }
 
 void	client::setMode(const std::string &Mode)
@@ -133,6 +135,11 @@ void	client::setMode(const std::string &Mode)
 void	client::setPassCheck(bool n)
 {
 	this->passCheck = n;
+}
+
+void	client::setUsername(const std::string &Username)
+{
+	this->data.username = Username;
 }
 
 //? ------------- End Setters ------------- *//
@@ -150,17 +157,22 @@ int	client::getStatus() const
 
 std::string	client::getNick() const
 {
-	return (this->nick);
+	return (this->data.nick);
 }
 
 std::string	client::getRealname() const
 {
-	return (this->realname);
+	return (this->data.realname);
 }
 
 std::string	client::getHostname() const
 {
-	return (this->hostname);
+	return (this->data.hostname);
+}
+
+std::string	client::getUsername() const
+{
+	return (this->data.username);
 }
 
 std::string	client::getMode() const

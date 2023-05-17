@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "../../includes/commands.hpp"
-#include <ctime>
 
 using namespace ft;
 
@@ -32,7 +31,7 @@ void	cinterface::welcome(ft::client &c)
 	std::string time(asctime(gmtm));
 
 	this->reply(c, RPL_WELCOME, ":Welcome to the irc server!");
-	this->reply(c, RPL_YOURHOST, ":Your host is ircserv, running version 1");
+	this->reply(c, RPL_YOURHOST, ":Your host is ircserv, running version 1.0.0");
 	this->reply(c, RPL_CREATED, ":Server started " + time);
 	this->reply(c, RPL_MYINFO, "ircserv ircserv-1.0.0");
 	this->reply(c, RPL_ISUPPORT, ":are available on this server");
@@ -107,4 +106,27 @@ void	cinterface::msgOfTheDay(ft::client &c)
 	this->reply(c, RPL_MOTD, ":-                                                  ");
 
 	this->reply(c, RPL_ENDOFMOTD, ":End of /MOTD command.");
+}
+
+std::string		cinterface::combineArgs(const std::vector<std::string> &args, size_t start, size_t end)
+{
+	std::string	res;
+
+	while (start < end && start < args.size())
+	{
+		res += args[start];
+		if (start != args.size() - 1)
+			res += ' ';
+		start++;
+	}
+	return (res);
+}
+
+std::string		cinterface::sender(ft::client &c)
+{
+	return (
+			c.getNick() + "!~"
+			+ c.getUsername()
+			+ "@" + c.getHostname()
+			);
 }

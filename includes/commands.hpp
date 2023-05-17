@@ -19,6 +19,7 @@
 # include <map>
 # include <string>
 # include <poll.h>
+# include <ctime>
 
 # define RPL_WELCOME			std::string("001")
 # define RPL_YOURHOST			std::string("002")
@@ -69,6 +70,8 @@ namespace ft
 			std::string		randomMsgOfTheDay();
 			void			welcome(ft::client &c);
 			void			msgOfTheDay(ft::client &c);
+			std::string		combineArgs(const std::vector<std::string> &, size_t, size_t);
+			std::string		sender(ft::client &client);
 	};
 
 	// irssi commands
@@ -136,8 +139,6 @@ namespace ft
 						std::vector<pollfd> &, std::string &);
 					~nick ();
 
-			void	reply(ft::client &c, const std::string &code, const std::string &msg);
-			void	welcome(ft::client &c);
 			void	exec(int, const std::vector<std::string> &);
 			std::vector<std::string>	get_original_nickname(std::string &nick, int &i_pfds);
 			void	creating_nick(std::string &, int &);
