@@ -13,7 +13,7 @@ void	user::exec(int i_pfds, const std::vector<std::string> &cmds)
 
 	if (client.getStatus() == VERIFIED)
 		return (this->reply(client, ERR_ALREADYREGISTRED, ":Client already registered"));
-	if (cmds.size() >= 4)
+	if (cmds.size() > 4)
 	{
 		client.setUsername(cmds[2]);
 		client.setHostname(cmds[3]);

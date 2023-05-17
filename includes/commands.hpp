@@ -280,7 +280,8 @@ namespace ft
 					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels> &);
 				~privmsg ();
 
-			void exec(int, const std::vector<std::string> &);
+			void	send(ft::client &Sender, ft::client &Receiver, std::string &msg);
+			void	exec(int, const std::vector<std::string> &);
 	};
 
 	//!class ping : public ft::cinterface

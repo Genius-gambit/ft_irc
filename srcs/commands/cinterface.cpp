@@ -33,7 +33,7 @@ void	cinterface::welcome(ft::client &c)
 	this->reply(c, RPL_WELCOME, ":Welcome to the irc server!");
 	this->reply(c, RPL_YOURHOST, ":Your host is ircserv, running version 1.0.0");
 	this->reply(c, RPL_CREATED, ":Server started " + time);
-	this->reply(c, RPL_MYINFO, "ircserv ircserv-1.0.0");
+	this->reply(c, RPL_MYINFO, ":ircserv ircserv-1.0.0");
 	this->reply(c, RPL_ISUPPORT, ":are available on this server");
 	this->msgOfTheDay(c);
 }
