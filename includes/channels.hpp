@@ -24,14 +24,20 @@ namespace ft
 	class channels
 	{
 		private :
-			std::vector<int>	fds;
-			std::string	_chan;
-			std::string	_pass;
-			int			_len;
+			std::vector<int>			fds;
+			std::string					_chan;
+			std::string					_pass;
+			int							_len;
+			std::map<CLIENT_FD, CLIENT>	*clients;
 
 		public :
-			channels();
+			channels(void);
+			channels(std::map<CLIENT_FD, CLIENT> *);
+			channels(const channels &other);
 			~channels();
+
+			channels	&operator=(const channels &);
+
 			std::vector<int>	&getFds();
 			void	setChannelName(const std::string &);
 			void	setChannelPass(const std::string &);

@@ -25,7 +25,7 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 	std::map<std::string, ft::channels>::iterator	it = this->chan.find(cmds[1]);
 	if (it == this->chan.end())
 	{
-		this->chan[cmds[1]] = ft::channels();
+		this->chan[cmds[1]] = ft::channels(&this->clients);
 		this->chan[cmds[1]].setChannelName(cmds[1]);
 		if (cmds.size() > 2)
 			this->chan[cmds[1]].setChannelPass(cmds[2]);

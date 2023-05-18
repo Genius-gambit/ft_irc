@@ -20,6 +20,32 @@ channels::channels(void) : _len(0)
 	this->_pass = "";
 }
 
+channels::channels(std::map<CLIENT_FD, CLIENT>	*client) : _len(0), clients(client)
+{
+	this->_pass = "";
+}
+
+channels::channels(const channels &other) : clients(other.clients)
+{
+	this->fds = other.fds;
+	this->_chan = other._chan;
+	this->_pass = other._pass;
+	this->_len = other._len;
+}
+
+channels	&channels::operator=(const channels &other)
+{
+	if (this != &other)
+	{
+		this->fds = other.fds;
+		this->_chan = other._chan;
+		this->_pass = other._pass;
+		this->_len = other._len;
+		this->clients = other.clients;
+	}
+	return (*this);
+}
+
 channels::~channels() {}
 
 void	channels::setChannelName(const std::string &name)
