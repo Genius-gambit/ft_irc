@@ -30,9 +30,12 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 network::~network()
 {
 	std::map<std::string, ft::cinterface *>::iterator	it;
+	std::map<std::string, ft::channels *>::iterator		chan_it;
 
 	for (it = this->cmds.begin(); it != this->cmds.end(); it++)
-		delete it->second;
+		delete	it->second;
+	for (chan_it = this->chans.begin(); chan_it != this->chans.end(); chan_it++)
+		delete	chan_it->second;
 }
 
 bool	network::firstFour(const std::string &cmd)

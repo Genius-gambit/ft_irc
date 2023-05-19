@@ -15,12 +15,7 @@
 
 using namespace ft;
 
-channels::channels(void) : _len(0)
-{
-	this->_pass = "";
-}
-
-channels::channels(std::map<CLIENT_FD, CLIENT>	*client) : _len(0), clients(client)
+channels::channels(std::map<CLIENT_FD, CLIENT> &client) : _len(0), clients(client)
 {
 	this->_pass = "";
 }

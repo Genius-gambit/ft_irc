@@ -3,7 +3,7 @@
 using namespace ft;
 
 privmsg::privmsg(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw,
-	std::map<std::string, ft::channels>	&chans) :
+	std::map<std::string, ft::channels *>	&chans) :
 	ft::cinterface(c, p, pw), chan(chans) {}
 
 privmsg::~privmsg() {}
@@ -29,7 +29,7 @@ void	privmsg::exec(int i_pfds, const std::vector<std::string> &cmds)
 			msg = cmds[2];
 			for (size_t i = 3; i < cmds.size(); i++)
 					msg += " " + cmds[i];
-			this->chan[chan_name].sendToAll(":" + nick + " PRIVMSG " + chan_name + " " + msg + "\r\n", this->clients, client.getFd());
+			this->chan[chan_name]->sendToAll(":" + nick + " PRIVMSG " + chan_name + " " + msg + "\r\n", this->clients, client.getFd());
 		}
 		else
 		{

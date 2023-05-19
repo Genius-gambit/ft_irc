@@ -28,11 +28,10 @@ namespace ft
 			std::string					_chan;
 			std::string					_pass;
 			int							_len;
-			std::map<CLIENT_FD, CLIENT>	*clients;
+			std::map<CLIENT_FD, CLIENT>	&clients;
 
 		public :
-			channels(void);
-			channels(std::map<CLIENT_FD, CLIENT> *);
+			channels(std::map<CLIENT_FD, CLIENT> &client);
 			channels(const channels &other);
 			~channels();
 

@@ -37,7 +37,7 @@ namespace ft
 			std::map<CLIENT_FD, CLIENT>				clients;
 			std::vector<pollfd>						pfds;
 			std::string								password;
-			std::map<std::string, ft::channels>		chans;
+			std::map<std::string, ft::channels *>	chans;
 
 			bool									firstFour(const std::string &cmd);
 		public :

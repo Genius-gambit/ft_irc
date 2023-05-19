@@ -168,12 +168,12 @@ namespace ft
 	class join : public ft::cinterface
 	{
 		private :
-			std::map<std::string, ft::channels>	&chan;
+			std::map<std::string, ft::channels *>	&chan;
 	
 		public :
 			join (std::map<CLIENT_FD, CLIENT> &,
 					std::vector<pollfd> &, std::string &, 
-					std::map<std::string, ft::channels>	&);
+					std::map<std::string, ft::channels *>	&);
 	
 			~join ();
 
@@ -274,10 +274,10 @@ namespace ft
 	class privmsg : public ft::cinterface
 	{
 		private :
-			std::map<std::string, ft::channels>	&chan;
+			std::map<std::string, ft::channels *>	&chan;
 		public :
 				privmsg (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels> &);
+					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels *> &);
 				~privmsg ();
 
 			void	send(ft::client &Sender, ft::client &Receiver, std::string &msg);
