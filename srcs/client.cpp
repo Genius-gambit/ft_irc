@@ -15,9 +15,16 @@
 using namespace ft;
 
 //* ------------- Constructors ------------- *//
+
+s_clientFlags::s_clientFlags(): recvCapLs(false), recvNick(false), recvUser(false),
+	recvCapEnd(false), welcomeSent(false) {}
+
+s_clientFlags::~s_clientFlags() {}
+
 /** @brief client default constructor */
 client::client() : fd(0), status(ILLEGAL), markForDel(false), 
-	passCheck(false), data(), backlog() {(void)this->markForKick;}
+	passCheck(false), data(), registration(), backlog()
+{(void)this->markForKick;}
 
 /** @brief client file descriptor constructor
  * @note initializes fd to one passed as parameter,
@@ -188,6 +195,19 @@ bool		client::getIsMarkForDel() const
 bool		client::getPassCheck() const
 {
 	return (this->passCheck);
+}
+
+t_clientFlags	&client::getReg()
+{
+	return (this->registration);
+}
+
+bool			client::is_registered()
+{
+	return (this->registration.recvCapEnd
+			&& this->registration.recvCapLs
+			&& this->registration.recvNick
+			&& this->registration.recvUser);
 }
 
 //? ------------- End Getters ------------- *//

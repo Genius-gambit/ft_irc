@@ -19,6 +19,8 @@
 
 #include "client.hpp"
 
+# define IS_OPP bool
+
 namespace ft
 {
 	class channels
@@ -29,34 +31,26 @@ namespace ft
 			std::string					_pass;
 			int							_len;
 			std::map<CLIENT_FD, CLIENT>	&clients;
+			std::map<CLIENT_FD, IS_OPP> opps;
 
 		public :
-			channels(std::map<CLIENT_FD, CLIENT> &client);
-			channels(const channels &other);
-			~channels();
+										channels( std::map<CLIENT_FD, CLIENT> &client );
+										channels( const channels &other );
+										~channels();
 
-			channels	&operator=(const channels &);
+			channels					&operator=(const channels &);
 
-			std::vector<int>	&getFds();
-			void	setChannelName(const std::string &);
-			void	setChannelPass(const std::string &);
-			void	add_clients(int fd);
-			void	kick_client(int fd);
-			int		get_length(void);
-			void	print_clients();
-			std::string	get_pass();
-			std::string	getChannelName();
-			void	sendToAll(const std::string &, std::map<int, CLIENT> &, int);
+			std::vector<int>			&getFds();
+			void						setChannelName( const std::string & );
+			void						setChannelPass( const std::string & );
+			void						add_clients( int fd );
+			void						kick_client( int fd );
+			int							get_length( void );
+			void						print_clients();
+			std::string					get_pass();
+			std::string					getChannelName();
+			void						sendToAll( const std::string &, std::map<int, CLIENT> &, int );
 	};
 };
-
-/*
-
-for (size_t i = 0; i < channels.getFds().size(); i++)
-{
-	this->clients[channels.getFds()[i]].addBacklog("hi bob");
-}
-
-*/
 
 #endif

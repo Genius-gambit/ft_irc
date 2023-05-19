@@ -22,6 +22,7 @@
 
 # include "client.hpp"
 # include "network.hpp"
+# include "welcome.hpp"
 # include "../ftServerUtils/includes/Listener.hpp"
 
 /** @brief NPOLL macro is used to define a pollfd struct
@@ -57,7 +58,7 @@ namespace ft
 			void			regNewClient();
 			void			receiveCmds(size_t);
 			void			sendReply(size_t);
-			void			rmClient(size_t);
+			bool			rmClient(size_t);
 
 		public :
 							server (int nport, std::string pw);

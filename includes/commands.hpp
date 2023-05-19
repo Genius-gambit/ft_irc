@@ -67,9 +67,6 @@ namespace ft
 			virtual void 	exec(int, const std::vector<std::string> &) = 0;
 
 			void			reply(ft::client &c, const std::string &code, const std::string &msg);
-			std::string		randomMsgOfTheDay();
-			void			welcome(ft::client &c);
-			void			msgOfTheDay(ft::client &c);
 			std::string		combineArgs(const std::vector<std::string> &, size_t, size_t);
 			std::string		sender(ft::client &client);
 	};

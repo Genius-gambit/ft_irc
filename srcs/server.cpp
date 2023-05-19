@@ -119,11 +119,12 @@ void	ft::server::sendReply(size_t i)
 	}
 }
 
-void	ft::server::rmClient(size_t i)
+bool	ft::server::rmClient(size_t i)
 {
 	close (pfds[i].fd);
 	this->clients.erase(pfds[i].fd);
 	this->pfds.erase(pfds.begin() + i);
+	return (true);
 }
 
 void	ft::server::run()
@@ -132,27 +133,74 @@ void	ft::server::run()
 	bool		clientRM = false;
 
 	std::cout << "Server Running ..." << std::endl;
+
+	/** @brief main server loop, will run until a specific
+	 * 			signal is received, or the state changes.
+	*/
 	while (ft::g_server_run && this->state)
 	{
+		/** @brief checks the array of fds in the vector to see
+		 * 			if they are ready to read or write to.
+		*/
 		poll(this->pfds.data(), this->pfds.size(), -1);
-		for (size_t i = 0; i < this->pfds.size(); i++)
-		{
-			if (!i && this->pfds[i].revents & POLLIN)
+
+		/** @brief 0'th index of pfds is the master socket/fd.
+		 * 			Checking POLLIN of the master fd establishes
+		 * 			whether a client is trying to connect, and
+		 * 			registers new client with regNewClient;
+		*/
+		if (this->pfds[0].revents & POLLIN)
 				this->regNewClient();
 
-			if (i && this->pfds[i].revents & POLLOUT)
+		/** @brief loops through each index of the pfds vector
+		 * 			checking for POLLIN and POLLOUT of each client
+		*/
+		for (size_t i = 1; i < this->pfds.size(); i++)
+		{
+			/** @brief finds the right client */
+			ft::client	&client = M_CLIENT(i);
+
+			/** @brief checks whether client is ready to write
+			 * 			to using the following :
+			 * 				this->pfds[i].revents & POLLOUT
+			*/
+			if (this->pfds[i].revents & POLLOUT)
 				this->sendReply(i);
 
-			if (i && M_CLIENT(i).getIsMarkForDel())
-			{
-				this->rmClient(i);
-				clientRM = true;
-			}
+			/** @brief sending welcome message when
+			 * 			a client gets registered.
+			 * 			The welcome class is similar to a command
+			 * 				in that it inherits from cinterface, however
+			 * 				it is not a command.
+			*/
+			if (!client.getReg().welcomeSent
+				&& client.is_registered())
+				client.getReg().welcomeSent
+					= ft::welcome(this->clients,
+						this->pfds, this->password).Welcome(client);
 
-			if (i && !clientRM && this->pfds[i].revents & POLLIN)
+			/** @brief a client that requests /quit command is
+			 * 			marked for deletion in the quit command.
+			 * 			The removal happens when a call to rmClient
+			 * 			method is made with index to client.
+			*/
+			if (client.getIsMarkForDel())
+				clientRM = this->rmClient(i);
+
+			/** @brief section to receive command/string from
+			 * 			client fd. 
+			 * 			If the following evaluates to true that
+			 * 			signifies the client is ready to read from :
+			 * 				this->pfds[i].revents & POLLIN
+			*/
+			if (!clientRM && this->pfds[i].revents & POLLIN)
 				this->receiveCmds(i);
 
 			clientRM = false;
+
+			/** @brief clears the cmds vector of the command received
+			 * 			and it's arguments.
+			*/
 			this->clear();
 		}
 	}

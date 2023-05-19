@@ -45,6 +45,7 @@ bool	network::firstFour(const std::string &cmd)
 			 cmd == "NICK" ? true :
 			 cmd == "USER" ? true :
 			 cmd == "QUIT" ? true :
+			 cmd == "JOIN" ? true :
 			 false );
 }
 
@@ -54,6 +55,8 @@ void	network::selCmd(const std::vector<std::string> &v_cmds, int i_pfds)
 	ft::client	&client = M_CLIENT(i_pfds);
 
 	it = this->cmds.find(v_cmds[0]);
+	if (client.getPassCheck() == true && client.is_registered())
+			client.setStatus(VERIFIED);
 	if (it != this->cmds.end())
 	{
 		if ((client.getStatus() == ILLEGAL && firstFour(v_cmds[0])) ||

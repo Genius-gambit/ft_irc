@@ -13,6 +13,7 @@ SRCS = main \
 	network \
 	parser \
 	channels \
+	welcome \
 	commands/cinterface \
 	commands/quit \
 	commands/cap \

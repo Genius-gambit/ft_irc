@@ -105,5 +105,6 @@ void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 			return;
 		}
 	}
+	client.getReg().recvNick = true;
 	client.setNick(nick);
 }

@@ -42,18 +42,30 @@ namespace ft
 		std::string				servername;	//! Client servername
 	}	t_clientData;
 
+	typedef struct s_clientFlags
+	{
+		s_clientFlags ();
+		~s_clientFlags ();
+
+		bool					recvCapLs;
+		bool					recvNick;
+		bool					recvUser;
+		bool					recvCapEnd;
+		bool					welcomeSent;
+	}	t_clientFlags;
+
 	class client
 	{
 		private :
 			int						fd;			//! Client fd to read / write to
 			int						status;		//! Illegal / Verified
 
-
 			bool					markForDel; //! Mark the client to be deleted
 			bool					passCheck;	//! user entered correct password
 			bool					markForKick;
 
 			t_clientData			data;
+			t_clientFlags			registration;
 
 			std::string				buffer;
 			std::string				mode;		//! Client mode
@@ -97,6 +109,8 @@ namespace ft
 			std::string				getUsername() const;
 
 			std::string				getMode() const;
+			t_clientFlags			&getReg();
+			bool					is_registered();
 
 	};
 };

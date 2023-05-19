@@ -21,6 +21,7 @@ void	user::exec(int i_pfds, const std::vector<std::string> &cmds)
 		realname = this->combineArgs(cmds, 4, cmds.size());
 		realname.erase(realname.begin());
 		client.setRealname(realname);
+		client.getReg().recvUser = true;
 		return ;
 	}
 	this->reply(client, ERR_NEEDMOREPARAMS, ":Not enough parameters");

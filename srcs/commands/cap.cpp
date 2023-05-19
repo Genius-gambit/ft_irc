@@ -23,15 +23,12 @@ void	cap::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
 	ft::client	&client = M_CLIENT(i_pfds);
 	if (cmds[1] == "LS")
+	{
+		client.getReg().recvCapLs = true;
 		client.addBacklog("CAP * LS :multi-prefix server-time\r\n");
+	}
 	else if (cmds[1] == "REQ")
 		client.addBacklog("CAP * ACK :multi-prefix server-time\r\n");
 	else if (cmds[1] == "END")
-	{
-		if (client.getPassCheck() == true)
-		{
-			client.setStatus(VERIFIED);
-			this->welcome(client);
-		}
-	}
+		client.getReg().recvCapEnd = true;
 }
