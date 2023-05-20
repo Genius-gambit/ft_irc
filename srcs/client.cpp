@@ -149,6 +149,11 @@ void	client::setUsername(const std::string &Username)
 	this->data.username = Username;
 }
 
+void	client::setOper(bool n)
+{
+	this->data.isOper = n;
+}
+
 //? ------------- End Setters ------------- *//
 
 //? ------------- Getters ------------- *//
@@ -200,6 +205,11 @@ bool		client::getPassCheck() const
 t_clientFlags	&client::getReg()
 {
 	return (this->registration);
+}
+
+bool			client::getOper() const
+{
+	return (this->data.isOper);
 }
 
 bool			client::is_registered()

@@ -153,6 +153,15 @@ namespace ft
   	OPER foo bar - Try to become an operator using password "bar" and
   	username "foo". */
 
+	class oper : public ft::cinterface
+	{
+		public:
+			oper(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw);
+			~oper();
+
+			void	exec(int i_pfds, const std::vector<std::string> &cmds);
+	};
+
 	/* Usage: JOIN <channel>{,<channel>} [<key>{,<key>}]
   	Join the comma separated list of channels, specifying the passwords,
   	if needed.  If a channel is password protected and no password is given,
@@ -176,14 +185,6 @@ namespace ft
 
 			void exec(int, const std::vector<std::string> &);
 	};
-
-	//! class part : public ft::cinterface
-	/* Usage: PART <channel>{,<channel>}
-  	Part the comma separated list of channels.  If no message is given,
-  	part message is used.  Numeric Replies:
-  	ERR_NEEDMOREPARAMS ERR_NOSUCHCHANNEL ERR_NOTONCHANNEL
-  	Examples:
-  	PART #twilight_zone -or- PART #oz-ops,&group5 */
 
 	//! class names : public ft::cinterface
 	/* Usage: NAMES [ <channel>{,<channel>} ]

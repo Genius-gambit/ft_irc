@@ -40,6 +40,7 @@ namespace ft
 		std::string				realname;	//! Client realname
 		std::string				hostname;	//! Client hostname
 		std::string				servername;	//! Client servername
+		bool					isOper;		//! Client is an IRC operator
 	}	t_clientData;
 
 	typedef struct s_clientFlags
@@ -97,11 +98,13 @@ namespace ft
 			void					setHostname(const std::string &Hostname);
 			void					setUsername(const std::string &Username);
 			void					setMode(const std::string &Mode);
+			void					setOper(bool);
 
 			int						getFd() const;
 			int						getStatus() const;
 			bool					getIsMarkForDel() const;
 			bool					getPassCheck() const;
+			bool					getOper() const;
 
 			std::string				getNick() const;
 			std::string				getRealname() const;

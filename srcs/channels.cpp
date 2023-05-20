@@ -91,8 +91,6 @@ int	channels::get_length() { return (this->_len); }
 
 std::vector<int>	&channels::getFds() { return (this->fds); }
 
-//sendtoAll function should send message to all clients
-//except to itself
 void	channels::sendToAll(const std::string &msg, std::map<int, CLIENT> &clients, int fd)
 {
 	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)

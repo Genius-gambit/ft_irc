@@ -30,6 +30,7 @@ namespace ft
 			std::string					_chan;
 			std::string					_pass;
 			int							_len;
+			std::string					_topic;
 			std::map<CLIENT_FD, CLIENT>	&clients;
 			std::map<CLIENT_FD, IS_OPP> opps;
 
