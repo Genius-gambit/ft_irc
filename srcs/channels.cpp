@@ -72,13 +72,14 @@ void	channels::add_clients(int fd)
 	std::cout << "Length: " << this->_len << std::endl;
 }
 
-void	channels::kick_client(int fd)
+void	channels::kick_client(std::string &nickname, bool &kicked)
 {
 	std::vector<int>::iterator	it;
 
+	(void)kicked;
 	for (it = this->fds.begin(); it != this->fds.end(); it++)
 	{
-		if (*it == fd)
+		if (this->clients[*it].getNick() == nickname)
 		{
 			this->_len--;
 			break;

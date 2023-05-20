@@ -45,7 +45,7 @@ namespace ft
 			void						setChannelName( const std::string & );
 			void						setChannelPass( const std::string & );
 			void						add_clients( int fd );
-			void						kick_client( int fd );
+			void						kick_client( std::string &, bool & );
 			int							get_length( void );
 			void						print_clients();
 			std::string					get_pass();

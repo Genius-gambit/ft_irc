@@ -6,13 +6,15 @@
 	2. Unique channels implemented.
 	3. Unique clients implemented in particular channels.4
 	4. Parsing handled for duplicate nicknames.
-   5. Unique nicknames have been implemented from nick.cpp.
-   6. Added a public memebr function in nick class.
-   7. Added a new variable in client class markForKick boolean value.
-   8. Added setChannelName(const std::string &) to set the name of the channel.
-   9. Added setChannelPass(const std::string &) to set the password of the channel.
-   10. Added getChannelName() to fetch the name of the channel.
-   11. Added get_pass() to fetch the password of the channel.
+	5. Unique nicknames have been implemented from nick.cpp.
+	6. Added a public memebr function in nick class.
+	7. Added a new variable in client class markForKick boolean value.
+	8. Added setChannelName(const std::string &) to set the name of the channel.
+	9. Added setChannelPass(const std::string &) to set the password of the channel.
+	10. Added getChannelName() to fetch the name of the channel.
+	11. Added get_pass() to fetch the password of the channel.
+	12. Edited kick_client(int fd) to kick_client(std::string &, bool &);
+	13. Boolean value which indicates if the client has quit the server / kicked from the particular channel.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object
