@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 00:50:50 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/20 00:59:10 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/20 13:13:12 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,19 @@ welcome::~welcome () {}
 
 bool	welcome::Welcome(ft::client &c)
 {
-	time_t		now = time(0);
-	tm			*gmtm = gmtime(&now);
-	std::string time(asctime(gmtm));
+	time_t		now = time( 0 );
+	tm			*gmtm = gmtime( &now );
+	std::string time( asctime( gmtm ) );
 
-	this->reply(c, RPL_WELCOME, ":Welcome to the irc server!");
-	this->reply(c, RPL_YOURHOST, ":Your host is ircserv, running version 1.0.0");
-	this->reply(c, RPL_CREATED, ":Server started " + time);
-	this->reply(c, RPL_MYINFO, ":ircserv ircserv-1.0.0");
-	this->reply(c, RPL_ISUPPORT, ":are available on this server");
-	this->msgOfTheDay(c);
-	return (true);
+	this->reply( c, RPL_WELCOME, ":Welcome to the irc server!" );
+	this->reply( c, RPL_YOURHOST, ":Your host is ircserv, running version 1.0.0" );
+	this->reply( c, RPL_CREATED, ":Server started " + time );
+	this->reply( c, RPL_MYINFO, ":ircserv ircserv-1.0.0" );
+	this->reply( c, RPL_ISUPPORT, ":are available on this server" );
+	this->msgOfTheDay( c );
+	if ( !c.getPassCheck() )
+		c.addBacklog( ":ircserv NOTICE AUTH :*** Incorrect PASSWORD received...\n\r" );
+	return ( true );
 }
 
 std::string	welcome::randomMsgOfTheDay()

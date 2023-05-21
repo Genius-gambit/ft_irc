@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/20 00:46:47 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/20 02:42:05 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/20 13:14:36 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ namespace	ft
 	{
 		public :
 						welcome (std::map<CLIENT_FD, CLIENT> &,
-							std::vector<pollfd> &, std::string &);
+									std::vector<pollfd> &,
+									std::string &);
 						~welcome ();
 			
+			bool		Welcome(ft::client &c);
 			void		msgOfTheDay(ft::client &c);
 			std::string	randomMsgOfTheDay();
-			bool		Welcome(ft::client &c);
 
 		private :
 			void 		exec(int i_pfds, const std::vector<std::string> &cmds);

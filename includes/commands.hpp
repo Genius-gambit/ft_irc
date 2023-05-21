@@ -27,6 +27,10 @@
 # define RPL_MYINFO				std::string("004")
 # define RPL_ISUPPORT			std::string("005")
 
+# define RPL_NAMREPLY			std::string("353")
+# define RPL_ENDOFNAMES			std::string("366")
+# define ERR_BADCHANNELKEY		std::string("475")
+
 # define RPL_MOTDSTART			std::string("375")
 # define RPL_MOTD				std::string("372")
 # define RPL_ENDOFMOTD 			std::string("376")
@@ -183,7 +187,8 @@ namespace ft
 	
 			~join ();
 
-			void exec(int, const std::vector<std::string> &);
+			void	welcome(ft::client &client, std::string chan);
+			void	exec(int, const std::vector<std::string> &);
 	};
 
 	class kick : public ft::cinterface

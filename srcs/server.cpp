@@ -173,11 +173,12 @@ void	ft::server::run()
 			 * 				in that it inherits from cinterface, however
 			 * 				it is not a command.
 			*/
-			if (!client.getReg().welcomeSent
-				&& client.is_registered())
+			if ( !client.getReg().welcomeSent
+					&& client.is_registered() )
 				client.getReg().welcomeSent
-					= ft::welcome(this->clients,
-						this->pfds, this->password).Welcome(client);
+					= ft::welcome( this->clients,
+									this->pfds,
+									this->password ).Welcome( client );
 
 			/** @brief a client that requests /quit command is
 			 * 			marked for deletion in the quit command.

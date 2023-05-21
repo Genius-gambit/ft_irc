@@ -20,10 +20,58 @@ join::join(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &
 
 join::~join() {}
 
+void	join::welcome(ft::client &client, std::string chan)
+{
+	this->chan[chan]->sendToAll( ":" + this->sender(client)
+									+ " JOIN :"
+									+ chan
+									+ "\r\n", this->clients, -1 );
+
+	std::string	clientList;
+	std::vector<int>	&chanFds = this->chan[chan]->getFds();
+	for (size_t i = 0; i < chanFds.size(); i++)
+		clientList += this->clients[chanFds[i]].getNick() + " ";
+
+	client.addBacklog(": "
+						+ RPL_NAMREPLY
+						+ " "
+						+ client.getNick()
+						+ " = "
+						+ chan
+						+ " :"
+						+ clientList
+						+ "\r\n");
+
+	client.addBacklog(": "
+						+ RPL_ENDOFNAMES
+						+ " "
+						+ client.getNick()
+						+ " "
+						+ chan
+						+ " :End of /NAMES list.\r\n");
+}
+
 void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
+	ft::client	&client = M_CLIENT(i_pfds);
 	std::map<std::string, ft::channels *>::iterator	it = this->chan.find(cmds[1]);
-	if (it == this->chan.end())
+
+	if (it != this->chan.end())
+	{
+		bool		empty	= this->chan[cmds[1]]->get_pass().empty();
+		std::string	pw		= this->chan[cmds[1]]->get_pass();
+
+		if (!empty && (cmds.size() <= 2 || cmds[2] != pw))
+		{
+			client.addBacklog(ERR_BADCHANNELKEY
+						+ " "
+						+ client.getNick()
+						+ " "
+						+ " :Incorrect Channel Password\r\n");
+			return ;
+		}
+	}
+	else
 	{
 		if (cmds[1][0] != '#')
 		{
@@ -37,11 +85,7 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 		this->chan[cmds[1]]->op(M_CLIENT(i_pfds).getFd());
 		std::cout << this->chan[cmds[1]]->getOp(M_CLIENT(i_pfds).getFd()) << std::endl;
 	}
-	if ((this->chan[cmds[1]]->get_pass().empty())
-		|| ((cmds.size() > 2)
-		&& (cmds[2] == this->chan[cmds[1]]->get_pass())))
-		this->chan[cmds[1]]->add_clients(M_CLIENT(i_pfds).getFd());
-	else
-		std::cout << "Wrong Password!" << std::endl;
+	this->chan[cmds[1]]->add_clients(client.getFd());
+	this->welcome(client, cmds[1]);
 }
 

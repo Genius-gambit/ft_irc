@@ -214,10 +214,15 @@ bool			client::getOper() const
 
 bool			client::is_registered()
 {
-	return (this->registration.recvCapEnd
-			&& this->registration.recvCapLs
+	bool	cap_negotiation = ( 
+				( this->registration.recvCapEnd
+					&& this->registration.recvCapLs ) ||
+				( !this->registration.recvCapEnd
+					&& !this->registration.recvCapLs ) );
+
+	return ( cap_negotiation
 			&& this->registration.recvNick
-			&& this->registration.recvUser);
+			&& this->registration.recvUser );
 }
 
 //? ------------- End Getters ------------- *//
