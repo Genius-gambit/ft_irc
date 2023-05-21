@@ -18,6 +18,7 @@ SRCS = main \
 	commands/quit \
 	commands/cap \
 	commands/join \
+	commands/kick \
 	commands/nick \
 	commands/pass \
 	commands/ping \

@@ -186,6 +186,21 @@ namespace ft
 			void exec(int, const std::vector<std::string> &);
 	};
 
+	class kick : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
+	
+		public :
+			kick (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &, 
+					std::map<std::string, ft::channels *>	&);
+	
+			~kick ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
+
 	//! class names : public ft::cinterface
 	/* Usage: NAMES [ <channel>{,<channel>} ]
   	By supplying a list of channel names or if no arguments are given,

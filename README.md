@@ -15,6 +15,10 @@
 	11. Added get_pass() to fetch the password of the channel.
 	12. Edited kick_client(int fd) to kick_client(std::string &, bool &);
 	13. Boolean value which indicates if the client has quit the server / kicked from the particular channel.
+	14. Edited kick.cpp kick_client function.
+	15. Implemented kick function to check if the client is the channel operator to kick another client.
+	16. Before kicking any client, it checks if the client is the member of the channel or not.
+	17. After kicking any client it sends a message to all the clients in the channel that the client has been kicked by an operator. 
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object

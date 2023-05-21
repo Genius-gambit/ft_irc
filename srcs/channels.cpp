@@ -43,6 +43,11 @@ channels	&channels::operator=(const channels &other)
 
 channels::~channels() {}
 
+void						channels::op( int fd )
+{
+	this->opps[fd] = true;
+}
+
 void	channels::setChannelName(const std::string &name)
 {
 	this->_chan = name.substr(1, name.length());
@@ -59,6 +64,7 @@ std::string	channels::getChannelName() { return (this->_chan); }
 
 void	channels::add_clients(int fd)
 {
+	std::cout << "Length: " << this->_len << std::endl;
 	for (std::vector<int>::iterator it = this->fds.begin(); it  != this->fds.end(); it++)
 	{
 		if (*it == fd)
@@ -69,23 +75,29 @@ void	channels::add_clients(int fd)
 	}
 	this->fds.push_back(fd);
 	this->_len++;
-	std::cout << "Length: " << this->_len << std::endl;
 }
 
-void	channels::kick_client(std::string &nickname, bool &kicked)
+void	channels::kick_client(std::string &nickname, std::string &msg)
 {
 	std::vector<int>::iterator	it;
 
-	(void)kicked;
 	for (it = this->fds.begin(); it != this->fds.end(); it++)
 	{
 		if (this->clients[*it].getNick() == nickname)
 		{
 			this->_len--;
+			this->clients[*it].addBacklog(msg);
+			sendToAll(msg, clients, *it);
 			break;
 		}
 	}
 	this->fds.erase(it);
+
+}
+
+bool	&channels::getOp(int fd)
+{
+	return (this->opps[fd]);
 }
 
 int	channels::get_length() { return (this->_len); }
@@ -100,7 +112,6 @@ void	channels::sendToAll(const std::string &msg, std::map<int, CLIENT> &clients,
 			clients[*it].addBacklog(msg);
 	}
 }
-
 
 void	channels::print_clients()
 {

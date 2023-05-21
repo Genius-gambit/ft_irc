@@ -44,8 +44,10 @@ namespace ft
 			std::vector<int>			&getFds();
 			void						setChannelName( const std::string & );
 			void						setChannelPass( const std::string & );
+			void						op( int fd );
+			bool						&getOp(int fd);
 			void						add_clients( int fd );
-			void						kick_client( std::string &, bool & );
+			void						kick_client( std::string &, std::string &);
 			int							get_length( void );
 			void						print_clients();
 			std::string					get_pass();

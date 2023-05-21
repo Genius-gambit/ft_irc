@@ -26,6 +26,7 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["PING"] = new ft::ping(this->clients, this->pfds, this->password);
 	this->cmds["PRIVMSG"] = new privmsg(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["OPER"] = new oper(this->clients, this->pfds, this->password);
+	this->cmds["KICK"] = new ft::kick(this->clients, this->pfds, this->password, this->chans);
 }
 
 network::~network()
@@ -47,6 +48,7 @@ bool	network::firstFour(const std::string &cmd)
 			 cmd == "USER" ? true :
 			 cmd == "QUIT" ? true :
 			 cmd == "JOIN" ? true :
+			 cmd == "KICK" ? true :
 			 false );
 }
 
