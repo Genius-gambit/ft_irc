@@ -30,6 +30,7 @@ SRCS = main \
 	commands/names \
 	commands/invite \
 	commands/part \
+	commands/list \
 
 CXX = c++
 

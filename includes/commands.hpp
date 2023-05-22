@@ -61,6 +61,11 @@
 
 # define RPL_INVITING			std::string("341")
 
+# define RPL_LISTSTART			std::string("321")
+# define RPL_LIST				std::string("322")
+# define RPL_LISTEND			std::string("323")
+
+
 
 namespace ft
 {
@@ -452,5 +457,28 @@ namespace ft
 			void exec(int, const std::vector<std::string> &);
 	};
 
+	//!class list : public ft::cinterface
+	/* Usage: LIST [ <channel>{,<channel>} [ <server> ] ]
+  	If no parameters are given, the server will return the current
+  	channel list.  If the <channel> parameter is given, only the status
+  	of that channel is displayed.  If the <server> parameter is
+  	supplied, the list will contain only channels which are maintained
+  	by the server specified.  Numeric Replies:
+  	ERR_TOOMANYMATCHES ERR_NOSUCHSERVER RPL_LIST RPL_LISTEND
+  	Examples:
+  	LIST #twilight_zone,#42 -or- LIST -or- LIST #twilight_zone,#42
+  	*.edu -or- LIST #twilight_zone,#42 *.edu */
+
+  	class list : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
+		public :
+				list (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels *> &);
+				~list ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 #endif
