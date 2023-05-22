@@ -53,6 +53,8 @@
 # define ERR_NOSUCHCHANNEL		std::string("403")
 
 # define RPL_YOUREOPER			std::string("381")
+# define RPL_CHANNELMODEIS		std::string("324")
+# define RPL_UMODEIS			std::string("221")
 
 namespace ft
 {
@@ -270,6 +272,21 @@ namespace ft
   	ERR_USERSDONTMATCH
   	Examples:
   	MODE WiZ -w -or- MODE Angel +i */
+
+	class mode : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
+	
+		public :
+			mode (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &, 
+					std::map<std::string, ft::channels *>	&);
+	
+			~mode ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 	//!class privmsg : public ft::cinterface
 	/* Usage: PRIVMSG <msgtarget> <message>

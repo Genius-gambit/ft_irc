@@ -25,6 +25,7 @@ SRCS = main \
 	commands/user \
 	commands/privmsg \
 	commands/oper \
+	commands/mode \
 
 CXX = c++
 

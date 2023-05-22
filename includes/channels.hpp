@@ -30,7 +30,10 @@ namespace ft
 			std::string					_chan;
 			std::string					_pass;
 			int							_len;
+			int							_limit;
 			std::string					_topic;
+			bool						_is_topic;
+			bool						_invite_only;
 			std::map<CLIENT_FD, CLIENT>	&clients;
 			std::map<CLIENT_FD, IS_OPP> opps;
 
@@ -53,6 +56,15 @@ namespace ft
 			std::string					get_pass();
 			std::string					getChannelName();
 			void						sendToAll( const std::string &, std::map<int, CLIENT> &, int );
+			void						set_mode( const std::string & );
+			std::string					get_mode();
+			void						set_topic( const std::string & );
+			std::string					get_topic();
+			std::string					get_users();
+			void						add_op( const std::string & );
+			void						remove_op( const std::string & );
+			void						remove_clients( int );
+			int							string_to_int( const std::string & );
 	};
 };
 

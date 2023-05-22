@@ -113,6 +113,111 @@ void	channels::sendToAll(const std::string &msg, std::map<int, CLIENT> &clients,
 	}
 }
 
+void	channels::set_mode(const std::string &mode)
+{
+	if (mode[0] == '+')
+	{
+		for (size_t i = 1; i < mode.length(); i++)
+		{
+			if (mode[i] == 'o')
+				this->opps[this->fds[i]] = true;
+			if (mode[i] == 'k')
+				this->setChannelPass(mode.substr(i + 1, mode.length()));
+			if (mode[i] == 'l')
+				this->_limit = string_to_int(mode.substr(i + 1, mode.length()));
+			if (mode[i] == 't')
+				this->_is_topic = true;
+			if (mode[i] == 'i')
+				this->_invite_only = true;
+		}
+	}
+	else if (mode[0] == '-')
+	{
+		for (size_t i = 1; i < mode.length(); i++)
+		{
+			if (mode[i] == 'o')
+				this->opps[this->fds[i]] = false;
+			if (mode[i] == 'k')
+				this->setChannelPass("");
+			if (mode[i] == 'l')
+				this->_limit = 0;
+			if (mode[i] == 't')
+				this->_is_topic = false;
+			if (mode[i] == 'i')
+				this->_invite_only = false;
+		}
+	}
+}
+
+std::string	channels::get_mode() 
+{
+	std::string	mode;
+
+	mode = "+";
+	if (this->_is_topic)
+		mode += "t";
+	if (this->_invite_only)
+		mode += "i";
+	if (this->_len)
+		mode += "l" + std::to_string(this->_limit);
+	if (!this->_pass.empty())
+		mode += "k" + this->_pass;
+	mode += "n";
+	mode += "-b";
+	return (mode);
+}
+
+void	channels::set_topic(const std::string &topic) { this->_topic = topic; }
+
+std::string	channels::get_topic() { return (this->_topic); }
+
+std::string	channels::get_users()
+{
+	std::string	users;
+
+	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
+	{
+		users += this->clients[*it].getNick();
+		if (it != this->fds.end() - 1)
+			users += " ";
+	}
+	return (users);
+}
+
+
+void	channels::add_op(const std::string &nick)
+{
+	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
+	{
+		if (this->clients[*it].getNick() == nick)
+		{
+			this->opps[*it] = true;
+			break;
+		}
+	}
+}
+
+void	channels::remove_op(const std::string &nick)
+{
+	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
+	{
+		if (this->clients[*it].getNick() == nick)
+		{
+			this->opps[*it] = false;
+			break;
+		}
+	}
+}
+
+int	channels::string_to_int(const std::string &str)
+{
+	std::stringstream	ss(str);
+	int					res;
+
+	ss >> res;
+	return (res);
+}
+
 void	channels::print_clients()
 {
 	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
