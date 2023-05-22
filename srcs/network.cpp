@@ -31,6 +31,7 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["TOPIC"] = new topic(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["NAMES"] = new names(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["INVITE"] = new invite(this->clients, this->pfds, this->password, this->chans);
+	this->cmds["PART"] = new part(this->clients, this->pfds, this->password, this->chans);
 }
 
 network::~network()

@@ -431,6 +431,26 @@ namespace ft
 			void exec(int, const std::vector<std::string> &);
 	};
 
+	//!class part : public ft::cinterface
+	/* Usage: PART <channel>{,<channel>}
+  	Part command is used to leave a channel.  If a user attempts to
+  	leave a channel that he is not a member of, he receives an error
+  	numeric.  Numeric Replies:
+  	ERR_NEEDMOREPARAMS ERR_NOSUCHCHANNEL ERR_NOTONCHANNEL
+  	Examples:
+  	PART #twilight_zone -or- PART #oz-ops,&group5 */
+
+	class part : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
+		public :
+				part (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels *> &);
+				~part ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 
 #endif
