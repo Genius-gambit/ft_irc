@@ -56,6 +56,9 @@
 # define RPL_CHANNELMODEIS		std::string("324")
 # define RPL_UMODEIS			std::string("221")
 
+# define RPL_TOPIC				std::string("332")
+# define RPL_NOTOPIC			std::string("331")
+
 namespace ft
 {
 	/** @brief command interface inherited by the commands,
@@ -261,6 +264,21 @@ namespace ft
   	RPL_TOPIC
   	Examples:
   	TOPIC #test :New topic -or- TOPIC #test : */
+
+	class topic : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
+	
+		public :
+			topic (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &, 
+					std::map<std::string, ft::channels *>	&);
+	
+			~topic ();
+
+			void	exec(int, const std::vector<std::string> &);
+	};
 
 	//! class mode : public ft::cinterface
 	/* Usage: MODE <nickname> <modes>
