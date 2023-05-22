@@ -52,6 +52,8 @@
 # define ERR_NOSUCHNICK			std::string("401")
 # define ERR_NOSUCHCHANNEL		std::string("403")
 
+# define RPL_YOUREOPER			std::string("381")
+
 namespace ft
 {
 	/** @brief command interface inherited by the commands,
