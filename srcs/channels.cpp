@@ -159,7 +159,11 @@ std::string	channels::get_mode()
 	if (this->_invite_only)
 		mode += "i";
 	if (this->_len)
-		mode += "l" + std::to_string(this->_limit);
+	{
+		std::string	ret;
+		ret << (this->_limit);
+		mode += "l" + ret;
+	}
 	if (!this->_pass.empty())
 		mode += "k" + this->_pass;
 	mode += "n";

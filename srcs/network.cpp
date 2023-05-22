@@ -20,7 +20,7 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["PASS"] = new ft::pass(this->clients, this->pfds, this->password);	//? 1
 	this->cmds["NICK"] = new ft::nick(this->clients, this->pfds, this->password);	//? 2
 	this->cmds["USER"] = new user(this->clients, this->pfds, this->password);		//? 3
-	this->cmds["QUIT"] = new ft::quit(this->clients, this->pfds, this->password);	//? 4
+	this->cmds["QUIT"] = new ft::quit(this->clients, this->pfds, this->password, this->chans);	//? 4
 
 	this->cmds["JOIN"] = new ft::join(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["PING"] = new ft::ping(this->clients, this->pfds, this->password);

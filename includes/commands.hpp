@@ -112,9 +112,12 @@ namespace ft
   	QUIT :Gone to have lunch -or- QUIT :Gone to the beach */
 	class quit : public ft::cinterface
 	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
 		public :
 				quit (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &);
+					std::vector<pollfd> &, std::string &,
+					std::map<std::string, ft::channels *>	&);
 				~quit ();
 
 			void exec(int, const std::vector<std::string> &);

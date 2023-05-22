@@ -14,8 +14,9 @@
 
 using namespace ft;
 
-quit::quit(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) :
-	ft::cinterface(c, p, pw) {}
+quit::quit(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw,
+	std::map<std::string, ft::channels *>	&chans) :
+	ft::cinterface(c, p, pw), chan(chans) {}
 
 quit::~quit() {}
 
@@ -36,6 +37,21 @@ void	quit::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
 	ft::client	&client = M_CLIENT(i_pfds);
 
+	for (std::map<std::string, ft::channels *>::iterator it = this->chan.begin();
+		it != this->chan.end(); it++)
+		{
+			ft::channels	*tmp = it->second;
+			std::vector<int>	clients_fds;
+			
+			clients_fds = tmp->getFds();
+			std::string	msg = M_CLIENT(i_pfds).getNick();
+			msg += " has quit the sever!\r\n";
+			for (std::vector<int>::iterator iter = clients_fds.begin(); iter != clients_fds.end(); iter++)
+			{
+				if (*iter == M_CLIENT(i_pfds).getFd())
+					tmp->sendToAll(msg, this->clients, M_CLIENT(i_pfds).getFd());
+			}
+		}
 	client.markClientForDel();
 	client.addBacklog(":" + client.getNick()
 		+ " QUIT :" + pars(cmds) + "\r\n");
