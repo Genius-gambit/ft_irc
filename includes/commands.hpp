@@ -226,6 +226,20 @@ namespace ft
   	Examples:
   	NAMES #twilight_zone,#42 - list visible users on #twilight_zone
   	and #42 -or- NAMES - list visible users for all channels */
+	class names : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
+	
+		public :
+			names (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &, 
+					std::map<std::string, ft::channels *>	&);
+	
+			~names ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 	//! class kick : public ft::cinterface
 	/* Usage: KICK <channel> <user> [<comment>]

@@ -29,6 +29,7 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["KICK"] = new ft::kick(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["MODE"] = new mode(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["TOPIC"] = new topic(this->clients, this->pfds, this->password, this->chans);
+	this->cmds["NAMES"] = new names(this->clients, this->pfds, this->password, this->chans);
 }
 
 network::~network()
