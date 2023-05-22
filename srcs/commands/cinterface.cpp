@@ -46,3 +46,18 @@ std::string		cinterface::sender(ft::client &c)
 			+ "@" + c.getHostname()
 			);
 }
+
+void	cinterface::find_fd(std::string &nick, int &fd)
+{
+	std::map<CLIENT_FD, CLIENT>::iterator	it;
+
+	for (it = this->clients.begin(); it != this->clients.end(); it++)
+	{
+		if (it->second.getNick() == nick)
+		{
+			fd = it->first;
+			return ;
+		}
+	}
+	fd = -1;
+}

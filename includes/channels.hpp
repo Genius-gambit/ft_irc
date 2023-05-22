@@ -63,7 +63,6 @@ namespace ft
 			std::string					get_users();
 			void						add_op( const std::string & );
 			void						remove_op( const std::string & );
-			void						remove_clients( int );
 			int							string_to_int( const std::string & );
 	};
 };

@@ -59,6 +59,9 @@
 # define RPL_TOPIC				std::string("332")
 # define RPL_NOTOPIC			std::string("331")
 
+# define RPL_INVITING			std::string("341")
+
+
 namespace ft
 {
 	/** @brief command interface inherited by the commands,
@@ -80,6 +83,7 @@ namespace ft
 			void			reply(ft::client &c, const std::string &code, const std::string &msg);
 			std::string		combineArgs(const std::vector<std::string> &, size_t, size_t);
 			std::string		sender(ft::client &client);
+			void			find_fd(std::string &nick, int &fd);
 	};
 
 	// irssi commands
@@ -268,6 +272,21 @@ namespace ft
   	RPL_INVITING
   	Examples:
   	INVITE Wiz #Twilight_Zone -or- INVITE Wiz #Twilight_Zone */
+
+	class invite : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
+	
+		public :
+			invite (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &, 
+					std::map<std::string, ft::channels *>	&);
+	
+			~invite ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 	//! class topic : public ft::cinterface
 	/* Usage: TOPIC <channel> [ <topic> ]

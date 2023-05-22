@@ -28,6 +28,7 @@ SRCS = main \
 	commands/mode \
 	commands/topic \
 	commands/names \
+	commands/invite \
 
 CXX = c++
 
