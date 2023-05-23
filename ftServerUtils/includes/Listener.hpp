@@ -34,6 +34,7 @@ namespace ft
 			std::string			nonBlocking();
 			std::string			BindConnect();
 			std::string			ListenConnect();
+
 	};
 };
 

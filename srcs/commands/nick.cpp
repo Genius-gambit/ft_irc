@@ -99,7 +99,7 @@ void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 	{
 		if (i != (size_t)i_pfds && M_CLIENT(i).getNick() == nick)
 		{
-			client.addBacklog(": " + ERR_NICKNAMEINUSE + " * " + nick + " :Nickname already in use\r\n");
+			client.addBacklog(":ircserv " + ERR_NICKNAMEINUSE + " * " + nick + " :Nickname is already in use.\r\n");
 			creating_nick(nick, i_pfds);
 			client.addBacklog(":" + this->sender(client) + " NICK :" + nick + "\r\n");
 			return;

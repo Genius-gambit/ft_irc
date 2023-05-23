@@ -1,4 +1,5 @@
 NAME = ircserv
+BONUS = bot/IrcBot
 
 SERVDIR = ftServerUtils
 SERVARCH = $(SERVDIR)/ServerUtils.a
@@ -32,13 +33,21 @@ SRCS = main \
 	commands/part \
 	commands/list \
 
+BONUS_SRCS = main \
+			bot \
+			parser \
+
 CXX = c++
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
 
 OBJDIR = object
 
+B_OBJDIR = b_object
+
 OBJS = $(addprefix $(OBJDIR)/, $(addsuffix .o, $(SRCS)))
+
+B_OBJ = $(addprefix $(B_OBJDIR)/, $(addsuffix .o, $(BONUS_SRCS)))
 
 #* @note : to include a new directory within srcs
 #* 	please add @mkdir -p $(OBJDIR)/directory_name to below
@@ -49,21 +58,32 @@ $(OBJDIR)/%.o : srcs/%.cpp
 	@printf "\033[A\033[2K\r"
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+$(B_OBJDIR)/%.o : bot/srcs/%.cpp
+	@mkdir -p $(B_OBJDIR)
+	@printf "\033[A\033[2K\r"
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 all : $(NAME) printProvided
 
 $(NAME): utils printStart $(OBJS) printnl
 	@printf "Generating Executable:\n"
 	$(CXX) $(CXXFLAGS) $(OBJS) $(SERVARCH) -o $(NAME)
 
+bonus : utils $(B_OBJ)
+	@printf "Generating Bonus Executable:\n"
+	$(CXX) $(CXXFLAGS) $(B_OBJ) $(SERVARCH) -o $(BONUS)
+
 utils :
 	@make -C $(SERVDIR)
 
 clean:
 	@rm -rf $(OBJDIR)
+	@rm -rf $(B_OBJDIR)
 	@make clean -C $(SERVDIR)
 
 fclean: clean
 	@rm -rf $(NAME)
+	@rm -rf $(BONUS)
 	@make fclean -C $(SERVDIR)
 	@rm -rf server.log
 

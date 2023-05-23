@@ -110,13 +110,14 @@ void	ft::server::receiveCmds(size_t i)
 void	ft::server::sendReply(size_t i)
 {
 	std::string	reply;
+	ft::client	&client = M_CLIENT(i);
 
-	while (M_CLIENT(i).getBacklogSize())
+	while (client.getBacklogSize())
 	{
-		reply = M_CLIENT(i).retrBacklog();
-		reply >> M_CLIENT(i);
+		reply += client.retrBacklog();
 		this->log << " >> " + reply;
 	}
+	reply >> client;
 }
 
 bool	ft::server::rmClient(size_t i)
@@ -186,7 +187,10 @@ void	ft::server::run()
 			 * 			method is made with index to client.
 			*/
 			if (client.getIsMarkForDel())
+			{
 				clientRM = this->rmClient(i);
+				break ;
+			}
 
 			/** @brief section to receive command/string from
 			 * 			client fd. 
