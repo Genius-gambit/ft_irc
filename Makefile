@@ -16,6 +16,7 @@ SRCS = main \
 	channels \
 	welcome \
 	commands/cinterface \
+	commands/dcc \
 	commands/quit \
 	commands/cap \
 	commands/join \

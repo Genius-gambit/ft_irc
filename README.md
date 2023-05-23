@@ -18,7 +18,9 @@
 	14. Edited kick.cpp kick_client function.
 	15. Implemented kick function to check if the client is the channel operator to kick another client.
 	16. Before kicking any client, it checks if the client is the member of the channel or not.
-	17. After kicking any client it sends a message to all the clients in the channel that the client has been kicked by an operator. 
+	17. After kicking any client it sends a message to all the clients in the channel that the client has been kicked by an operator.
+	18. Implemented parsing of file transfer.
+	19. Created a class with name dcc.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object
@@ -39,13 +41,13 @@
 1. ~~Initialise Channels.~~
 2. ~~Implement Unique channels in the server.~~
 3. ~~Implement Unique clients in particular channels.~~
-4. Kick Client with the nickname along with sending a message to all the clients in a particular channel.
+4. ~~Kick Client with the nickname along with sending a message to all the clients in a particular channel.~~
 5. ~~Authentication Part for the clients.~~
 6. ~~Parsing for nickname.~~
-7. Quit command needs to be implemented which leads to kick clients from their respective channelsand also send a message.
+7. ~~Quit command needs to be implemented which leads to kick clients from their respective channelsand also send a message.~~
 8. ~~Implementation of channels along with passwords.~~
 9. ~~Implementation of granting access to clients who give correct password to the channels for joining in.~~
-
+10. Implement File transfer.
 
 #### WJS
 1. Implement server

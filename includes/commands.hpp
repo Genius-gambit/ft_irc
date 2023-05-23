@@ -210,6 +210,19 @@ namespace ft
 			void	exec(int, const std::vector<std::string> &);
 	};
 
+	class dcc : public ft::cinterface
+	{
+		private:
+			std::map<std::map<int, int>, bool>	_sender;
+			std::map<std::map<int, int>, bool>	_receiver;
+		public :
+			dcc (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &);
+			~dcc ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
+
 	class kick : public ft::cinterface
 	{
 		private :

@@ -21,6 +21,7 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["NICK"] = new ft::nick(this->clients, this->pfds, this->password);	//? 2
 	this->cmds["USER"] = new user(this->clients, this->pfds, this->password);		//? 3
 	this->cmds["QUIT"] = new ft::quit(this->clients, this->pfds, this->password, this->chans);	//? 4
+	this->cmds["DCC"] = new ft::dcc(this->clients, this->pfds, this->password);
 
 	this->cmds["JOIN"] = new ft::join(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["PING"] = new ft::ping(this->clients, this->pfds, this->password);
@@ -54,6 +55,7 @@ bool	network::firstFour(const std::string &cmd)
 			 cmd == "USER" ? true :
 			 cmd == "QUIT" ? true :
 			 cmd == "JOIN" ? true :
+			 cmd == "DCC" ? true :
 			 false );
 }
 
