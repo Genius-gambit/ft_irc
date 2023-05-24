@@ -45,7 +45,7 @@ void	quit::exec(int i_pfds, const std::vector<std::string> &cmds)
 			
 			clients_fds = tmp->getFds();
 			std::string msg;
-			msg += ":" + sender(client) + " QUIT :Quit: has quit the sever!\r\n";
+			msg += ":" + sender(client) + " QUIT :Quit: has quit the server!\r\n";
 			for (std::vector<int>::iterator iter = clients_fds.begin(); iter != clients_fds.end(); iter++)
 			{
 				if (*iter == M_CLIENT(i_pfds).getFd())
