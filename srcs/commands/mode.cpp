@@ -27,6 +27,11 @@ void	mode::exec(int i_pfds, const std::vector<std::string> &cmds)
 		this->reply(M_CLIENT(i_pfds), ERR_NOSUCHCHANNEL, chan_name);
 		return ;
 	}
+	if (this->chan[chan_name]->getOp(M_CLIENT(i_pfds).getFd()) == false)
+	{
+		this->reply(M_CLIENT(i_pfds), ERR_NOPRIVILEGES, chan_name + " :You're not channel operator");
+		return ;
+	}
 	if (cmds.size() == 2)
 	{
 		chan_mode = this->chan[chan_name]->get_mode();
@@ -48,8 +53,10 @@ void	mode::exec(int i_pfds, const std::vector<std::string> &cmds)
 		}
 		if (mode.find('t') != mode.npos)
 		{
+			if (this->chan[chan_name]->get_is_topic() == true)
+				return ;
 			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " +t\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "+t");
+			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + " +t");
 		}
 		if (cmds.size() > 3)
 		{
@@ -67,7 +74,7 @@ void	mode::exec(int i_pfds, const std::vector<std::string> &cmds)
 		}
 		else
 			this->chan[chan_name]->set_mode(mode);
-		this->chan[chan_name]->sendToAll(":" + M_CLIENT(i_pfds).getNick() + " MODE " + chan_name + " " + mode + "\r\n", this->clients, M_CLIENT(i_pfds).getFd());
+		// this->chan[chan_name]->sendToAll(":" + M_CLIENT(i_pfds).getNick() + " MODE " + chan_name + " " + mode + "\r\n", this->clients, M_CLIENT(i_pfds).getFd());
 	}
 	else if (mode[0] == '-')
 	{
@@ -97,6 +104,6 @@ void	mode::exec(int i_pfds, const std::vector<std::string> &cmds)
 			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "-k");
 		}
 		this->chan[chan_name]->set_mode(mode);
-		this->chan[chan_name]->sendToAll(":" + M_CLIENT(i_pfds).getNick() + " MODE " + chan_name + " " + mode + "\r\n", this->clients, M_CLIENT(i_pfds).getFd());
+		// this->chan[chan_name]->sendToAll(":" + M_CLIENT(i_pfds).getNick() + " MODE " + chan_name + " " + mode + "\r\n", this->clients, M_CLIENT(i_pfds).getFd());
 	}
 }

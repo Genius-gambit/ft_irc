@@ -70,6 +70,7 @@
 # define ERR_USERNOTINCHANNEL	std::string("441")
 # define ERR_USERONCHANNEL		std::string("443")
 
+# define ERR_NOPRIVILEGES		std::string("481")
 
 namespace ft
 {
@@ -210,7 +211,7 @@ namespace ft
 	
 			~join ();
 
-			void	welcome(ft::client &client, std::string chan);
+			void	welcome(ft::client &client, std::string chan, bool newChan);
 			void	exec(int, const std::vector<std::string> &);
 	};
 

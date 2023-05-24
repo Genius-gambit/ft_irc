@@ -17,7 +17,7 @@ void	oper::exec(int i_pfds, const std::vector<std::string> &cmds)
 		if (password == "admin")
 		{
 			client.setOper(1);
-			client.addBacklog(RPL_YOUREOPER + client.getNick() + " : You are now an IRC operator\r\n");
+			client.addBacklog(RPL_YOUREOPER + " " + client.getNick() + " : You are now an IRC operator\r\n");
 		}
 		else
 			client.addBacklog(ERR_PASSWDMISMATCH + client.getNick() + " : Password incorrect\r\n");

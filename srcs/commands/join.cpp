@@ -20,8 +20,9 @@ join::join(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &
 
 join::~join() {}
 
-void	join::welcome(ft::client &client, std::string chan)
+void	join::welcome(ft::client &client, std::string chan, bool newChan)
 {
+	(void) newChan;
 	this->chan[chan]->sendToAll( ":" + this->sender(client)
 									+ " JOIN :"
 									+ chan
@@ -31,7 +32,6 @@ void	join::welcome(ft::client &client, std::string chan)
 	std::vector<int>	&chanFds = this->chan[chan]->getFds();
 	for (size_t i = 0; i < chanFds.size(); i++)
 		clientList += this->clients[chanFds[i]].getNick() + " ";
-
 	client.addBacklog(": "
 						+ RPL_NAMREPLY
 						+ " "
@@ -41,7 +41,14 @@ void	join::welcome(ft::client &client, std::string chan)
 						+ " :"
 						+ clientList
 						+ "\r\n");
-
+	if (newChan)
+	{
+			client.addBacklog("MODE " 
+								+ chan 
+								+ " +o " 
+								+ client.getNick() 
+								+ "\r\n");
+	}
 	client.addBacklog(": "
 						+ RPL_ENDOFNAMES
 						+ " "
@@ -100,9 +107,13 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 		if (cmds.size() > 2)
 			this->chan[cmds[1]]->setChannelPass(cmds[2]);
 		this->chan[cmds[1]]->op(M_CLIENT(i_pfds).getFd());
+		this->reply(M_CLIENT(i_pfds), RPL_UMODEIS, "+o " + M_CLIENT(i_pfds).getNick());
 		std::cout << this->chan[cmds[1]]->getOp(M_CLIENT(i_pfds).getFd()) << std::endl;
 	}
 	this->chan[cmds[1]]->add_clients(client.getFd());
-	this->welcome(client, cmds[1]);
+	if (this->chan[cmds[1]]->get_length() == 1)
+		this->welcome(client, cmds[1], true);
+	else
+		this->welcome(client, cmds[1], false);
 }
 
