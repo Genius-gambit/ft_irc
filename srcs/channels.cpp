@@ -18,6 +18,9 @@ using namespace ft;
 channels::channels(std::map<CLIENT_FD, CLIENT> &client) : _len(0), clients(client)
 {
 	this->_pass = "";
+	this->_limit = -1;
+	this->_is_topic = false;
+	this->_invite_only = false;
 }
 
 channels::channels(const channels &other) : clients(other.clients)
@@ -158,7 +161,7 @@ std::string	channels::get_mode()
 		mode += "t";
 	if (this->_invite_only)
 		mode += "i";
-	if (this->_len)
+	if (this->_limit != -1)
 	{
 		std::string	ret;
 		ret << (this->_limit);
@@ -186,6 +189,16 @@ std::string	channels::get_users()
 			users += " ";
 	}
 	return (users);
+}
+
+bool	channels::is_user(const std::string &nick)
+{
+	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
+	{
+		if (this->clients[*it].getNick() == nick)
+			return (true);
+	}
+	return (false);
 }
 
 
@@ -221,6 +234,37 @@ int	channels::string_to_int(const std::string &str)
 	ss >> res;
 	return (res);
 }
+
+void	channels::set_invite_only(bool invite_only)
+{
+	this->_invite_only = invite_only;
+}
+
+bool	channels::get_invite_only() { return (this->_invite_only); }
+
+void	channels::set_limit(int limit) { this->_limit = limit; }
+
+int		channels::get_limit() { return (this->_limit); }
+
+void	channels::set_is_topic(bool is_topic) { this->_is_topic = is_topic; }
+
+bool	channels::get_is_topic() { return (this->_is_topic); }
+
+void	channels::add_invited_user(const std::string &nick)
+{
+	this->_invited_users.push_back(nick);
+}
+
+bool	channels::is_invited(const std::string &nick)
+{
+	for (std::vector<std::string>::iterator it = this->_invited_users.begin(); it != this->_invited_users.end(); it++)
+	{
+		if (*it == nick)
+			return (true);
+	}
+	return (false);
+}
+
 
 void	channels::print_clients()
 {

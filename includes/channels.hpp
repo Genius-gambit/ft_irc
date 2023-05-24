@@ -34,6 +34,7 @@ namespace ft
 			std::string					_topic;
 			bool						_is_topic;
 			bool						_invite_only;
+			std::vector<std::string>	_invited_users;
 			std::map<CLIENT_FD, CLIENT>	&clients;
 			std::map<CLIENT_FD, IS_OPP> opps;
 
@@ -61,9 +62,18 @@ namespace ft
 			void						set_topic( const std::string & );
 			std::string					get_topic();
 			std::string					get_users();
+			bool						is_user( const std::string & );
 			void						add_op( const std::string & );
 			void						remove_op( const std::string & );
 			int							string_to_int( const std::string & );
+			void						set_invite_only( bool );
+			bool						get_invite_only();
+			void						set_limit( int );
+			int							get_limit();
+			void						set_is_topic( bool );
+			bool						get_is_topic();
+			void						add_invited_user( const std::string & );
+			bool						is_invited( const std::string & );
 	};
 };
 
