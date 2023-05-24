@@ -71,6 +71,7 @@
 # define ERR_USERONCHANNEL		std::string("443")
 
 # define ERR_NOPRIVILEGES		std::string("481")
+# define ERR_NOSUCHNICK			std::string("401")
 
 namespace ft
 {

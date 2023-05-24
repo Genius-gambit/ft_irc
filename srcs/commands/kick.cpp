@@ -45,6 +45,11 @@ void	kick::exec(int i_pfds, const std::vector<std::string> &cmds)
 				client.addBacklog("Not a channel Operator!\r\n");
 		}
 		else
-			client.addBacklog("Not a channel name or member of the channel!\r\n");
+			client.addBacklog(": "
+								+ ERR_NOSUCHNICK
+								+ " "
+								+ client.getNick()
+								+ " "
+								+ cmds[2] + " :No such nick\r\n");
 	}
 }

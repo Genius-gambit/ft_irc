@@ -38,6 +38,15 @@ BONUS_SRCS = main \
 			bot \
 			parser \
 
+OS:= ${shell uname}
+
+ifeq ($(shell uname -s), Darwin)
+	def = -D OSX
+endif
+ifeq ($(shell uname -s), Linux)
+	def = -D LINUX
+endif
+
 CXX = c++
 
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -g3
@@ -68,7 +77,7 @@ all : $(NAME) printProvided
 
 $(NAME): utils printStart $(OBJS) printnl
 	@printf "Generating Executable:\n"
-	$(CXX) $(CXXFLAGS) $(OBJS) $(SERVARCH) -o $(NAME)
+	$(CXX) $(CXXFLAGS) $(OBJS) $(SERVARCH) $(def) -o $(NAME)
 
 bonus : utils $(B_OBJ)
 	@printf "Generating Bonus Executable:\n"
