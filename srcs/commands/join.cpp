@@ -67,7 +67,8 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 						+ " "
 						+ client.getNick()
 						+ " "
-						+ " :Incorrect Channel Password\r\n");
+						+ cmds[1]
+						+ "\r\n");
 			return ;
 		}
 	}
