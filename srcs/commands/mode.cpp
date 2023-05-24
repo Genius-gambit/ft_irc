@@ -56,12 +56,12 @@ void	mode::exec(int i_pfds, const std::vector<std::string> &cmds)
 			if (mode.find('l') != mode.npos)
 			{
 				M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " +l " + mode.substr(mode.find('l') + 1, mode.length()) + "\r\n");
-				this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "+l " + mode.substr(mode.find('l') + 1, mode.length()));
+				this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + " +l " + mode.substr(mode.find('l') + 1, mode.length()));
 			}
 			if (mode.find('k') != mode.npos)
 			{
 				M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " +k " + cmds[3] + "\r\n");
-				this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "+k " + cmds[3]);
+				this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + " +k " + cmds[3]);
 			}
 			this->chan[chan_name]->set_mode(mode + cmds[3]);
 		}
@@ -94,7 +94,7 @@ void	mode::exec(int i_pfds, const std::vector<std::string> &cmds)
 		if (mode.find('k') != mode.npos)
 		{
 			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " -k\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "-k ");
+			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "-k");
 		}
 		this->chan[chan_name]->set_mode(mode);
 		this->chan[chan_name]->sendToAll(":" + M_CLIENT(i_pfds).getNick() + " MODE " + chan_name + " " + mode + "\r\n", this->clients, M_CLIENT(i_pfds).getFd());
