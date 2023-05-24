@@ -30,11 +30,19 @@ void	join::welcome(ft::client &client, std::string chan, bool newChan)
 
 	std::string	clientList;
 	std::vector<int>	&chanFds = this->chan[chan]->getFds();
+
 	for (size_t i = 0; i < chanFds.size(); i++)
-		clientList += this->clients[chanFds[i]].getNick() + " ";
+	{
+		ft::client	&ChanMem = this->clients[chanFds[i]];
+
+		if (this->chan[chan]->getOp(ChanMem.getFd()))
+			clientList += "@";
+		clientList += ChanMem.getNick() + " ";
+	}
+
 	client.addBacklog(": "
 						+ RPL_NAMREPLY
-						+ " "
+						+ " @"
 						+ client.getNick()
 						+ " = "
 						+ chan
@@ -60,8 +68,8 @@ void	join::welcome(ft::client &client, std::string chan, bool newChan)
 
 void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
-	ft::client	&client = M_CLIENT(i_pfds);
-	std::map<std::string, ft::channels *>::iterator	it = this->chan.find(cmds[1]);
+	ft::client	&client = M_CLIENT( i_pfds );
+	std::map<std::string, ft::channels *>::iterator	it = this->chan.find( cmds[1] );
 
 	if (it != this->chan.end())
 	{
@@ -70,13 +78,11 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 
 		if (!empty && (cmds.size() <= 2 || cmds[2] != pw))
 		{
-			client.addBacklog(ERR_BADCHANNELKEY
+			return (client.addBacklog(ERR_BADCHANNELKEY
 						+ " "
 						+ client.getNick()
 						+ " "
-						+ cmds[1]
-						+ "\r\n");
-			return ;
+						+ " :Incorrect Channel Password\r\n"));
 		}
 		if (this->chan[cmds[1]]->get_limit() != -1)
 		{
@@ -97,11 +103,9 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 	}
 	else
 	{
-		if (cmds[1][0] != '#')
-		{
-			M_CLIENT(i_pfds).addBacklog("Channel Name needs to be followed by #!\r\n");
-			return ;
-		}
+		if ( cmds[1][0] != '#' )
+			return ( client.addBacklog( "Channel Name needs to be followed by #!\r\n" ) );
+
 		this->chan[cmds[1]] = new ft::channels(this->clients);
 		this->chan[cmds[1]]->setChannelName(cmds[1]);
 		if (cmds.size() > 2)

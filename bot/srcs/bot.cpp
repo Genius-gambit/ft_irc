@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:54:16 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/23 17:57:39 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/24 14:21:34 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,8 @@ using namespace ft;
 
 bool		g_bot_run = true;
 
-bot::bot () : fd(0), pfd() {}
+bot::bot () : fd(0), pfd(), buffer(), pars(), msgs(), backlog(),
+	chan(), sendingCmd(false) {}
 
 bot::~bot() {}
 
@@ -51,6 +52,7 @@ void	bot::Connect()
 	cmd += "NICK bot\r\n";
 	cmd += "USER bot bot localhost :ircbot\r\n";
 	cmd += "JOIN #BotChat\r\n";
+	this->chan.push_back("#BotChat");
 
 	poll(&this->pfd, 1, -1);
 	if (this->pfd.revents & POLLOUT)
@@ -69,9 +71,18 @@ void	bot::run ()
 		{
 			std::string	msg;
 
-			msg += "PRIVMSG #BotChat :" + this->backlog.front() + "\r\n";
+			if (!sendingCmd)
+			{
+				for (size_t i = 0; i < this->chan.size(); i++)
+					msg += "PRIVMSG "
+						+ this->chan[i] + " :"
+						+ this->backlog.front() + "\r\n";
+			}
+			else
+				msg += this->backlog.front();
 			send(this->fd, msg.c_str(), msg.size(), 0);
 			this->backlog.erase(this->backlog.begin());
+			this->sendingCmd = false;
 		}
 
 		usleep (120000);
@@ -80,10 +91,8 @@ void	bot::run ()
 		{
 			pars.pRecv( Read(this->fd) );
 			for (size_t j = 0; j < pars.getCmds().size(); j++)
-			{
 				if (pars.getCmdSec(j)[0].size())
 					this->selCmd(pars.getCmdSec(j));
-			}
 		}
 		pars.clear();
 	}
@@ -104,12 +113,28 @@ std::string	bot::toLower(const std::string str)
 
 void		bot::selCmd(std::vector<std::string> cmd)
 {
-	if (cmd.size() >= 3)
+	if (cmd.size() < 3)
+		return ;
+	if (cmd[1] == "PRIVMSG"
+		&& this->toLower(cmd[3]) == ":hello")
+		this->backlog = this->msgs;
+	else if (cmd[1] == "QUIT")
+		this->backlog.push_back("Bye Bye!");
+	else if (cmd[1] == "INVITE")
 	{
-		if (cmd[1] == "PRIVMSG"
-			&& cmd[2] == "#BotChat"
-			&& this->toLower(cmd[3]) == ":hello")
-			this->backlog = this->msgs;
+		cmd[3].erase(cmd[3].begin());
+		
+		for (size_t i = 0; i < this->chan.size(); i++)
+			if (this->chan[i] == cmd[3])
+				return ;
+		this->backlog.push_back("JOIN " + cmd[3] + "\r\n");
+		this->chan.push_back(cmd[3]);
+		this->sendingCmd = true;
+	}
+	else if (cmd[1] == "KICK")
+	{
+		this->backlog.push_back("JOIN " + cmd[2] + "\r\n");
+		this->sendingCmd = true;
 	}
 }
 

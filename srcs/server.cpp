@@ -110,12 +110,14 @@ void	ft::server::receiveCmds(size_t i)
 void	ft::server::sendReply(size_t i)
 {
 	std::string	reply;
+	std::string	rep;
 	ft::client	&client = M_CLIENT(i);
 
 	while (client.getBacklogSize())
 	{
-		reply += client.retrBacklog();
-		this->log << " >> " + reply;
+		rep = client.retrBacklog();
+		reply += rep;
+		this->log << " >> " + rep;
 	}
 	reply >> client;
 }

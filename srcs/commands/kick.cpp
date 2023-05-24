@@ -15,12 +15,12 @@ void	kick::exec(int i_pfds, const std::vector<std::string> &cmds)
 	if (cmds.size() >= 3)
 	{
 		std::map<std::string, ft::channels *>::iterator	it = this->chan.find(cmds[1]);
-		std::vector<int>	getFd = this->chan[cmds[1]]->getFds();
+		std::vector<int>	&getFd = this->chan[cmds[1]]->getFds();
 		std::vector<int>::iterator	lookUpClient = getFd.begin();
 
 		for (lookUpClient = getFd.begin(); lookUpClient != getFd.end(); lookUpClient++)
 		{
-			if (*lookUpClient == client.getFd())
+			if (this->clients[*lookUpClient].getNick() == cmds[2])
 				break;
 		}
 		if (it != this->chan.end() && lookUpClient != getFd.end())

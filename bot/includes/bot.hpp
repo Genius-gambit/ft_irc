@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 15:45:00 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/23 16:52:56 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/24 02:09:46 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ namespace ft
 			ft::parser					pars;
 			std::vector<std::string>	msgs;
 			std::vector<std::string>	backlog;
+			std::vector<std::string>	chan;
+			bool						sendingCmd;
 
 		public	:
 										bot ();

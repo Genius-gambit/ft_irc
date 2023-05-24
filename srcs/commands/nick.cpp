@@ -14,7 +14,8 @@
 
 using namespace ft;
 
-nick::nick(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) : ft::cinterface(c, p, pw) {}
+nick::nick(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw) :
+	ft::cinterface(c, p, pw) {}
 
 nick::~nick() {}
 
@@ -50,21 +51,24 @@ std::vector<std::string>	nick::get_original_nickname(std::string &nick, int &i_p
 	return (tmp);
 }
 
-void nick::creating_nick(std::string &nick, int &i_pfds)
+void nick::creating_nick( std::string &nick, int &i_pfds )
 {
-	std::vector<std::string> tmp;
+	std::vector<std::string>	tmp;
+	ft::client					&client = M_CLIENT( i_pfds );
 	
-	tmp = get_original_nickname(nick, i_pfds);
-	std::cout << std::endl;
-	std::cout << "Number of Clients: " << (size_t)i_pfds << std::endl << std::endl;
+	tmp = get_original_nickname( nick, i_pfds );
 	std::string str = nick + "_";
-	for (size_t i = 1; i < this->pfds.size(); i++)
+
+	for ( size_t i = 1; i < this->pfds.size(); i++ )
 	{
-		if (M_CLIENT(i).getNick().substr(0, str.length()) == str)
-			tmp.push_back(M_CLIENT(i).getNick());
+		ft::client	&checkClient = M_CLIENT( i );
+		if ( checkClient.getNick().substr( 0, str.length() ) == str )
+			tmp.push_back( checkClient.getNick() );
 	}
+
 	if (tmp.size() == 1)
-		M_CLIENT(i_pfds).setNick(nick + "_1");
+		client.setNick(nick + "_1");
+
 	else if (tmp.size() > 1)
 	{
 		int		max_index = 0;
@@ -76,17 +80,12 @@ void nick::creating_nick(std::string &nick, int &i_pfds)
 				break;
 			}
 		}
-		M_CLIENT(i_pfds).setNick(str
-		+ ft_itoa(std::atoi(get_max_str(tmp).substr(str.length(),
-		tmp[max_index].length() ).c_str()) + 1));
+
+		client.setNick( str
+			+ ft_itoa( std::atoi(
+				get_max_str( tmp ).substr( str.length(),
+				tmp[max_index].length() ).c_str() ) + 1));
 	}
-	std::cout << "****Nicknames****" << std::endl;
-	for (size_t i = 1; i < this->pfds.size(); i++)
-	{
-		std::cout << M_CLIENT(i).getNick() << std::endl;
-	}
-	std::cout << "****End****" << std::endl
-			  << std::endl;
 }
 
 void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
@@ -102,6 +101,7 @@ void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 			client.addBacklog(":ircserv " + ERR_NICKNAMEINUSE + " * " + nick + " :Nickname is already in use.\r\n");
 			creating_nick(nick, i_pfds);
 			client.addBacklog(":" + this->sender(client) + " NICK :" + nick + "\r\n");
+			client.getReg().recvNick = true;
 			return;
 		}
 	}
