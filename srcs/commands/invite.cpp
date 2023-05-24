@@ -22,13 +22,24 @@ void	invite::exec(int i_pfds, const std::vector<std::string> &cmds)
         this->reply(M_CLIENT(i_pfds), ERR_NEEDMOREPARAMS, "INVITE");
         return ;
     }
-    if (cmds[2][0] == '#')
+    if (chan_name[0] == '#')
     {
 		if (this->chan.find(cmds[2]) == this->chan.end())
 		{
-			this->reply(M_CLIENT(i_pfds), ERR_NOSUCHCHANNEL, cmds[2]);
+			this->reply(client, ERR_NOSUCHCHANNEL, chan_name);
 			return ;
 		}
+		if (this->chan[cmds[2]]->is_user(inviter_nick) == false)
+		{
+			this->reply(client, ERR_USERNOTINCHANNEL, inviter_nick + " " + chan_name + " :You aren't on that channel");
+			return ;
+		}
+		if (this->chan[cmds[2]]->is_user(invitee_nick) == true)
+		{
+			this->reply(client, ERR_USERONCHANNEL, invitee_nick + " " + chan_name + " :is already on channel");
+			return ;
+		}
+		this->chan[cmds[2]]->add_invited_user(invitee_nick);
 		this->clients[invitee_fd].addBacklog(":" + inviter_nick + " INVITE " + invitee_nick + " :" + chan_name + "\r\n");
 		this->reply(client, RPL_INVITING, invitee_nick + " " + chan_name);
         return ;

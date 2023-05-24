@@ -65,6 +65,10 @@
 # define RPL_LIST				std::string("322")
 # define RPL_LISTEND			std::string("323")
 
+# define ERR_CHANNELISFULL		std::string("471")
+# define ERR_INVITEONLYCHAN		std::string("473")
+# define ERR_USERNOTINCHANNEL	std::string("441")
+# define ERR_USERONCHANNEL		std::string("443")
 
 
 namespace ft

@@ -71,6 +71,22 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 						+ "\r\n");
 			return ;
 		}
+		if (this->chan[cmds[1]]->get_limit() != -1)
+		{
+			if (this->chan[cmds[1]]->get_length() >= this->chan[cmds[1]]->get_limit())
+			{
+				this->reply(client, ERR_CHANNELISFULL, cmds[1]);
+				return ;
+			}
+		}
+		if (this->chan[cmds[1]]->get_invite_only() == true)
+		{
+			if (this->chan[cmds[1]]->is_invited(client.getNick()) == false)
+			{
+				this->reply(client, ERR_INVITEONLYCHAN, cmds[1]);
+				return ;
+			}
+		}
 	}
 	else
 	{
