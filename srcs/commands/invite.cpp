@@ -17,6 +17,7 @@ void	invite::exec(int i_pfds, const std::vector<std::string> &cmds)
 	find_fd(invitee_nick, invitee_fd);
 	std::string inviter_nick = M_CLIENT(i_pfds).getNick();
 	ft::client	&client = M_CLIENT(i_pfds);
+	bool	userFound = false;
 	if (cmds.size() < 3)
     {
         this->reply(M_CLIENT(i_pfds), ERR_NEEDMOREPARAMS, "INVITE");
@@ -27,6 +28,25 @@ void	invite::exec(int i_pfds, const std::vector<std::string> &cmds)
 		if (this->chan.find(cmds[2]) == this->chan.end())
 		{
 			this->reply(client, ERR_NOSUCHCHANNEL, chan_name);
+			return ;
+		}
+		if (this->chan[cmds[2]]->getOp(client.getFd()) == false)
+		{
+			this->reply(client, ERR_CHANOPRIVSNEEDED, chan_name + " :You're not channel operator");
+			return ;
+		}
+		for (size_t i = 0; i < this->pfds.size(); i++)
+		{
+			ft::client	&rec = M_CLIENT(i);
+			if (rec.getNick() == invitee_nick)
+			{
+				userFound = true;
+				break;
+			}
+		}
+		if (userFound == false)
+		{
+			this->reply(client, ERR_NOSUCHNICK, invitee_nick);
 			return ;
 		}
 		if (this->chan[cmds[2]]->is_user(inviter_nick) == false)

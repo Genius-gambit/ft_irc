@@ -14,8 +14,7 @@ void	topic::exec(int i_pfds, const std::vector<std::string> &cmds)
 		this->reply(M_CLIENT(i_pfds), ERR_NEEDMOREPARAMS, "TOPIC");
 		return ;
 	}
-	if (chan[cmds[1]]->get_mode().find('t') != chan[cmds[1]]->get_mode().npos 
-		&& M_CLIENT(i_pfds).getOper() == false)
+	if (this->chan[cmds[1]]->get_is_topic() && this->chan[cmds[1]]->getOp(M_CLIENT(i_pfds).getFd()) == false)
 	{
 		this->reply(M_CLIENT(i_pfds), ERR_CHANOPRIVSNEEDED, cmds[1] + " :You're not channel operator");
 		return ;

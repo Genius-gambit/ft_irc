@@ -27,83 +27,60 @@ void	mode::exec(int i_pfds, const std::vector<std::string> &cmds)
 		this->reply(M_CLIENT(i_pfds), ERR_NOSUCHCHANNEL, chan_name);
 		return ;
 	}
-	if (this->chan[chan_name]->getOp(M_CLIENT(i_pfds).getFd()) == false)
-	{
-		this->reply(M_CLIENT(i_pfds), ERR_NOPRIVILEGES, chan_name + " :You're not channel operator");
-		return ;
-	}
 	if (cmds.size() == 2)
 	{
 		chan_mode = this->chan[chan_name]->get_mode();
 		this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + " " + chan_mode);
 		return ;
 	}
+	if (cmds[2].length() == 1)
+	{
+		this->reply(M_CLIENT(i_pfds), ERR_NEEDMOREPARAMS, "MODE");
+		return ;
+	}
+	if (this->chan[chan_name]->getOp(M_CLIENT(i_pfds).getFd()) == false)
+	{
+		this->reply(M_CLIENT(i_pfds), ERR_CHANOPRIVSNEEDED, chan_name + " :You're not channel operator");
+		return ;
+	}
+	if (cmds[2][0] != '+' && cmds[2][0] != '-')
+	{
+		this->reply(M_CLIENT(i_pfds), ERR_UNKNOWNMODE, cmds[2] + " :is unknown mode to me");
+		return ;
+	}
 	mode = cmds[2];
 	if (mode[0] == '+')
 	{
 		if (mode.find('o') != mode.npos)
-		{
-			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " +o " + M_CLIENT(i_pfds).getNick() + "\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_UMODEIS, "+o " + M_CLIENT(i_pfds).getNick());
-		}
+			M_CLIENT(i_pfds).addBacklog("MODE " 
+				+ chan_name + " +o " + M_CLIENT(i_pfds).getNick() + "\r\n");
 		if (mode.find('i') != mode.npos)
-		{
 			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " +i\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "+i");
-		}
 		if (mode.find('t') != mode.npos)
 		{
 			if (this->chan[chan_name]->get_is_topic() == true)
 				return ;
 			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " +t\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + " +t");
 		}
 		if (cmds.size() > 3)
 		{
 			if (mode.find('l') != mode.npos)
-			{
-				M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " +l " + mode.substr(mode.find('l') + 1, mode.length()) + "\r\n");
-				this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + " +l " + mode.substr(mode.find('l') + 1, mode.length()));
-			}
+				M_CLIENT(i_pfds).addBacklog("MODE " 
+					+ chan_name + " +l " + mode.substr(mode.find('l') + 1, mode.length()) + "\r\n");
 			if (mode.find('k') != mode.npos)
-			{
 				M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " +k " + cmds[3] + "\r\n");
-				this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + " +k " + cmds[3]);
-			}
 			this->chan[chan_name]->set_mode(mode + cmds[3]);
 		}
 		else
 			this->chan[chan_name]->set_mode(mode);
-		// this->chan[chan_name]->sendToAll(":" + M_CLIENT(i_pfds).getNick() + " MODE " + chan_name + " " + mode + "\r\n", this->clients, M_CLIENT(i_pfds).getFd());
 	}
 	else if (mode[0] == '-')
 	{
 		if (mode.find('o') != mode.npos)
-		{
 			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " -o " + M_CLIENT(i_pfds).getNick() + "\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_UMODEIS, "-o " + M_CLIENT(i_pfds).getNick());
-		}
-		if (mode.find('i') != mode.npos)
-		{
-			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " -i\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "-i");
-		}
-		if (mode.find('t') != mode.npos)
-		{
-			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " -t\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "-t");
-		}
-		if (mode.find('l') != mode.npos)
-		{
-			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " -l\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "-l");
-		}
-		if (mode.find('k') != mode.npos)
-		{
-			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " -k\r\n");
-			this->reply(M_CLIENT(i_pfds), RPL_CHANNELMODEIS, chan_name + "-k");
-		}
+		if (mode.find('i') != mode.npos || mode.find('t') != mode.npos 
+			|| mode.find('l') != mode.npos || mode.find('k') != mode.npos)
+			M_CLIENT(i_pfds).addBacklog("MODE " + chan_name + " " + mode + "\r\n");
 		this->chan[chan_name]->set_mode(mode);
-		// this->chan[chan_name]->sendToAll(":" + M_CLIENT(i_pfds).getNick() + " MODE " + chan_name + " " + mode + "\r\n", this->clients, M_CLIENT(i_pfds).getFd());
 	}
 }

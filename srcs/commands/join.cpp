@@ -108,6 +108,8 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 			this->chan[cmds[1]]->setChannelPass(cmds[2]);
 		this->chan[cmds[1]]->op(M_CLIENT(i_pfds).getFd());
 		this->reply(M_CLIENT(i_pfds), RPL_UMODEIS, "+o " + M_CLIENT(i_pfds).getNick());
+		this->clients[M_CLIENT(i_pfds).getFd()].addBacklog("MODE " + cmds[1] + " +n" + "\r\n");
+		this->clients[M_CLIENT(i_pfds).getFd()].addBacklog("MODE " + cmds[1] + " -b" + "\r\n");
 		std::cout << this->chan[cmds[1]]->getOp(M_CLIENT(i_pfds).getFd()) << std::endl;
 	}
 	this->chan[cmds[1]]->add_clients(client.getFd());
