@@ -69,6 +69,7 @@ void nick::creating_nick( std::string &nick, int &i_pfds )
 	if (tmp.size() == 1)
 	{
 		nick += "_1";
+		std::cout << nick << std::endl;
 		client.addBacklog(":"
 						+ sender(client)
 						+ " NICK :"
@@ -89,7 +90,7 @@ void nick::creating_nick( std::string &nick, int &i_pfds )
 			}
 		}
 
-		std::string	nick = ( str
+		nick = ( str
 							+ ft_itoa( std::atoi(
 									get_max_str( tmp ).substr( str.length(),
 									tmp[max_index].length() ).c_str() ) + 1));
@@ -110,13 +111,15 @@ void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 	ft::client	&client = M_CLIENT(i_pfds);
 
 	nick = cmds[1];
+	if (client.getNick() == nick)
+		return ;
 	for (size_t i = 1; i < this->pfds.size(); i++)
 	{
 		if (i != (size_t)i_pfds && M_CLIENT(i).getNick() == nick)
 		{
-			client.addBacklog(":ircserv " + ERR_NICKNAMEINUSE + " * " + nick + " :Nickname is already in use.\r\n");
+			// client.addBacklog(":ircserv " + ERR_NICKNAMEINUSE + " * " + nick + " :Nickname is already in use.\r\n");
 			creating_nick(nick, i_pfds);
-			client.addBacklog(":" + this->sender(client) + " NICK :" + nick + "\r\n");
+			// client.addBacklog(":" + this->sender(client) + " NICK :" + nick + "\r\n");
 			client.getReg().recvNick = true;
 			return;
 		}
