@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+/* ************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   commands.hpp                                       :+:      :+:    :+:   */
@@ -8,7 +8,7 @@
 /*   Created: 2023/05/08 16:54:00 by wismith           #+#    #+#             */
 /*   Updated: 2023/05/11 17:44:44 by wismith          ###   ########.fr       */
 /*                                                                            */
-/* ************************************************************************** */
+/* ************************** */
 
 #	ifndef COMMANDS_HPP
 # define COMMANDS_HPP
@@ -72,6 +72,12 @@
 
 # define ERR_NOPRIVILEGES		std::string("481")
 # define ERR_NOSUCHNICK			std::string("401")
+
+#ifdef OSX
+	#define CLIENTDIR "User"
+#else
+	#define CLIENTDIR "home"
+#endif
 
 namespace ft
 {
@@ -221,6 +227,8 @@ namespace ft
 		private:
 			std::map<std::map<int, int>, bool>	_sender;
 			std::map<std::map<int, int>, bool>	_receiver;
+			std::map<std::map<int, int>, std::string>	_fileSending;
+			std::map<std::map<int, int>, std::string>	_data;
 		public :
 			dcc (std::map<CLIENT_FD, CLIENT> &,
 					std::vector<pollfd> &, std::string &);

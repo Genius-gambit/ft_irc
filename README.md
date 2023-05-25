@@ -21,6 +21,7 @@
 	17. After kicking any client it sends a message to all the clients in the channel that the client has been kicked by an operator.
 	18. Implemented parsing of file transfer.
 	19. Created a class with name dcc.
+	20. Implemented file transfer with nc.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object
