@@ -67,8 +67,16 @@ void nick::creating_nick( std::string &nick, int &i_pfds )
 	}
 
 	if (tmp.size() == 1)
-		client.setNick(nick + "_1");
+	{
+		nick += "_1";
+		client.addBacklog(":"
+						+ sender(client)
+						+ " NICK :"
+						+ nick
+						+ "\r\n");
 
+		client.setNick(nick);
+	}
 	else if (tmp.size() > 1)
 	{
 		int		max_index = 0;
@@ -81,10 +89,18 @@ void nick::creating_nick( std::string &nick, int &i_pfds )
 			}
 		}
 
-		client.setNick( str
-			+ ft_itoa( std::atoi(
-				get_max_str( tmp ).substr( str.length(),
-				tmp[max_index].length() ).c_str() ) + 1));
+		std::string	nick = ( str
+							+ ft_itoa( std::atoi(
+									get_max_str( tmp ).substr( str.length(),
+									tmp[max_index].length() ).c_str() ) + 1));
+
+		client.addBacklog(":"
+						+ sender(client)
+						+ " NICK :"
+						+ nick
+						+ "\r\n");
+
+		client.setNick( nick );
 	}
 }
 
@@ -106,5 +122,12 @@ void nick::exec(int i_pfds, const std::vector<std::string> &cmds)
 		}
 	}
 	client.getReg().recvNick = true;
+
+	client.addBacklog(":"
+						+ sender(client)
+						+ " NICK :"
+						+ nick
+						+ "\r\n");
+	
 	client.setNick(nick);
 }

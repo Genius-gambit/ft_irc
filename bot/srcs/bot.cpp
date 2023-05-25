@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:54:16 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/24 14:21:34 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/25 00:04:40 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void	sighandlr(int signum)
 {
 	(void) signum;
 	g_bot_run = false;
-	std::cout << "\nStopping server!" << std::endl;
+	std::cout << "\nStopping bot!" << std::endl;
 }
 
 void	bot::catch_signals()
