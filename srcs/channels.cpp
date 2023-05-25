@@ -122,28 +122,24 @@ void	channels::set_mode(const std::string &mode)
 	{
 		for (size_t i = 1; i < mode.length(); i++)
 		{
-			if (mode[i] == 'o')
-				this->opps[this->fds[i]] = true;
 			if (mode[i] == 'k')
 				this->setChannelPass(mode.substr(i + 1, mode.length()));
 			if (mode[i] == 'l')
 				this->_limit = string_to_int(mode.substr(i + 1, mode.length()));
-			if (mode[i] == 't')
-				this->_is_topic = true;
-			if (mode[i] == 'i')
-				this->_invite_only = true;
 		}
+		if (mode[1] == 't')
+			this->_is_topic = true;
+		if (mode[1] == 'i')
+			this->_invite_only = true;
 	}
 	else if (mode[0] == '-')
 	{
 		for (size_t i = 1; i < mode.length(); i++)
 		{
-			if (mode[i] == 'o')
-				this->opps[this->fds[i]] = false;
 			if (mode[i] == 'k')
 				this->setChannelPass("");
 			if (mode[i] == 'l')
-				this->_limit = 0;
+				this->_limit = -1;
 			if (mode[i] == 't')
 				this->_is_topic = false;
 			if (mode[i] == 'i')
@@ -169,8 +165,6 @@ std::string	channels::get_mode()
 	}
 	if (!this->_pass.empty())
 		mode += "k" + this->_pass;
-	mode += "n";
-	mode += "-b";
 	return (mode);
 }
 
@@ -182,11 +176,12 @@ std::string	channels::get_users()
 {
 	std::string	users;
 
-	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
+	for (size_t i = 0; i < this->fds.size(); i++)
 	{
-		users += this->clients[*it].getNick();
-		if (it != this->fds.end() - 1)
-			users += " ";
+		if (this->getOp(fds[i]))
+			users += "@" + this->clients[fds[i]].getNick() + " ";
+		else
+			users += this->clients[fds[i]].getNick() + " ";
 	}
 	return (users);
 }

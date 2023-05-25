@@ -26,10 +26,8 @@ SRCS = main \
 	commands/ping \
 	commands/user \
 	commands/privmsg \
-	commands/oper \
 	commands/mode \
 	commands/topic \
-	commands/names \
 	commands/invite \
 	commands/part \
 	commands/list \

@@ -26,16 +26,12 @@ network::network(std::string pw) : ft::parser(), clients(), pfds(), password(pw)
 	this->cmds["JOIN"] = new ft::join(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["PING"] = new ping(this->clients, this->pfds, this->password);
 	this->cmds["PRIVMSG"] = new privmsg(this->clients, this->pfds, this->password, this->chans);
-	this->cmds["OPER"] = new oper(this->clients, this->pfds, this->password);
-	this->cmds["NAMES"] = new names(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["PART"] = new part(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["LIST"] = new list(this->clients, this->pfds, this->password, this->chans);
 
-	//channel operator functions
 	this->cmds["MODE"] = new mode(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["INVITE"] = new invite(this->clients, this->pfds, this->password, this->chans);
 	this->cmds["KICK"] = new ft::kick(this->clients, this->pfds, this->password, this->chans);
-	//only incase of +t mode
 	this->cmds["TOPIC"] = new topic(this->clients, this->pfds, this->password, this->chans);
 }
 
