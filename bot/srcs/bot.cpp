@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 13:54:16 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/25 00:04:40 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/26 14:33:12 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bot::bot () : fd(0), pfd(), buffer(), pars(), msgs(), backlog(),
 
 bot::~bot() {}
 
-void	bot::init ()
+void	bot::init (int port)
 {
 	struct sockaddr_in serv_addr;
 
@@ -30,7 +30,7 @@ void	bot::init ()
     }
 
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+    serv_addr.sin_port = htons(port);
 
     if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
 	{ exit (1); }
@@ -42,13 +42,13 @@ void	bot::init ()
 	this->catch_signals();
 }
 
-void	bot::Connect()
+void	bot::Connect(std::string pass)
 {
 	std::string	cmd;
 
 	cmd += "CAP LS\r\n";
 	cmd += "CAP END\r\n";
-	cmd += "PASS " + PASS + "\r\n";
+	cmd += "PASS " + pass + "\r\n";
 	cmd += "NICK bot\r\n";
 	cmd += "USER bot bot localhost :ircbot\r\n";
 	cmd += "JOIN #BotChat\r\n";

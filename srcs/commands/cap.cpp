@@ -30,7 +30,7 @@ void	cap::exec(int i_pfds, const std::vector<std::string> &cmds)
 		client.addBacklog("CAP * LS\r\n");
 	}
 	else if (cmds[1] == "REQ")
-		client.addBacklog("CAP * ACK :multi-prefix server-time\r\n");
+		client.addBacklog("CAP * ACK\r\n");
 	else if (cmds[1] == "END")
 		client.getReg().recvCapEnd = true;
 }

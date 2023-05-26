@@ -10,7 +10,7 @@ privmsg::~privmsg() {}
 
 void	privmsg::send(ft::client &Sender, ft::client &Receiver, std::string &msg)
 {
-	Receiver.addBacklog(":" + Sender.getNick() + " PRIVMSG " + Receiver.getNick() + " :" + msg + "\r\n");
+	Receiver.addBacklog(":" + this->sender(Sender) + " PRIVMSG " + Receiver.getNick() + " " + msg + "\r\n");
 }
 
 void	privmsg::exec(int i_pfds, const std::vector<std::string> &cmds)

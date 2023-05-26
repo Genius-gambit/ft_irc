@@ -6,7 +6,7 @@
 /*   By: wismith <wismith@42ABUDHABI.AE>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 15:45:00 by wismith           #+#    #+#             */
-/*   Updated: 2023/05/24 02:09:46 by wismith          ###   ########.fr       */
+/*   Updated: 2023/05/26 14:29:06 by wismith          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # include <string>
 # include <fstream>
 
-# include "../../ftServerUtils/includes/ServerUtility.hpp"
+# include "../../ftServerUtils/includes/error.hpp"
 #include "../includes/parser.hpp"
 
 namespace ft
@@ -58,8 +58,8 @@ namespace ft
 										bot ();
 										~bot ();
 
-			void						init ();
-			void						Connect();
+			void						init (int);
+			void						Connect(std::string);
 			void						run ();
 
 			void						catch_signals();
