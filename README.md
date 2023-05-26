@@ -22,6 +22,7 @@
 	18. Implemented parsing of file transfer.
 	19. Created a class with name dcc.
 	20. Implemented file transfer with nc.
+	21. Improved FIle transfer command.
 2. ***WJS*** 
    1. Created main.cpp
    2. Implemented class error object
@@ -48,7 +49,7 @@
 7. ~~Quit command needs to be implemented which leads to kick clients from their respective channelsand also send a message.~~
 8. ~~Implementation of channels along with passwords.~~
 9. ~~Implementation of granting access to clients who give correct password to the channels for joining in.~~
-10. Implement File transfer.
+10. ~~Implement File transfer.~~
 
 #### WJS
 1. Implement server

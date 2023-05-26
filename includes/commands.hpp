@@ -234,6 +234,9 @@ namespace ft
 					std::vector<pollfd> &, std::string &);
 			~dcc ();
 
+			std::string	getClientDir();
+			void	sendingData(ft::client &, ft::client	&, const std::vector<std::string> &cmds );
+			void	retrievingData(ft::client &clientSender, ft::client	&clientReceiver, const std::vector<std::string> &cmds );
 			void exec(int, const std::vector<std::string> &);
 	};
 
