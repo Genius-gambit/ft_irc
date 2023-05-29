@@ -12,35 +12,35 @@
 
 #include "../includes/server.hpp"
 
-bool	ft::g_server_run = true;
+using namespace ft;
+
+bool	ft::g_server_run = RUNNING;
 
 /** @brief Port and Password Constructor
  * 		initializes values to default settings
 */
-ft::server::server(int nport, std::string pw) : network(pw), state(SHUTDOWN), opt(1),
+server::server(int nport, std::string pw) : network(pw), state(SHUTDOWN), opt(1),
 				port(nport), lstn() {}
 
 /** @brief Destructor
  * @note closes any open file descriptors
 */
-ft::server::~server()
+server::~server()
 {
 	this->log << "Closing client fds\n";
 	for (size_t i = 0; i < this->pfds.size(); i++)
 		(i ? close (this->pfds[i].fd) : (int) i);
 	this->log << "Shutting Down Server";
-	std::cout << "Shutting Down Server" << std::endl;
 }
 
 /** @brief server init calls lstnInit to initialize the listener,
  * 			pushes a new struct pollfd with values initialized with the macro NPOLL,
  * 			if an exception hasn't been thrown yet, the state is set to RUNNING
 */
-void	ft::server::init()
+void	server::init()
 {
 	ft::catch_signals();
 	this->log << "initializing the listener";
-	std::cout << "Initializing Listener" << std::endl;
 	this->lstnInit();
 	this->pfds.push_back(NPOLL(this->lstn.getSock()));
 	this->state = RUNNING;
@@ -53,7 +53,7 @@ void	ft::server::init()
  * 			Binds the socket to fd.
  * 			Listens with the socket.
 */
-void	ft::server::lstnInit()
+void	server::lstnInit()
 {
 	this->opt = 1;
 	this->log << this->lstn.setInfo(AF_INET, SOCK_STREAM, IPPROTO_TCP, this->port, INADDR_ANY);
@@ -62,6 +62,7 @@ void	ft::server::lstnInit()
 	this->log << this->lstn.nonBlocking();
 	this->log << this->lstn.BindConnect();
 	this->log << this->lstn.ListenConnect();
+	this->log << " ";
 }
 
 /** @brief registers a new  client
@@ -71,7 +72,7 @@ void	ft::server::lstnInit()
  * 		Each client is associated with a pollfd structure stored
  * 			within a vector.
 */
-void	ft::server::regNewClient()
+void	server::regNewClient()
 {
 	std::string	fdStr;
     int 		fd = -1;
@@ -79,51 +80,78 @@ void	ft::server::regNewClient()
     struct 		sockaddr_in address;
     memset(&address, 0, sizeof(address));
 
-	this->log << "Client Attempting to Connect";
+	this->log << "[ Client Attempting to Connect ]";
     if ((fd = accept(this->lstn.getSock(), (sockaddr *)&address, (socklen_t *)&addrlen)) < 0
 		|| this->clients.size() >= 100)
 		this->log << "Client unable to connect!\n";
 	else
 	{
-		this->clients[fd] = ft::client(fd);
+		this->clients[fd] = client(fd);
 		this->pfds.push_back(NPOLL(fd));
 		this->log << "Accepting new client, fd : " + (fdStr << fd);
 	}
+	this->log << " ";
 }
 
-void	ft::server::receiveCmds(size_t i)
+/** @brief function to receive commands coming from the client,
+ * 			commands are then parsed and can be retrieved by the
+ * 			getCmdSec(size_t); method which returns the indexes of
+ * 			a vector of strings.
+ * 			The selCmd(vector<std::string> &, int ) method is used to
+ * 			select the appropriate command and to execute it.
+*/
+void	server::receiveCmds(size_t i)
 {
 	std::string	cmd;
+	size_t		pos = cmd.npos;
 
 	cmd << M_CLIENT(i);
-	this->log << " << " + cmd;
 	this->pRecv(cmd);
+
+	while ((pos = cmd.find('\n', pos + 1)) != cmd.npos)
+		cmd[pos] = ' ';
+	while ((pos = cmd.find('\r', pos + 1)) != cmd.npos)
+		cmd[pos] = ' ';
+	this->log << " << " + cmd;
+
 	for (size_t j = 0; j < this->getCmds().size(); j++)
-	{
 		if (this->getCmdSec(j)[0].size())
-		{
-			this->printCmds(this->getCmdSec(j));
 			this->selCmd(this->getCmdSec(j), i);
-		}
-	}
 }
 
-void	ft::server::sendReply(size_t i)
+/** @brief sendReply is used to send and unload the backlog for each
+ * 			client. The backlog contains commands that trigger events
+ * 			within the client ( ref client: irssi ), e.g: joining a channel.
+*/
+void	server::sendReply(size_t i)
 {
 	std::string	reply;
 	std::string	rep;
-	ft::client	&client = M_CLIENT(i);
+	size_t		pos;
+	client	&client = M_CLIENT(i);
 
 	while (client.getBacklogSize())
 	{
 		rep = client.retrBacklog();
 		reply += rep;
+
+
+		while ((pos = rep.find('\n', pos + 1)) != rep.npos)
+			rep[pos] = ' ';
+		while ((pos = rep.find('\r', pos + 1)) != rep.npos)
+			rep[pos] = ' ';
 		this->log << " >> " + rep;
+
+
 	}
 	reply >> client;
 }
 
-bool	ft::server::rmClient(size_t i)
+/** @brief rmClient method is to remove
+ * 			a client from the system and close it's
+ * 			file descriptor.
+*/
+bool	server::rmClient(size_t i)
 {
 	close (pfds[i].fd);
 	this->clients.erase(pfds[i].fd);
@@ -131,7 +159,8 @@ bool	ft::server::rmClient(size_t i)
 	return (true);
 }
 
-void	ft::server::run()
+/** @brief run method contains the main server loop */
+void	server::run()
 {
 	std::string	cmd;
 	bool		clientRM = false;
@@ -162,7 +191,7 @@ void	ft::server::run()
 		for (size_t i = 1; i < this->pfds.size(); i++)
 		{
 			/** @brief finds the right client */
-			ft::client	&client = M_CLIENT(i);
+			client	&client = M_CLIENT(i);
 
 			/** @brief checks whether client is ready to write
 			 * 			to using the following :
@@ -180,7 +209,7 @@ void	ft::server::run()
 			if ( !client.getReg().welcomeSent
 					&& client.is_registered() )
 				client.getReg().welcomeSent
-					= ft::welcome( this->clients,
+					= welcome( this->clients,
 									this->pfds,
 									this->password ).Welcome( client );
 
@@ -216,13 +245,29 @@ void	ft::server::run()
 
 /** @brief Non-members */
 
+/** @brief signal handler stops the server upon receiving
+ * 			a signal regardless of the signal.
+*/
 void	sighandlr(int signum)
 {
 	(void) signum;
-	ft::g_server_run = false;
+	ft::g_server_run = SHUTDOWN;
 	std::cout << "\nStopping server!" << std::endl;
 }
 
+/** @brief catch_signal function is used to catch the specific
+ * 			signals we server handles. This reduces the possibility
+ * 			of memory leaks during the runtime, and provides the user
+ * 			a way of shutting down the server.
+ * 
+ * 			Signals handled :
+ * 
+ * 				SIGINT
+ * 				SIGQUIT
+ * 				SIGHUP
+ * 				SIGTERM
+ * 				SIGPIPE
+*/
 void	ft::catch_signals()
 {
 	signal(SIGINT, sighandlr);

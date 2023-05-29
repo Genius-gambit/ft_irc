@@ -167,7 +167,7 @@ int	client::getStatus() const
 	return (this->status);
 }
 
-std::string	client::getNick() const
+const std::string	&client::getNick() const
 {
 	return (this->data.nick);
 }

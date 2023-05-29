@@ -88,7 +88,6 @@ void	dcc::exec( int i_pfds, const std::vector<std::string> &cmds )
 		std::string	receivingFile;
 		ft::client	nick;
 		std::size_t	it;
-		std::cout << cmds[2] << std::endl;
 		for (it = 0; it < this->pfds.size(); it++)
 		{
 			if (M_CLIENT(it).getNick() == cmds[2])

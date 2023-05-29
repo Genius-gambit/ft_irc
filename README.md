@@ -24,18 +24,29 @@
 	20. Implemented file transfer with nc.
 	21. Improved FIle transfer command.
 2. ***WJS*** 
-   1. Created main.cpp
-   2. Implemented class error object
-   3. Handled invalid port as argument
-   4. Implemented a signal handler
-   5. Implemented SetSocket(Interface) and Binder class for ftServer library
-   6. Implemented Listener and Reader class, and merged Binder into Listener for ftServer library
-   7. Implemented non-blocking using function fcntl within Listener
-   8. Added socket options method to Listener class that incorporated setsockopt
+   1. Implemented Makefile
+   2. Implemented rule 'client' within Makefile to pull irssi client version 1.2.3 from Docker Hub
+   3. Made every Makefile call to rule 'client' generate a unique instance of irssi with unique names allowing for multiple containers to run simultaneously
+   4. Implemented class error object
+   5. Handled invalid port as argument
+   6. Implemented a signal handler
+   7. Implemented SetSocket(Interface) for ftServer library
+   8. Implemented Listener class for ftServer library
+   9. Implemented non-blocking using function fcntl within Listener
+   10. Added socket options method to Listener class that incorporated setsockopt
+   11. Developed the Server Architecture
+   12. Added network parent class
+   13. Implemented a Select Command method within network
+   14. Added a parser grandparent to server class, used to parse incoming commands
+   15. Added a command interface class that stores all relevant values' references, and takes their references in constructors
+   16. Tested resulting program using valgrind, and fixed memory leaks
+   17. Helped format messages according to irssi 
+   18. Created a simple Irc bot that is seperate from the main program, and connects like a regular user.
+   19. Added a create channel and join feature within IrcBot
    
    ## Authentication Part
-   1. ~~Password needs to be matched.~~
-   2. ~~Nickname parsing if there are same nicknames.~~
+   20. ~~Password needs to be matched.~~
+   21. ~~Nickname parsing if there are same nicknames.~~
 
 ## Objectives
 
@@ -52,4 +63,4 @@
 10. ~~Implement File transfer.~~
 
 #### WJS
-1. Implement server
+1. ~~Implement server~~

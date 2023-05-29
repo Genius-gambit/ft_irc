@@ -106,7 +106,7 @@ namespace ft
 			bool					getPassCheck() const;
 			bool					getOper() const;
 
-			std::string				getNick() const;
+			const std::string		&getNick() const;
 			std::string				getRealname() const;
 			std::string				getHostname() const;
 			std::string				getUsername() const;

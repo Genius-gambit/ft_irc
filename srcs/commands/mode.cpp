@@ -57,7 +57,6 @@ void	mode::exec(int i_pfds, const std::vector<std::string> &cmds)
 			{
 				int fd;
 				std::string nick = cmds[3];
-				std::cout << "nick: " << nick << std::endl;
 				find_fd(nick, fd);
 				this->chan[chan_name]->add_op(nick);
 				// M_CLIENT(fd).addBacklog("MODE " + chan_name + " +o " + nick + "\r\n");

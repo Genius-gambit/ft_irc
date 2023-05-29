@@ -69,7 +69,6 @@ void nick::creating_nick( std::string &nick, int &i_pfds )
 	if (tmp.size() == 1)
 	{
 		nick += "_1";
-		std::cout << nick << std::endl;
 		client.addBacklog(":"
 						+ sender(client)
 						+ " NICK :"

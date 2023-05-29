@@ -88,19 +88,20 @@ namespace ft
 	class cinterface
 	{
 		protected :
-			std::map<CLIENT_FD, CLIENT>			&clients;
-			std::vector<pollfd>					&pfds;
-			std::string							&password;
+			std::map<CLIENT_FD, CLIENT>				&clients;
+			std::vector<pollfd>						&pfds;
+			std::string								&password;
 		public :
-							cinterface (std::map<CLIENT_FD, CLIENT> &, std::vector<pollfd> &, std::string &);
-			virtual 		~cinterface ();
+													cinterface (std::map<CLIENT_FD, CLIENT> &,
+																	std::vector<pollfd> &, std::string &);
+			virtual 								~cinterface ();
 
-			virtual void 	exec(int, const std::vector<std::string> &) = 0;
+			virtual void 							exec(int, const std::vector<std::string> &) = 0;
 
-			void			reply(ft::client &c, const std::string &code, const std::string &msg);
-			std::string		combineArgs(const std::vector<std::string> &, size_t, size_t);
-			std::string		sender(ft::client &client);
-			void			find_fd(std::string &nick, int &fd);
+			void									reply(ft::client &c, const std::string &code, const std::string &msg);
+			std::string								combineArgs(const std::vector<std::string> &, size_t, size_t);
+			std::string								sender(ft::client &client);
+			void									find_fd(std::string &nick, int &fd);
 	};
 
 	// irssi commands
@@ -108,11 +109,11 @@ namespace ft
 	class cap : public ft::cinterface
 	{
 		public :
-				cap (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &);
-				~cap ();
+													cap (std::map<CLIENT_FD, CLIENT> &,
+															std::vector<pollfd> &, std::string &);
+													~cap ();
 
-			void exec(int, const std::vector<std::string> &);
+			void 									exec(int, const std::vector<std::string> &);
 	};
 
 	/* Usage: QUIT [ <Quit Message> ]
@@ -127,12 +128,12 @@ namespace ft
 		private :
 			std::map<std::string, ft::channels *>	&chan;
 		public :
-				quit (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &,
-					std::map<std::string, ft::channels *>	&);
-				~quit ();
+													quit (std::map<CLIENT_FD, CLIENT> &,
+															std::vector<pollfd> &, std::string &,
+															std::map<std::string, ft::channels *>	&);
+													~quit ();
 
-			void exec(int, const std::vector<std::string> &);
+			void 									exec(int, const std::vector<std::string> &);
 	};
 
 	/* Usage: PASS <password>
@@ -143,11 +144,11 @@ namespace ft
 	class pass : public ft::cinterface
 	{
 		public :
-				pass (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &);
-				~pass ();
+													pass (std::map<CLIENT_FD, CLIENT> &,
+															std::vector<pollfd> &, std::string &);
+													~pass ();
 
-			void exec(int, const std::vector<std::string> &);
+			void									exec(int, const std::vector<std::string> &);
 	};
 
 	/* Usage: NICK <nickname> [ <hopcount> ]
@@ -167,13 +168,13 @@ namespace ft
 	class nick : public ft::cinterface
 	{
 		public :
-					nick (std::map<CLIENT_FD, CLIENT> &,
-						std::vector<pollfd> &, std::string &);
-					~nick ();
+													nick (std::map<CLIENT_FD, CLIENT> &,
+															std::vector<pollfd> &, std::string &);
+													~nick ();
 
-			void	exec(int, const std::vector<std::string> &);
-			std::vector<std::string>	get_original_nickname(std::string &nick, int &i_pfds);
-			void	creating_nick(std::string &, int &);
+			void									exec(int, const std::vector<std::string> &);
+			std::vector<std::string>				get_original_nickname(std::string &nick, int &i_pfds);
+			void									creating_nick(std::string &, int &);
 	};
 
 	/* Usage: JOIN <channel>{,<channel>} [<key>{,<key>}]
@@ -191,32 +192,35 @@ namespace ft
 			std::map<std::string, ft::channels *>	&chan;
 
 		public :
-			join (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &,
-					std::map<std::string, ft::channels *>	&);
+													join (std::map<CLIENT_FD, CLIENT> &,
+															std::vector<pollfd> &, std::string &,
+															std::map<std::string, ft::channels *>	&);
 
-			~join ();
+													~join ();
 
-			void	welcome(ft::client &client, std::string chan, bool newChan);
-			void	exec(int, const std::vector<std::string> &);
+			void									welcome(ft::client &client, std::string chan, bool newChan);
+			void									exec(int, const std::vector<std::string> &);
 	};
 
 	class dcc : public ft::cinterface
 	{
 		private:
-			std::map<std::map<int, int>, bool>	_sender;
-			std::map<std::map<int, int>, bool>	_receiver;
+			std::map<std::map<int, int>, bool>			_sender;
+			std::map<std::map<int, int>, bool>			_receiver;
 			std::map<std::map<int, int>, std::string>	_fileSending;
 			std::map<std::map<int, int>, std::string>	_data;
 		public :
-			dcc (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &);
-			~dcc ();
+														dcc (std::map<CLIENT_FD, CLIENT> &,
+																std::vector<pollfd> &, std::string &);
+														~dcc ();
 
-			std::string	getClientDir();
-			void	sendingData(ft::client &, ft::client	&, const std::vector<std::string> &cmds );
-			void	retrievingData(ft::client &clientSender, ft::client	&clientReceiver, const std::vector<std::string> &cmds );
-			void exec(int, const std::vector<std::string> &);
+			std::string									getClientDir();
+			void										sendingData(ft::client &, ft::client &,
+																		const std::vector<std::string> &cmds );
+			void										retrievingData(ft::client &clientSender,
+																		ft::client	&clientReceiver,
+																		const std::vector<std::string> &cmds );
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 	//! class kick : public ft::cinterface
@@ -237,13 +241,13 @@ namespace ft
 			std::map<std::string, ft::channels *>	&chan;
 
 		public :
-			kick (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &,
-					std::map<std::string, ft::channels *>	&);
+														kick (std::map<CLIENT_FD, CLIENT> &,
+																std::vector<pollfd> &, std::string &,
+																std::map<std::string, ft::channels *>	&);
 
-			~kick ();
+														~kick ();
 
-			void exec(int, const std::vector<std::string> &);
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 	//! class invite : public ft::cinterface
@@ -264,16 +268,16 @@ namespace ft
 	class invite : public ft::cinterface
 	{
 		private :
-			std::map<std::string, ft::channels *>	&chan;
+			std::map<std::string, ft::channels *>		&chan;
 
 		public :
-			invite (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &,
-					std::map<std::string, ft::channels *>	&);
+														invite (std::map<CLIENT_FD, CLIENT> &,
+																	std::vector<pollfd> &, std::string &,
+																	std::map<std::string, ft::channels *>	&);
 
-			~invite ();
+														~invite ();
 
-			void exec(int, const std::vector<std::string> &);
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 	//! class topic : public ft::cinterface
@@ -289,16 +293,16 @@ namespace ft
 	class topic : public ft::cinterface
 	{
 		private :
-			std::map<std::string, ft::channels *>	&chan;
+			std::map<std::string, ft::channels *>		&chan;
 
 		public :
-			topic (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &,
-					std::map<std::string, ft::channels *>	&);
+														topic (std::map<CLIENT_FD, CLIENT> &,
+																std::vector<pollfd> &, std::string &,
+																std::map<std::string, ft::channels *>	&);
 
-			~topic ();
+														~topic ();
 
-			void	exec(int, const std::vector<std::string> &);
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 	//! class mode : public ft::cinterface
@@ -315,16 +319,16 @@ namespace ft
 	class mode : public ft::cinterface
 	{
 		private :
-			std::map<std::string, ft::channels *>	&chan;
+			std::map<std::string, ft::channels *>		&chan;
 
 		public :
-			mode (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &,
-					std::map<std::string, ft::channels *>	&);
+														mode (std::map<CLIENT_FD, CLIENT> &,
+																std::vector<pollfd> &, std::string &,
+																std::map<std::string, ft::channels *>	&);
 
-			~mode ();
+														~mode ();
 
-			void exec(int, const std::vector<std::string> &);
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 	//!class privmsg : public ft::cinterface
@@ -350,14 +354,18 @@ namespace ft
 	class privmsg : public ft::cinterface
 	{
 		private :
-			std::map<std::string, ft::channels *>	&chan;
+			std::map<std::string, ft::channels *>		&chan;
 		public :
-				privmsg (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels *> &);
-				~privmsg ();
+														privmsg (std::map<CLIENT_FD, CLIENT> &,
+																	std::vector<pollfd> &,
+																	std::string &,
+																	std::map<std::string,
+																	ft::channels *> &);
+														~privmsg ();
 
-			void	send(ft::client &Sender, ft::client &Receiver, std::string &msg);
-			void	exec(int, const std::vector<std::string> &);
+			void										send(ft::client &Sender, ft::client &Receiver,
+																std::string &msg);
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 	//!class ping : public ft::cinterface
@@ -379,11 +387,11 @@ namespace ft
 	class ping : public ft::cinterface
 	{
 		public :
-				ping (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &);
-				~ping ();
+														ping (std::map<CLIENT_FD, CLIENT> &,
+																std::vector<pollfd> &, std::string &);
+														~ping ();
 
-			void exec(int, const std::vector<std::string> &);
+			void										exec(int, const std::vector<std::string> &);
 	};
 };
 
@@ -412,11 +420,11 @@ namespace ft
 	class user : public ft::cinterface
 	{
 		public :
-				user (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &);
-				~user ();
+														user (std::map<CLIENT_FD, CLIENT> &,
+																std::vector<pollfd> &, std::string &);
+														~user ();
 
-			void exec(int, const std::vector<std::string> &);
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 	//!class part : public ft::cinterface
@@ -431,13 +439,14 @@ namespace ft
 	class part : public ft::cinterface
 	{
 		private :
-			std::map<std::string, ft::channels *>	&chan;
+			std::map<std::string, ft::channels *>		&chan;
 		public :
-				part (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels *> &);
-				~part ();
+														part (std::map<CLIENT_FD, CLIENT> &,
+																std::vector<pollfd> &, std::string &,
+																std::map<std::string, ft::channels *> &);
+														~part ();
 
-			void exec(int, const std::vector<std::string> &);
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 	//!class list : public ft::cinterface
@@ -455,13 +464,14 @@ namespace ft
   	class list : public ft::cinterface
 	{
 		private :
-			std::map<std::string, ft::channels *>	&chan;
+			std::map<std::string, ft::channels *>		&chan;
 		public :
-				list (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, std::map<std::string, ft::channels *> &);
-				~list ();
+														list (std::map<CLIENT_FD, CLIENT> &,
+																std::vector<pollfd> &, std::string &,
+																std::map<std::string, ft::channels *> &);
+														~list ();
 
-			void exec(int, const std::vector<std::string> &);
+			void										exec(int, const std::vector<std::string> &);
 	};
 
 #endif

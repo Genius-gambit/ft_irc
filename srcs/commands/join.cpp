@@ -107,7 +107,6 @@ void	join::exec(int i_pfds, const std::vector<std::string> &cmds)
 		if (cmds.size() > 2)
 			this->chan[cmds[1]]->setChannelPass(cmds[2]);
 		this->chan[cmds[1]]->op(M_CLIENT(i_pfds).getFd());
-		std::cout << this->chan[cmds[1]]->getOp(M_CLIENT(i_pfds).getFd()) << std::endl;
 	}
 	this->chan[cmds[1]]->add_clients(client.getFd());
 	if (this->chan[cmds[1]]->get_length() == 1)

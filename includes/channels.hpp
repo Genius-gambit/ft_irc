@@ -51,7 +51,7 @@ namespace ft
 			void						op( int fd );
 			bool						&getOp(int fd);
 			void						add_clients( int fd );
-			void						kick_client( std::string &, std::string &);
+			void						kick_client( const std::string &, std::string &);
 			int							get_length( void );
 			void						print_clients();
 			std::string					get_pass();

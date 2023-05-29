@@ -10,7 +10,6 @@ invite::~invite() {}
 
 void	invite::exec(int i_pfds, const std::vector<std::string> &cmds)
 {
-	(void) chan;
 	std::string chan_name = cmds[2];
 	std::string invitee_nick = cmds[1];
 	int invitee_fd;

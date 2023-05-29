@@ -30,23 +30,12 @@
 */
 # define NPOLL(nfd) (struct pollfd){ .fd = nfd, .events = POLLIN | POLLOUT, .revents = 0 }
 
-# define RUNNING 1
-# define SHUTDOWN 0
-
-/*
-*	struct pollfd
-*	{
-*		int fd;
-*		int	events = POLLIN | POLLOUT;
-*		int revents = 0;
-*	}
-*
-*	struct pollfd *pfds
-*/
+# define RUNNING true
+# define SHUTDOWN false
 
 namespace ft
 {
-	class server : public network
+	class server : 			public network
 	{
 		private :
 			int				state;
@@ -79,7 +68,7 @@ namespace ft
 	 * 		server loop so the program can move on to freeing and exiting,
 	 * 		properly.
 	 */
-	void	catch_signals();
+	void					catch_signals();
 };
 
 #endif

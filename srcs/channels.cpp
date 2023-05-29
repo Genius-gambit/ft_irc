@@ -67,20 +67,14 @@ std::string	channels::getChannelName() { return (this->_chan); }
 
 void	channels::add_clients(int fd)
 {
-	std::cout << "Length: " << this->_len << std::endl;
 	for (std::vector<int>::iterator it = this->fds.begin(); it  != this->fds.end(); it++)
-	{
 		if (*it == fd)
-		{
-			std::cout << "Already a Member" << std::endl;
 			return ;
-		}
-	}
 	this->fds.push_back(fd);
 	this->_len++;
 }
 
-void	channels::kick_client(std::string &nickname, std::string &msg)
+void	channels::kick_client(const std::string &nickname, std::string &msg)
 {
 	std::vector<int>::iterator	it;
 
@@ -109,11 +103,10 @@ std::vector<int>	&channels::getFds() { return (this->fds); }
 
 void	channels::sendToAll(const std::string &msg, std::map<int, CLIENT> &clients, int fd)
 {
-	for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
-	{
-		if (*it != fd)
-			clients[*it].addBacklog(msg);
-	}
+	if (this->fds.size())
+		for (std::vector<int>::iterator it = this->fds.begin(); it != this->fds.end(); it++)
+			if (*it != fd)
+				clients[*it].addBacklog(msg);
 }
 
 void	channels::set_mode(const std::string &mode)

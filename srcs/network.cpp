@@ -70,7 +70,5 @@ void	network::selCmd(const std::vector<std::string> &v_cmds, int i_pfds)
 		if ((client.getStatus() == ILLEGAL && firstFour(v_cmds[0])) ||
 			client.getStatus() == VERIFIED)
 			it->second->exec(i_pfds, v_cmds);
-		else
-			std::cout << "Wrong Permissions" << std::endl;
 	}
 }
