@@ -74,7 +74,7 @@
 # define ERR_NOSUCHNICK			std::string("401")
 
 #ifdef OSX
-	#define CLIENTDIR "User"
+	#define CLIENTDIR "Users"
 #else
 	#define CLIENTDIR "home"
 #endif
@@ -176,27 +176,6 @@ namespace ft
 			void	creating_nick(std::string &, int &);
 	};
 
-	//! class oper : public ft::cinterface
-	/* Usage: OPER <name> <password>
-  	Used by a normal user to obtain operator privileges.  The combination
-  	of <name> and <password> are compared with a list of oper
-  	(password) entries in the configuration file and if a match is found,
-  	the client is bootstrapped to operator status.  Numeric Replies:
-  	ERR_NEEDMOREPARAMS ERR_NOOPERHOST ERR_PASSWDMISMATCH
-  	RPL_YOUREOPER
-  	Examples:
-  	OPER foo bar - Try to become an operator using password "bar" and
-  	username "foo". */
-
-	class oper : public ft::cinterface
-	{
-		public:
-			oper(std::map<CLIENT_FD, CLIENT> &c, std::vector<pollfd> &p, std::string &pw);
-			~oper();
-
-			void	exec(int i_pfds, const std::vector<std::string> &cmds);
-	};
-
 	/* Usage: JOIN <channel>{,<channel>} [<key>{,<key>}]
   	Join the comma separated list of channels, specifying the passwords,
   	if needed.  If a channel is password protected and no password is given,
@@ -210,12 +189,12 @@ namespace ft
 	{
 		private :
 			std::map<std::string, ft::channels *>	&chan;
-	
+
 		public :
 			join (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, 
+					std::vector<pollfd> &, std::string &,
 					std::map<std::string, ft::channels *>	&);
-	
+
 			~join ();
 
 			void	welcome(ft::client &client, std::string chan, bool newChan);
@@ -240,49 +219,6 @@ namespace ft
 			void exec(int, const std::vector<std::string> &);
 	};
 
-	class kick : public ft::cinterface
-	{
-		private :
-			std::map<std::string, ft::channels *>	&chan;
-	
-		public :
-			kick (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, 
-					std::map<std::string, ft::channels *>	&);
-	
-			~kick ();
-
-			void exec(int, const std::vector<std::string> &);
-	};
-
-	//! class names : public ft::cinterface
-	/* Usage: NAMES [ <channel>{,<channel>} ]
-  	By supplying a list of channel names or if no arguments are given,
-  	a list of all channels and their occupants is returned.  If the
-  	target server is joined to fewer than 5 channels, a list of all
-  	channels the client is joined to will be returned.  The <channel>
-  	parameter may also be a comma separated list of channels.  Numeric
-  	Replies:
-  	ERR_TOOMANYMATCHES ERR_NOSUCHSERVER RPL_NAMREPLY
-  	RPL_ENDOFNAMES
-  	Examples:
-  	NAMES #twilight_zone,#42 - list visible users on #twilight_zone
-  	and #42 -or- NAMES - list visible users for all channels */
-	class names : public ft::cinterface
-	{
-		private :
-			std::map<std::string, ft::channels *>	&chan;
-	
-		public :
-			names (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, 
-					std::map<std::string, ft::channels *>	&);
-	
-			~names ();
-
-			void exec(int, const std::vector<std::string> &);
-	};
-
 	//! class kick : public ft::cinterface
 	/* Usage: KICK <channel> <user> [<comment>]
   	Forcibly removes a user from a channel.  <comment> is an optional
@@ -294,7 +230,21 @@ namespace ft
   	ERR_NOTREGISTERED
   	Examples:
   	KICK &Melbourne Matthew -or- KICK #Finnish John :Speaking
-  	English */ 
+  	English */
+	class kick : public ft::cinterface
+	{
+		private :
+			std::map<std::string, ft::channels *>	&chan;
+
+		public :
+			kick (std::map<CLIENT_FD, CLIENT> &,
+					std::vector<pollfd> &, std::string &,
+					std::map<std::string, ft::channels *>	&);
+
+			~kick ();
+
+			void exec(int, const std::vector<std::string> &);
+	};
 
 	//! class invite : public ft::cinterface
 	/* Usage: INVITE <nickname> <channel>
@@ -315,12 +265,12 @@ namespace ft
 	{
 		private :
 			std::map<std::string, ft::channels *>	&chan;
-	
+
 		public :
 			invite (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, 
+					std::vector<pollfd> &, std::string &,
 					std::map<std::string, ft::channels *>	&);
-	
+
 			~invite ();
 
 			void exec(int, const std::vector<std::string> &);
@@ -340,12 +290,12 @@ namespace ft
 	{
 		private :
 			std::map<std::string, ft::channels *>	&chan;
-	
+
 		public :
 			topic (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, 
+					std::vector<pollfd> &, std::string &,
 					std::map<std::string, ft::channels *>	&);
-	
+
 			~topic ();
 
 			void	exec(int, const std::vector<std::string> &);
@@ -366,12 +316,12 @@ namespace ft
 	{
 		private :
 			std::map<std::string, ft::channels *>	&chan;
-	
+
 		public :
 			mode (std::map<CLIENT_FD, CLIENT> &,
-					std::vector<pollfd> &, std::string &, 
+					std::vector<pollfd> &, std::string &,
 					std::map<std::string, ft::channels *>	&);
-	
+
 			~mode ();
 
 			void exec(int, const std::vector<std::string> &);

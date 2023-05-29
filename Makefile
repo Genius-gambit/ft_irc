@@ -4,7 +4,7 @@ BONUS = bot/IrcBot
 SERVDIR = ftServerUtils
 SERVARCH = $(SERVDIR)/ServerUtils.a
 
-#* @note : no need to include .cpp extension in SRCS 	
+#* @note : no need to include .cpp extension in SRCS
 #* 	@format : directory/file_name without .cpp
 #*	@example : classDef/rawData
 
@@ -64,12 +64,12 @@ $(OBJDIR)/%.o : srcs/%.cpp
 	@mkdir -p $(OBJDIR)
 	@mkdir -p $(OBJDIR)/commands
 	@printf "\033[A\033[2K\r"
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(def) -c $< -o $@
 
 $(B_OBJDIR)/%.o : bot/srcs/%.cpp
 	@mkdir -p $(B_OBJDIR)
 	@printf "\033[A\033[2K\r"
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(def) -c $< -o $@
 
 all : $(NAME) printProvided
 
@@ -118,7 +118,7 @@ client:
 #* @brief : make rm_client will remove the client and delete the image
 rm_client:
 	docker rmi $(CLIENT_VERSION)
-	
+
 #* @brief : rules to print messages
 printStart :
 	@printf "\nConstructing new 'ft_irc' server objects:\n\n"
@@ -130,3 +130,5 @@ printProvided :
 	@printf "\nServer 'ircserv' provided\n"
 
 .PHONY : all clean fclean re printStart printnl printProvided
+
+# run 42 container in interactive mode: docker exec -it 42-valgrind zsh

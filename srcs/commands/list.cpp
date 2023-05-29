@@ -16,7 +16,7 @@ void	list::exec(int i_pfds, const std::vector<std::string> &cmds)
 	std::string	chan_users;
 	std::string	chan_mode;
 
-	if (cmds[2][0] != '#')
+	if (cmds.size() <= 2)
 	{
 		this->reply(M_CLIENT(i_pfds), RPL_LISTSTART, "LIST of all Channels\r\n");
 		for (it = this->chan.begin(); it != this->chan.end(); it++)

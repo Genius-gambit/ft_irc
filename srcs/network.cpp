@@ -54,7 +54,6 @@ bool	network::firstFour(const std::string &cmd)
 			 cmd == "USER" ? true :
 			 cmd == "QUIT" ? true :
 			 cmd == "JOIN" ? true :
-			 cmd == "DCC" ? true :
 			 false );
 }
 

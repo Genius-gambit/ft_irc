@@ -20,8 +20,8 @@ bool	ft::g_server_run = true;
 ft::server::server(int nport, std::string pw) : network(pw), state(SHUTDOWN), opt(1),
 				port(nport), lstn() {}
 
-/** @brief Destructor 
- * @note closes any open file descriptors 
+/** @brief Destructor
+ * @note closes any open file descriptors
 */
 ft::server::~server()
 {
@@ -78,9 +78,10 @@ void	ft::server::regNewClient()
     int 		addrlen = 0;
     struct 		sockaddr_in address;
     memset(&address, 0, sizeof(address));
-	
+
 	this->log << "Client Attempting to Connect";
-    if ((fd = accept(this->lstn.getSock(), (sockaddr *)&address, (socklen_t *)&addrlen)) < 0)
+    if ((fd = accept(this->lstn.getSock(), (sockaddr *)&address, (socklen_t *)&addrlen)) < 0
+		|| this->clients.size() >= 100)
 		this->log << "Client unable to connect!\n";
 	else
 	{
@@ -195,7 +196,7 @@ void	ft::server::run()
 			}
 
 			/** @brief section to receive command/string from
-			 * 			client fd. 
+			 * 			client fd.
 			 * 			If the following evaluates to true that
 			 * 			signifies the client is ready to read from :
 			 * 				this->pfds[i].revents & POLLIN

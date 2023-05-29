@@ -21,7 +21,7 @@ ft::Listener::~Listener() {}
  * 			will call socket system call to initialize the socket fd (sock) attribute.
  * @note example input :
  * 			Domain: AF_INET, Service: SOCK_STREAM, protocol: 0, port: 6697, interface: INADDR_ANY
- * 	@note Throws SocketFailure Exception if socket system call fails. 
+ * 	@note Throws SocketFailure Exception if socket system call fails.
  */
 std::string	ft::Listener::setInfo(int domain, int service, int protocol,
 						int port, unsigned long interface)
@@ -35,7 +35,7 @@ std::string	ft::Listener::setInfo(int domain, int service, int protocol,
 	newAddr.sin_family = domain;
 	newAddr.sin_port = htons(port);
 	newAddr.sin_addr.s_addr = htonl(interface);
-	
+
 	this->setAddress(newAddr);
 	return ("Server Status: Socket fd set");
 }
@@ -48,11 +48,11 @@ std::string	ft::Listener::setInfo(int domain, int service, int protocol,
  * @note ->	Listener.nonBlocking()
  * @note ->	Listener.BindConnect()
  * @note ->	Listener.ListenConnect()
- * 	@note Throws ListenFailure Exception if listen fails. 
+ * 	@note Throws ListenFailure Exception if listen fails.
  */
 std::string	ft::Listener::ListenConnect()
 {
-	error().LstnCheck(listen(this->getSock(), this->getAddress().sin_port));
+	error().LstnCheck(listen(this->getSock(), 100));
 	return ("Server Status: Listening on Socket");
 }
 

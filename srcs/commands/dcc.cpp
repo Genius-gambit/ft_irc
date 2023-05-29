@@ -14,6 +14,8 @@ std::string	dcc::getClientDir()
 	std::string	_dir = CLIENTDIR;
 	chdir("/");
 	_dir = _dir.append("/");
+	if (getenv("USER") == NULL)
+		return (std::string());
 	_dir = _dir.append(getenv("USER"));
 	chdir(_dir.c_str());
 	cwd = getcwd(s, 100);
@@ -25,6 +27,8 @@ void	dcc::sendingData(ft::client &clientSender, ft::client	&clientReceiver, cons
 {
 	std::string	receivingFile;
 	std::string	filename = getClientDir();
+	if (filename.length() <= 0)
+		return ;
 	filename += cmds[3];
 	std::string	tmp = filename.substr(0, filename.find_last_of('/') + 1);
 	chdir("/");
@@ -70,7 +74,7 @@ void	dcc::retrievingData(ft::client &clientSender, ft::client	&clientReceiver, c
 			outFile << this->_data[getPair];
 		outFile.close();
 		clientReceiver.addBacklog("File received successfully from " + cmds[2] + "\r\n");
-		this->_sender[getPair] = false; 
+		this->_sender[getPair] = false;
 		_fileSending[getPair] = "";
 	}
 	else
@@ -95,11 +99,6 @@ void	dcc::exec( int i_pfds, const std::vector<std::string> &cmds )
 		}
 		if (it != this->pfds.size())
 		{
-			if (M_CLIENT(i_pfds).getFd() == nick.getFd())
-			{
-				M_CLIENT(i_pfds).addBacklog("That's Funny!\r\n");
-				return ;
-			}
 			if (cmds[1] == "SEND")
 				sendingData(M_CLIENT(i_pfds), nick, cmds);
 			else if (cmds[1] == "GET")

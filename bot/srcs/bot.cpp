@@ -123,7 +123,7 @@ void		bot::selCmd(std::vector<std::string> cmd)
 	else if (cmd[1] == "INVITE")
 	{
 		cmd[3].erase(cmd[3].begin());
-		
+
 		for (size_t i = 0; i < this->chan.size(); i++)
 			if (this->chan[i] == cmd[3])
 				return ;
