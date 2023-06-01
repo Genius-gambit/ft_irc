@@ -72,6 +72,48 @@ $(B_OBJDIR)/%.o : bot/srcs/%.cpp
 	$(CXX) $(CXXFLAGS) $(def) -c $< -o $@
 
 all : $(NAME) printProvided
+	@clear
+
+	@tput setaf 1
+	@printf ".__\n"                                          
+	@printf "|__|______   ____   ______ ______________  __\n"
+	@printf "|  \_  __ \_/ ___\ /  ___// __ \_  __ \  \/ /\n"
+	@printf "|  ||  | \/\  \___ \___  \\  ___/|  | \/\   / \n"
+	@printf "|__||__|    \___  >____  >\___  >__|    \_/  \n"
+	@printf "                \/     \/     \/             \n\n"
+	@tput init
+
+	@printf "Execute server as follows:\n\n"
+	@printf "\t./ircserv <"
+
+	@tput setaf 1
+	@printf "port"
+	@tput init
+	
+	@printf "> <"
+
+	@tput setaf 1
+	@printf "password"
+	@tput init
+
+	@printf ">\n\n"
+
+# @printf "<port> <server password>\n\n"
+
+	@printf "Connect client / bot with host's IPv4:\n\n"
+
+	@printf "Your host's IPv4 is: "
+	@tput setaf 2
+	@ipconfig getifaddr en0
+	@tput init
+	@printf "\n"
+
+	@printf "If running a bot or client on same host use "
+	@printf "localhost : "
+
+	@tput setaf 2
+	@printf "127.0.0.1\n"
+	@tput init
 
 $(NAME): utils printStart $(OBJS) printnl
 	@printf "Generating Executable:\n"
